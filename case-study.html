@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizon Analytics — Case Study by Mubeen Ansari</title>
+  <meta name="description" content="How I redesigned the core analytics dashboard for an AI-powered enterprise platform, reducing time-to-insight by 60%.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html"  class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="index.html#contact"  class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html"  class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="index.html#contact"  class="mobile-menu__link">Contact</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- CASE STUDY HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · SaaS · AI</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Horizon Analytics</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          Redesigning the core dashboard experience for an AI-powered analytics platform — making complex data feel obvious for enterprise teams.
+        </p>
+
+        <!-- Project meta -->
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Lead Product Designer</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Timeline</p>
+            <p class="cs-meta-item__value">6 months (2024)</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Team</p>
+            <p class="cs-meta-item__value">1 Designer, 4 Engineers, 1 PM</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Tools</p>
+            <p class="cs-meta-item__value">Figma, Maze, Notion</p>
+          </div>
+        </div>
+
+        <!-- Cover image -->
+        <div class="cs-cover cs-cover--blue" data-load-reveal data-delay="5">
+          <!-- Replace with: <img src="assets/images/horizon-cover.jpg" alt="Horizon Analytics dashboard redesign"> -->
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:40px 80px;">
+            <div style="width:100%;background:rgba(255,255,255,0.9);border-radius:16px;box-shadow:0 32px 80px rgba(0,0,0,0.12);overflow:hidden;">
+              <div style="background:#EDEAE3;height:40px;display:flex;align-items:center;padding:0 20px;gap:8px;">
+                <div style="width:12px;height:12px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#28C840;"></div>
+                <div style="background:#F2EFE8;border-radius:4px;height:20px;width:200px;margin-left:12px;"></div>
+              </div>
+              <div style="padding:24px;display:grid;grid-template-columns:200px 1fr;gap:20px;">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="background:#C8DDFF;border-radius:8px;height:36px;"></div>
+                  <div style="background:#EEF4FF;border-radius:8px;height:28px;"></div>
+                  <div style="background:#EEF4FF;border-radius:8px;height:28px;"></div>
+                  <div style="background:#EEF4FF;border-radius:8px;height:28px;opacity:0.6;"></div>
+                  <div style="background:#EEF4FF;border-radius:8px;height:28px;opacity:0.4;"></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;">
+                    <div style="background:#C8DDFF;border-radius:10px;height:72px;padding:12px;"><div style="background:rgba(255,255,255,0.6);border-radius:4px;height:10px;margin-bottom:6px;"></div><div style="font-size:0;background:var(--accent);border-radius:4px;height:18px;width:60%;"></div></div>
+                    <div style="background:#EEF4FF;border-radius:10px;height:72px;"></div>
+                    <div style="background:#EEF4FF;border-radius:10px;height:72px;"></div>
+                    <div style="background:#EEF4FF;border-radius:10px;height:72px;"></div>
+                  </div>
+                  <div style="background:#F2EFE8;border-radius:10px;height:120px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDY BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- Overview -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Overview</p>
+          <h2 class="cs-section__title">The challenge</h2>
+          <p class="cs-section__text">
+            Horizon Analytics had built a powerful AI engine that surfaced meaningful insights from complex data — but the interface made it nearly impossible to extract value quickly. Enterprise users were spending 45+ minutes per session to find the answers they needed.
+          </p>
+          <p class="cs-section__text">
+            My goal was to redesign the core dashboard experience from the ground up: reduce time-to-insight, make AI outputs more legible, and create a scalable design system that could support rapid feature development.
+          </p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">60%</div>
+            <div class="cs-metric__label">Reduction in time-to-insight</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">44%</div>
+            <div class="cs-metric__label">Increase in daily active usage</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">4.7★</div>
+            <div class="cs-metric__label">User satisfaction score (vs. 2.9 before)</div>
+          </div>
+        </div>
+
+        <!-- Research -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Discovery</p>
+          <h2 class="cs-section__title">Understanding the problem space</h2>
+          <p class="cs-section__text">
+            Before touching any design tools, I spent 3 weeks in deep research. I ran 18 user interviews across 6 enterprise accounts, shadowed power users in live sessions, and analysed support ticket patterns to identify the highest-friction moments.
+          </p>
+          <p class="cs-section__text">
+            Three core themes emerged: users couldn't quickly distinguish AI-generated insights from raw data; the navigation model forced too many context switches; and the information hierarchy didn't match how analysts actually thought about their work.
+          </p>
+        </div>
+
+        <!-- Image placeholder -->
+        <div class="cs-image" style="aspect-ratio:16/9;background:linear-gradient(135deg,#EEF4FF,#D1E3FF);" data-reveal>
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--accent);opacity:0.4;flex-direction:column;gap:0.5rem;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span style="font-size:0.875rem;font-family:var(--font-sans);">Research synthesis board — replace with your image</span>
+          </div>
+        </div>
+
+        <!-- Process steps -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Process</p>
+          <h2 class="cs-section__title">How I approached the redesign</h2>
+
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">Jobs-to-be-done mapping</h3>
+                <p class="cs-step__desc">Translated research findings into 8 primary user jobs. Prioritised based on frequency and pain intensity. This became the north star for every design decision.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">Information architecture overhaul</h3>
+                <p class="cs-step__desc">Ran card sorting sessions with 12 users to understand their mental models. Rebuilt the navigation from scratch around insight categories rather than data source types.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Design system foundation</h3>
+                <p class="cs-step__desc">Created a token-based design system with components for data tables, chart types, and AI insight cards — all accessible to WCAG AA standard.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">04</span>
+              <div>
+                <h3 class="cs-step__title">Iterative testing & refinement</h3>
+                <p class="cs-step__desc">Ran 4 rounds of usability testing with 6 users each. Iterated on the insight card hierarchy, filter patterns, and AI explainability features based on direct observation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image grid -->
+        <div class="cs-image-grid" data-reveal>
+          <div class="cs-image" style="aspect-ratio:4/3;background:linear-gradient(135deg,#C8DDFF,#EEF4FF);">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--accent);opacity:0.4;flex-direction:column;gap:0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-size:0.75rem;font-family:var(--font-sans);">Early wireframes</span>
+            </div>
+          </div>
+          <div class="cs-image" style="aspect-ratio:4/3;background:linear-gradient(135deg,#D1E3FF,#C8DDFF);">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--accent);opacity:0.4;flex-direction:column;gap:0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-size:0.75rem;font-family:var(--font-sans);">Final UI explorations</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solution -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Solution</p>
+          <h2 class="cs-section__title">What we shipped</h2>
+          <p class="cs-section__text">
+            The redesigned dashboard centres on three core improvements: an AI Insight Feed that surfaces the most relevant findings automatically; a redesigned navigation that reduces context switching by 70%; and a Chart Canvas that makes complex data relationships immediately scannable.
+          </p>
+          <p class="cs-section__text">
+            The new design system (128 components, fully documented) enabled the engineering team to ship follow-on features 40% faster and with dramatically fewer design QA rounds.
+          </p>
+        </div>
+
+        <!-- Full-width image -->
+        <div class="cs-image" style="aspect-ratio:16/8;background:linear-gradient(135deg,#EEF4FF 0%,#D1E3FF 50%,#C8DDFF 100%);" data-reveal>
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--accent);opacity:0.4;flex-direction:column;gap:0.5rem;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span style="font-size:0.875rem;font-family:var(--font-sans);">Final dashboard — replace with your screenshot</span>
+          </div>
+        </div>
+
+        <!-- Reflection -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Reflection</p>
+          <h2 class="cs-section__title">What I learned</h2>
+          <p class="cs-section__text">
+            The biggest lesson from this project was the importance of making AI outputs legible. Users didn't distrust the AI — they were confused about what they were supposed to do with its outputs. Labelling, context, and clear calls-to-action around AI insights made a bigger difference than any visual changes.
+          </p>
+          <p class="cs-section__text">
+            I also learned the compounding value of investing in design systems early. The 6 weeks spent building a solid foundation paid back within the first quarter, enabling features that would have taken months in the old setup.
+          </p>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">Design Systems · Conversational UI</p>
+              <h2 class="cs-next__title">FlowBot Design System</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
+        <nav class="footer__links">
+          <a href="work.html"  class="footer__link">Work</a>
+          <a href="about.html" class="footer__link">About</a>
+          <a href="index.html#contact"  class="footer__link">Contact</a>
+        </nav>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

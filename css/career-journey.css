@@ -1,0 +1,598 @@
+/* ════════════════════════════════════════════════
+   CAREER JOURNEY — Interactive Section
+   Inherits design tokens from style.css (:root)
+════════════════════════════════════════════════ */
+
+/* ── Section wrapper ─────────────────────────── */
+/* NOTE: no overflow:hidden here — it would break position:sticky on .cj-nav.
+   Per-stage overflow is clipped on .cj-stage / .cj-stage__visual instead. */
+.cj-section {
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Header ──────────────────────────────────── */
+.cj-header {
+  margin-bottom: var(--s16);
+  max-width: var(--container-narrow);
+}
+
+.cj-header .label {
+  margin-bottom: var(--s4);
+}
+
+.cj-eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--s3);
+}
+
+.cj-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: var(--s4);
+}
+
+.cj-subtitle {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Rail (nav + stages) ──────────────────────── */
+.cj-rail {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: var(--s10);
+  align-items: start;
+  position: relative;
+}
+
+/* ── Left nav ────────────────────────────────── */
+.cj-nav {
+  position: sticky;
+  top: calc(80px + var(--s8));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cj-nav__progress {
+  width: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  height: 100%;
+  position: absolute;
+  left: 18px;
+  top: 0;
+  overflow: hidden;
+}
+
+.cj-nav__progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cj-nav__btn {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 10px 12px 10px 40px;
+  border-radius: var(--r);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--t-base) ease;
+  position: relative;
+  width: 100%;
+}
+
+.cj-nav__dot {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  border: 2px solid var(--bg);
+  z-index: 1;
+  transition: background var(--t-base) ease, transform var(--t-base) var(--ease-spring);
+}
+
+.cj-nav__btn.is-active .cj-nav__dot {
+  background: var(--text);
+  transform: translateY(-50%) scale(1.2);
+}
+
+.cj-nav__btn:hover .cj-nav__dot {
+  background: var(--text-secondary);
+}
+
+.cj-nav__num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+.cj-nav__label {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--t-base) ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cj-nav__btn.is-active .cj-nav__label,
+.cj-nav__btn.is-active .cj-nav__num {
+  color: var(--text);
+}
+
+.cj-nav__btn:hover .cj-nav__label {
+  color: var(--text);
+}
+
+/* ── Stages list ─────────────────────────────── */
+.cj-stages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s6);
+}
+
+/* ── Stage card ──────────────────────────────── */
+.cj-stage {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  background: var(--bg);
+  transition: box-shadow var(--t-slow) ease, border-color var(--t-slow) ease;
+  will-change: transform;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cj-stage:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.07), 0 6px 20px rgba(0,0,0,0.04);
+}
+
+/* Focused stage (the one currently in view) gets a subtle lift + accent */
+.cj-stage.is-current {
+  border-color: var(--border-strong);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.06), 0 4px 14px rgba(0,0,0,0.03);
+}
+.cj-stage.is-current .cj-chapter-tag {
+  color: var(--text-secondary);
+}
+.cj-stage.is-current .cj-chapter-tag::after {
+  width: 56px;
+  background: var(--text);
+  transition: width var(--t-slow) var(--ease-out), background var(--t-base) ease;
+}
+.cj-stage--ai.is-current {
+  border-color: rgba(255,255,255,0.16);
+}
+.cj-stage--ai.is-current .cj-chapter-tag { color: rgba(255,255,255,0.5); }
+.cj-stage--ai.is-current .cj-chapter-tag::after { background: rgba(255,255,255,0.35); }
+
+/* Parallax target — driven by JS, kept GPU-friendly */
+.cj-stage__visual svg,
+.cj-ai-canvas svg {
+  will-change: transform;
+}
+
+.cj-stage__inner {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  min-height: 380px;
+}
+
+/* ── Stage content (left) ────────────────────── */
+.cj-stage__content {
+  padding: var(--s10);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cj-chapter-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--s6);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.cj-chapter-tag::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+.cj-stage__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: var(--s2);
+}
+
+.cj-stage__company {
+  font-size: var(--fs-sm);
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: var(--s6);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.cj-stage__company-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.cj-stage__story {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: var(--s6);
+  max-width: 44ch;
+}
+
+/* Reflection — handwritten Caveat font */
+.cj-reflection {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  padding: var(--s4) var(--s5);
+  border-left: 2px solid rgba(0,0,0,0.15);
+  margin-bottom: var(--s6);
+  background: var(--surface);
+  border-radius: 0 var(--r) var(--r) 0;
+  transform: rotate(-0.4deg);
+  transform-origin: left center;
+}
+
+/* Skills chips */
+.cj-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.cj-skill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  background: var(--bg);
+  letter-spacing: 0.02em;
+  transition: border-color var(--t-fast) ease;
+}
+
+.cj-stage:hover .cj-skill {
+  border-color: var(--border-strong);
+}
+
+/* ── Stage visual (right) ────────────────────── */
+.cj-stage__visual {
+  position: relative;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Hover side-note annotation ──────────────── */
+.cj-note {
+  position: absolute;
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  line-height: 1.35;
+}
+
+.cj-stage:hover .cj-note {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Stage 01: Blueprint ─────────────────────── */
+.cj-visual--blueprint {
+  background: #F8F8F6;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Stage 02: Agency / Sticky notes ────────── */
+.cj-visual--agency {
+  background: #FFFCF5;
+}
+
+/* ── Stage 03: Design system ─────────────────── */
+.cj-visual--system {
+  background: #F6F6F4;
+}
+
+/* ── Stage 04: Consulting / Data ─────────────── */
+.cj-visual--consulting {
+  background: #F4F6F9;
+}
+
+/* ── Stage 05: AI chapter — dark ─────────────── */
+.cj-stage--ai {
+  background: #0A0E1A;
+  border-color: rgba(255,255,255,0.07);
+}
+
+.cj-stage--ai .cj-stage__inner {
+  grid-template-columns: 1fr;
+  min-height: 520px;
+}
+
+.cj-stage--ai .cj-stage__content {
+  padding: var(--s12) var(--s10) var(--s10);
+}
+
+.cj-stage--ai .cj-chapter-tag {
+  color: rgba(255,255,255,0.3);
+}
+
+.cj-stage--ai .cj-chapter-tag::after {
+  background: rgba(255,255,255,0.12);
+}
+
+.cj-stage--ai .cj-stage__title {
+  color: #fff;
+}
+
+.cj-stage--ai .cj-stage__company {
+  color: rgba(255,255,255,0.35);
+}
+
+.cj-stage--ai .cj-stage__story {
+  color: rgba(255,255,255,0.6);
+  max-width: 56ch;
+}
+
+.cj-stage--ai .cj-reflection {
+  background: rgba(255,255,255,0.04);
+  border-left-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.55);
+}
+
+.cj-stage--ai .cj-skill {
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.04);
+}
+
+.cj-stage--ai:hover .cj-skill {
+  border-color: rgba(255,255,255,0.24);
+}
+
+.cj-stage--ai:hover {
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* ── Stage 06: Today ─────────────────────────── */
+.cj-visual--today {
+  background: var(--surface-2);
+}
+
+/* ═══ AI Workflow Canvas ════════════════════════ */
+.cj-ai-canvas {
+  width: 100%;
+  padding: var(--s6) var(--s10) var(--s10);
+  position: relative;
+}
+
+.cj-ai-canvas svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Node styles */
+.cj-ai-node {
+  cursor: default;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.cj-ai-node__ring {
+  fill: none;
+  stroke: rgba(255,255,255,0.1);
+  stroke-width: 1;
+  transition: stroke 0.3s ease;
+}
+
+.cj-ai-node__bg {
+  transition: fill 0.3s ease;
+}
+
+.cj-ai-node__icon {
+  fill: none;
+  stroke: rgba(255,255,255,0.7);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.cj-ai-node__label {
+  fill: rgba(255,255,255,0.45);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: fill 0.3s ease;
+}
+
+.cj-ai-node.is-visible {
+  animation: nodeIn 0.5s ease forwards;
+}
+
+.cj-ai-node.is-active .cj-ai-node__ring {
+  stroke: rgba(255,255,255,0.3);
+}
+
+.cj-ai-node.is-active .cj-ai-node__icon {
+  stroke: #fff;
+}
+
+.cj-ai-node.is-active .cj-ai-node__label {
+  fill: rgba(255,255,255,0.85);
+}
+
+.cj-ai-node.is-dim .cj-ai-node__icon {
+  stroke: rgba(255,255,255,0.25);
+}
+
+.cj-ai-node.is-dim .cj-ai-node__label {
+  fill: rgba(255,255,255,0.2);
+}
+
+@keyframes nodeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Path styles */
+.cj-ai-path {
+  fill: none;
+  stroke: rgba(255,255,255,0.12);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease;
+}
+
+.cj-ai-path.is-active {
+  stroke: rgba(255,255,255,0.45);
+}
+
+.cj-ai-path.is-dim {
+  stroke: rgba(255,255,255,0.05);
+}
+
+/* ═══ Mobile ════════════════════════════════════ */
+@media (max-width: 900px) {
+  .cj-rail {
+    grid-template-columns: 1fr;
+    gap: var(--s8);
+  }
+
+  .cj-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    padding: var(--s3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+  }
+
+  .cj-nav__progress { display: none; }
+
+  .cj-nav__btn {
+    padding: 6px 12px;
+    border-radius: var(--r);
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .cj-nav__dot { display: none; }
+
+  .cj-nav__btn.is-active {
+    background: var(--text);
+    border-radius: var(--r);
+  }
+
+  .cj-nav__btn.is-active .cj-nav__label,
+  .cj-nav__btn.is-active .cj-nav__num {
+    color: #fff;
+  }
+}
+
+@media (max-width: 768px) {
+  .cj-stage__inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .cj-stage__visual {
+    height: 200px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .cj-stage__content {
+    padding: var(--s8) var(--s6);
+  }
+
+  .cj-stage--ai .cj-stage__content {
+    padding: var(--s8) var(--s6) var(--s6);
+  }
+
+  .cj-stage__story {
+    max-width: 100%;
+  }
+
+  .cj-note { display: none; }
+}
+
+@media (max-width: 480px) {
+  .cj-nav__btn {
+    min-width: calc(50% - 4px);
+  }
+
+  .cj-nav__num { display: none; }
+}

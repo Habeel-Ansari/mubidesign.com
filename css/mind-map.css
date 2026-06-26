@@ -1,0 +1,378 @@
+/* ════════════════════════════════════════════════
+   INSIDE MY DESIGN MIND — interactive concept map
+   Inherits all tokens from style.css (:root).
+   Editorial. Restrained. No neon, no glass.
+════════════════════════════════════════════════ */
+
+.mm-section {
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+/* ── Header ──────────────────────────────────── */
+.mm-header {
+  max-width: 640px;
+  margin: 0 auto var(--s12);
+  text-align: center;
+}
+.mm-header .label { margin-bottom: var(--s3); }
+.mm-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+}
+.mm-subtitle {
+  margin-top: var(--s4);
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Stage (canvas + panel) ──────────────────── */
+/* overflow:hidden masks the closed panel, which is parked off the
+   right edge — the panel lives inside the stage and slides into it. */
+.mm-stage { position: relative; overflow: hidden; border-radius: var(--r-xl); }
+
+.mm-canvas {
+  position: relative;
+  width: 100%;
+  height: clamp(560px, 64vw, 760px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  perspective: 1200px;
+  /* subtle paper — stays inside the existing neutral palette */
+  background:
+    radial-gradient(120% 90% at 50% 38%, #FFFFFF 0%, var(--surface) 62%, var(--surface-2) 100%);
+  cursor: default;
+}
+/* faint grain — no futuristic grid, just paper tooth */
+.mm-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.022;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.mm-world { position: absolute; inset: 0; }
+
+/* ── Connection lines ────────────────────────── */
+.mm-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-slow) var(--ease-out);
+}
+.mm-svg.is-in { opacity: 1; }
+.mm-line {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  opacity: 0.45;
+  transition: stroke var(--t-base) ease, opacity var(--t-base) ease, stroke-width var(--t-base) ease;
+}
+.mm-line.is-active { stroke: var(--text); stroke-width: 1.25; opacity: 0.85; }
+.mm-line.is-dim    { opacity: 0.1; }
+
+/* ── Portrait (centre, moves slower) ─────────── */
+.mm-portrait {
+  position: absolute;
+  z-index: 2;
+  width: clamp(116px, 15vw, 164px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.mm-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+}
+.mm-portrait .mm-orbit {
+  position: absolute;
+  inset: -22px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 50%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Concept nodes ───────────────────────────── */
+.mm-node {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  border: none;
+  background: none;
+  padding: 0;
+  transition: opacity var(--t-base) ease;
+}
+.mm-node__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 9px 17px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  /* reveal animation lives here so it never fights the JS transform on .mm-node */
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out),
+              border-color var(--t-base) ease, box-shadow var(--t-base) ease;
+}
+.mm-node.is-in .mm-node__inner { opacity: 1; transform: none; }
+
+.mm-node__label {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+}
+
+/* hover description tooltip */
+.mm-node__desc {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 220px;
+  padding: 8px 12px;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base) ease, transform var(--t-base) ease;
+  z-index: 4;
+}
+
+/* hover state */
+.mm-node.is-hover { z-index: 6; }
+.mm-node.is-hover .mm-node__inner {
+  border-color: var(--border-strong);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.09), 0 4px 10px rgba(0,0,0,0.04);
+}
+.mm-node.is-hover .mm-node__desc { opacity: 1; transform: translateX(-50%) translateY(0); }
+.mm-node.is-related .mm-node__inner { border-color: var(--border-strong); }
+
+/* dim everything unrelated while focusing one node */
+.mm-canvas.is-focusing .mm-node:not(.is-hover):not(.is-related) { opacity: 0.32; }
+.mm-canvas.is-focusing .mm-portrait { opacity: 0.6; transition: opacity var(--t-base) ease; }
+
+/* the currently opened node */
+.mm-node.is-selected .mm-node__inner {
+  background: var(--text);
+  border-color: var(--text);
+}
+.mm-node.is-selected .mm-node__label { color: var(--bg); }
+
+/* ── Handwritten notes ───────────────────────── */
+.mm-note {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+.mm-note.is-in { opacity: 0.9; }
+
+/* ── Editorial panel (slides in, not a modal) ── */
+.mm-panel {
+  position: absolute;
+  top: 0; right: 0;
+  height: 100%;
+  width: min(420px, 84%);
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -30px 0 70px rgba(0,0,0,0.07);
+  padding: var(--s10);
+  overflow-y: auto;
+  transform: translateX(101%);
+  transition: transform 0.55s var(--ease-out);
+  z-index: 7;
+}
+.mm-panel.is-open { transform: translateX(0); }
+
+.mm-panel__close {
+  position: absolute;
+  top: var(--s5); right: var(--s5);
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  font-size: 1.1rem; line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--t-base) ease, color var(--t-base) ease;
+}
+.mm-panel__close:hover { border-color: var(--border-strong); color: var(--text); }
+
+.mm-panel__eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--s4);
+}
+.mm-panel__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  color: var(--text);
+  margin-bottom: var(--s3);
+}
+.mm-panel__tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--s6);
+  transform: rotate(-0.5deg);
+  transform-origin: left center;
+}
+.mm-panel__body {
+  font-size: var(--fs-sm);
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin-bottom: var(--s8);
+}
+.mm-panel__related-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--s3);
+}
+.mm-panel__related { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.mm-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--t-base) ease, color var(--t-base) ease;
+}
+.mm-chip:hover { border-color: var(--border-strong); color: var(--text); }
+
+/* scrim — closes panel, never covers the whole viewport */
+.mm-scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-xl);
+  background: rgba(23,23,23,0.04);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base) ease;
+  z-index: 6;
+}
+.mm-scrim.is-on { opacity: 1; pointer-events: auto; }
+
+/* enhanced cursor ring over a node (extends main.js cursor) */
+.cursor--ring {
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out),
+              border-color 0.25s ease, background-color 0.25s ease, opacity 0.3s ease;
+}
+.cursor--ring.is-node {
+  width: 72px; height: 72px;
+  border-color: rgba(23,23,23,0.35);
+  background-color: rgba(23,23,23,0.03);
+}
+
+/* ── Tablet — reduced depth (handled in JS) ──── */
+@media (max-width: 1023px) {
+  .mm-node__desc { max-width: 180px; }
+}
+
+/* ── Mobile — static editorial layout, tap to open ── */
+@media (max-width: 767px) {
+  .mm-canvas {
+    height: auto;
+    perspective: none;
+    padding: var(--s8) var(--s5);
+  }
+  .mm-canvas::before { display: none; }
+  .mm-svg, .mm-note { display: none; }
+  .mm-world {
+    position: static;
+    display: block;
+    text-align: center;
+  }
+
+  .mm-portrait {
+    position: static;
+    transform: none !important;
+    display: block;
+    width: 132px;
+    margin: 0 auto var(--s6);
+  }
+  .mm-portrait .mm-orbit { display: none; }
+
+  .mm-node {
+    position: static !important;
+    transform: none !important;
+    display: inline-flex;
+    margin: 4px;
+    vertical-align: middle;
+  }
+  .mm-node__inner { opacity: 1 !important; transform: none !important; }
+  .mm-node__desc { display: none; }
+
+  /* panel becomes a bottom sheet — fixed so the stage clip can't hide it */
+  .mm-panel {
+    position: fixed;
+    top: auto; bottom: 0; left: 0; right: 0;
+    width: 100%; height: auto; max-height: 82vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    box-shadow: 0 -30px 70px rgba(0,0,0,0.12);
+    transform: translateY(101%);
+    padding: var(--s8) var(--s6);
+  }
+  .mm-panel.is-open { transform: translateY(0); }
+  .mm-scrim {
+    position: fixed;
+    border-radius: 0;
+    background: rgba(23,23,23,0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-node__inner, .mm-note, .mm-svg { transition: opacity 0.3s ease; }
+}

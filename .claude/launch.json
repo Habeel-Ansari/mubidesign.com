@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/mubeensmacbook/Documents/Portfolio/.claude/server.js"],
+      "port": 4200,
+      "autoPort": true
+    }
+  ]
+}

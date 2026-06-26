@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mubeen Ansari - Senior Product Designer</title>
+  <meta name="description" content="Senior Product Designer with 9 years building B2B SaaS platforms, design systems, and design teams. Product Design Consultant at Geoserve. Based in Bangalore, India.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mubeen Ansari - Senior Product Designer">
+  <meta property="og:description" content="9 years designing B2B platforms, design systems, and building design teams. Currently Product Design Consultant at Geoserve.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yoursite.netlify.app">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="/" class="header__logo" aria-label="Mubeen Ansari home">Mubeen Ansari</a>
+
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="#work"    class="nav__link">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="#contact" class="nav__link">Contact</a></li>
+        </ul>
+
+        <div class="nav__actions">
+          <div class="social-links" aria-label="Social links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+            <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>
+              </svg>
+            </a>
+          </div>
+          <a href="#contact" class="btn btn--primary btn--sm">Let's connect</a>
+        </div>
+      </nav>
+
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-menu__links">
+      <a href="#work"    class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="#contact" class="mobile-menu__link">Contact</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- ═══════════════════════════════════════════
+         HERO
+    ═══════════════════════════════════════════ -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__inner">
+
+          <div class="hero__badge" data-load-reveal data-delay="1">
+            <span class="hero__badge-dot" aria-hidden="true"></span>
+            Open to new opportunities
+          </div>
+
+          <h1 class="hero__headline" data-load-reveal data-delay="2">
+            I turn complex problems into products that <em>actually ship</em>
+          </h1>
+
+          <p class="hero__sub" data-load-reveal data-delay="3">
+            Specializing in design leadership and systems for B2B SaaS. I build the infrastructure teams work inside - design systems, AI-augmented workflows, and 0-to-1 products that actually ship.
+          </p>
+
+          <div class="hero__actions" data-load-reveal data-delay="4">
+            <a href="#work" class="btn btn--primary">See my work</a>
+            <a href="#contact" class="btn btn--ghost">Let's connect</a>
+          </div>
+
+          <div class="hero__scribble" data-load-reveal data-delay="5">
+            <svg width="38" height="34" viewBox="0 0 38 34" fill="none" aria-hidden="true">
+              <path d="M5 5 C5 5 14 4 24 12 C31 18 35 26 34 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M34 31 L27 28 M34 31 L33 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>this site was built using<br><strong>Claude Code</strong> — in just 3 days</span>
+          </div>
+
+          <div class="hero__meta" data-load-reveal data-delay="6">
+            <span class="hero__location">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Bangalore, India
+            </span>
+            <span class="hero__avail">
+              <strong>9</strong> years · Product Design Consultant at Geoserve
+            </span>
+          </div>
+
+          <!-- Signature SVG -->
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         POSITIONING
+    ═══════════════════════════════════════════ -->
+    <section class="services" id="positioning" aria-labelledby="positioning-title">
+      <div class="container">
+
+        <div class="services__header">
+          <h2 class="services__title" id="positioning-title" data-reveal>
+            Strategy first. Systems always. Execution until it ships.
+          </h2>
+          <div data-reveal data-delay="2">
+            <p class="services__desc">
+              I work upstream - shaping what gets built before anyone opens a design tool. I ask the business question before the UX question, and I stay in until the feature is live and working.
+            </p>
+            <p class="services__desc" style="margin-top: 1rem;">
+              Over the past two years I've integrated AI into the design process - cutting research synthesis from days to hours, accelerating documentation, and improving design-to-engineering handoffs.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 pillars -->
+        <ul class="services__list" role="list" style="grid-template-columns: repeat(3, 1fr);">
+          <li class="service-item" data-reveal>
+            <p class="service-item__number">01</p>
+            <svg class="service-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <h3 class="service-item__title">Product thinking</h3>
+            <p class="service-item__desc">I ask "should we build this?" before "how should this look?" I work with founders, PMs and engineering leads to define what matters and what doesn't.</p>
+          </li>
+          <li class="service-item" data-reveal data-delay="1">
+            <p class="service-item__number">02</p>
+            <svg class="service-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <h3 class="service-item__title">Systems at scale</h3>
+            <p class="service-item__desc">I build design systems that compound over time - not just component libraries, but the foundations, tokens, and governance that let teams move faster as the product grows.</p>
+          </li>
+          <li class="service-item" data-reveal data-delay="2">
+            <p class="service-item__number">03</p>
+            <svg class="service-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3 class="service-item__title">Outcomes, not outputs</h3>
+            <p class="service-item__desc">My measure of success is whether the product works for real users - not whether the prototype impressed in review. I stay in until the thing ships.</p>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SELECTED WORK - sticky scroll stack
+    ═══════════════════════════════════════════ -->
+    <section class="work" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="work__header">
+          <h2 class="work__title" id="work-title" data-reveal>Selected work</h2>
+        </div>
+      </div>
+
+      <div class="case-stack">
+
+        <!-- ─── GeoStem ─── -->
+        <div class="case-item">
+          <div class="container">
+            <article class="case-card case-card--navy" data-tilt data-reveal>
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__meta">
+                    <span class="case-card__tag">Maritime SaaS · B2B</span>
+                    <span class="case-card__sep" aria-hidden="true"></span>
+                    <span class="case-card__year">Geoserve</span>
+                  </div>
+                  <div class="case-card__body">
+                    <span class="case-card__outcome">0-to-1 platform · Live in production</span>
+                    <h3 class="case-card__title">GeoStem - Maritime fuel trading intelligence platform</h3>
+                    <p class="case-card__desc">Designed a unified 0-to-1 platform for maritime fuel traders - live commodity pricing, global port bunkering rates, deal pipeline, and a real-time port map in one interface.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="geoserve-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <div class="case-card__tools">
+                      <span class="case-card__tool">Product Design</span>
+                      <span class="case-card__tool">Data viz</span>
+                      <span class="case-card__tool">0-to-1</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="case-card__media case-card__media--navy">
+                  <div class="mock-screen">
+                    <div class="mock-screen__frame" style="background:#fff;">
+                      <div class="mock-screen__bar" style="background:#001e4c;">
+                        <div class="mock-screen__dot" style="background:rgba(255,255,255,0.3);"></div>
+                        <div class="mock-screen__dot" style="background:rgba(255,255,255,0.3);"></div>
+                        <div class="mock-screen__dot" style="background:rgba(255,255,255,0.3);"></div>
+                        <div style="flex:1;font-size:8px;font-weight:600;color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;margin-left:6px;">Dashboard overview</div>
+                        <div style="font-size:8px;font-weight:700;color:#92c5fd;font-family:'Inter',sans-serif;">BRENT <span style="color:#fff;">64.65</span></div>
+                      </div>
+                      <div class="mock-screen__body" style="background:#F0F2F7;padding:8px;display:flex;flex-direction:column;gap:6px;">
+                        <!-- Banner -->
+                        <div style="background:linear-gradient(to right,#001e4c,#1f3a8a);border-radius:6px;padding:10px 12px;position:relative;overflow:hidden;">
+                          <svg style="position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:55%;opacity:0.12;" viewBox="0 0 300 60" preserveAspectRatio="none"><path d="M0 30C50 10 100 40 150 30C200 20 250 45 300 25V60H0Z" fill="#fff"/></svg>
+                          <div style="font-size:8px;font-weight:600;color:#fff;margin-bottom:6px;font-family:'Inter',sans-serif;">Dashboard overview</div>
+                          <div style="display:flex;gap:12px;">
+                            <div><div style="font-size:7px;color:#92c5fd;font-family:'Inter',sans-serif;">Deals Booked</div><div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.5px;font-family:'Inter',sans-serif;">04</div></div>
+                            <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:12px;"><div style="font-size:7px;color:#92c5fd;font-family:'Inter',sans-serif;">Avg Income / MT</div><div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.5px;font-family:'Inter',sans-serif;">$15k</div></div>
+                          </div>
+                        </div>
+                        <!-- Cards row -->
+                        <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:6px;">
+                          <div style="background:#fff;border-radius:6px;padding:8px;border:1px solid #E4E9F2;">
+                            <div style="font-size:7px;font-weight:600;color:#8995AB;font-family:'Inter',sans-serif;margin-bottom:4px;">LIVE PRICE</div>
+                            <div style="font-size:14px;font-weight:800;color:#0E1A33;letter-spacing:-0.5px;font-family:'Inter',sans-serif;">64.65</div>
+                            <div style="font-size:7px;font-weight:700;color:#16a34a;font-family:'Inter',sans-serif;">▲ +0.12%</div>
+                            <svg viewBox="0 0 80 24" width="100%" height="20" fill="none" style="margin-top:4px;"><defs><linearGradient id="mcf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1852FE" stop-opacity="0.2"/><stop offset="100%" stop-color="#1852FE" stop-opacity="0"/></linearGradient></defs><path d="M0 18C12 14 24 10 36 8C48 6 60 12 80 4" stroke="#1852FE" stroke-width="1.5" fill="none"/><path d="M0 18C12 14 24 10 36 8C48 6 60 12 80 4L80 24L0 24Z" fill="url(#mcf)"/></svg>
+                          </div>
+                          <div style="background:#fff;border-radius:6px;padding:8px;border:1px solid #E4E9F2;">
+                            <div style="font-size:7px;font-weight:600;color:#8995AB;font-family:'Inter',sans-serif;margin-bottom:6px;">PORT FUEL PRICING</div>
+                            <div style="display:flex;flex-direction:column;gap:4px;">
+                              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:8px;font-weight:600;color:#0E1A33;font-family:'Inter',sans-serif;">Singapore</span><span style="font-size:8px;font-weight:700;background:#EAF1FE;color:#1852FE;padding:1px 5px;border-radius:3px;font-family:'Inter',sans-serif;">598</span></div>
+                              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:8px;font-weight:600;color:#0E1A33;font-family:'Inter',sans-serif;">Rotterdam</span><span style="font-size:8px;font-weight:700;background:#EAF1FE;color:#1852FE;padding:1px 5px;border-radius:3px;font-family:'Inter',sans-serif;">582</span></div>
+                              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:8px;font-weight:600;color:#0E1A33;font-family:'Inter',sans-serif;">Fujairah</span><span style="font-size:8px;font-weight:700;background:#EAF1FE;color:#1852FE;padding:1px 5px;border-radius:3px;font-family:'Inter',sans-serif;">575</span></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ─── Green Getaways ─── -->
+        <div class="case-item">
+          <div class="container">
+            <article class="case-card" style="--card-bg:#F0F7F0;" data-tilt data-reveal>
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__meta">
+                    <span class="case-card__tag">WordPress · Booking Systems</span>
+                    <span class="case-card__sep" aria-hidden="true"></span>
+                    <span class="case-card__year">Green Getaways</span>
+                  </div>
+                  <div class="case-card__body">
+                    <span class="case-card__outcome">Manual process automated · Zero double-bookings</span>
+                    <h3 class="case-card__title">Replacing manual booking chaos with a self-service WordPress engine</h3>
+                    <p class="case-card__desc">Built a custom WordPress booking plugin and self-service booking pages for an eco-travel company running entirely on spreadsheets and WhatsApp. Automated confirmations, real-time availability, and an admin calendar replaced 3-4 hours of daily manual work.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="green-getaways-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <div class="case-card__tools">
+                      <span class="case-card__tool">WordPress</span>
+                      <span class="case-card__tool">UX Design</span>
+                      <span class="case-card__tool">Automation</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="case-card__media" style="background:linear-gradient(145deg,#071A08 0%,#0E2B12 50%,#14381A 100%);">
+                  <div class="mock-screen">
+                    <div class="mock-screen__frame" style="background:#F5F7F2;overflow:hidden;">
+                      <!-- Window bar -->
+                      <div class="mock-screen__bar" style="background:#fff;border-bottom:1px solid #E8EDE5;padding:0 10px;">
+                        <div class="mock-screen__dot" style="background:#FF5F57;"></div>
+                        <div class="mock-screen__dot" style="background:#FEBC2E;"></div>
+                        <div class="mock-screen__dot" style="background:#28C840;"></div>
+                        <div style="flex:1;display:flex;align-items:center;gap:5px;margin-left:10px;">
+                          <div style="width:12px;height:12px;background:#1A3D1F;border-radius:2.5px;display:flex;align-items:center;justify-content:center;"><svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M5 1C3 1 1 3 1 5s2 4 4 4 4-2 4-4S7 1 5 1z" stroke="#7BC060" stroke-width="1.2"/><path d="M5 1v9M1 5h8" stroke="#7BC060" stroke-width=".8" stroke-linecap="round"/></svg></div>
+                          <span style="font-size:8px;font-weight:700;color:#1A3D1F;font-family:'Inter',sans-serif;">Green Getaways</span>
+                        </div>
+                        <div style="display:flex;gap:10px;align-items:center;margin-right:6px;">
+                          <span style="font-size:7px;font-weight:700;color:#1A3D1F;border-bottom:1.5px solid #1A3D1F;padding-bottom:1px;font-family:'Inter',sans-serif;">Stays</span>
+                          <span style="font-size:7px;color:#9CA3AF;font-family:'Inter',sans-serif;">Events</span>
+                          <span style="font-size:7px;color:#9CA3AF;font-family:'Inter',sans-serif;">Bookings</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                          <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/></svg>
+                          <div style="display:flex;align-items:center;gap:2px;"><div style="width:12px;height:12px;background:#E5E7EB;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#6B7280" stroke-width="2.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#6B7280" stroke-width="2.5" stroke-linecap="round"/></svg></div><span style="font-size:6.5px;color:#6B7280;font-family:'Inter',sans-serif;">Profile</span></div>
+                        </div>
+                      </div>
+                      <!-- 3-panel photo strip matching real GG website -->
+                      <div style="display:flex;height:72px;overflow:hidden;border-bottom:1px solid rgba(0,0,0,.06);">
+                        <!-- Panel 1: Terracotta – lean-to tent + peg silhouettes -->
+                        <div style="flex:1;background:linear-gradient(170deg,#8B3A10,#C25A1A);position:relative;overflow:hidden;">
+                          <svg viewBox="0 0 80 72" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                            <!-- lean-to shelter lines -->
+                            <line x1="22" y1="18" x2="44" y2="42" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="44" y1="18" x2="22" y2="42" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="14" y1="42" x2="52" y2="42" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="14" y1="42" x2="14" y2="56" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="52" y1="42" x2="52" y2="56" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round"/>
+                            <!-- peg figures -->
+                            <circle cx="22" cy="54" r="5" fill="rgba(80,25,5,.7)"/>
+                            <rect x="18" y="59" width="8" height="11" rx="3" fill="rgba(80,25,5,.7)"/>
+                            <circle cx="38" cy="55" r="4.5" fill="rgba(80,25,5,.6)"/>
+                            <rect x="34.5" y="59.5" width="7" height="10" rx="3" fill="rgba(80,25,5,.6)"/>
+                            <circle cx="54" cy="56" r="4" fill="rgba(80,25,5,.55)"/>
+                            <rect x="50.5" y="60" width="7" height="9" rx="3" fill="rgba(80,25,5,.55)"/>
+                          </svg>
+                        </div>
+                        <!-- Panel 2: Dark green – tall bottle silhouettes -->
+                        <div style="flex:1;background:#1A3D0E;position:relative;overflow:hidden;">
+                          <svg viewBox="0 0 80 72" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14" cy="36" r="7" fill="rgba(12,28,6,.75)"/>
+                            <rect x="9" y="43" width="10" height="20" rx="4" fill="rgba(12,28,6,.75)"/>
+                            <circle cx="29" cy="32" r="8" fill="rgba(12,28,6,.7)"/>
+                            <rect x="24" y="40" width="10" height="24" rx="4" fill="rgba(12,28,6,.7)"/>
+                            <circle cx="46" cy="34" r="7.5" fill="rgba(12,28,6,.72)"/>
+                            <rect x="41" y="41.5" width="10" height="22" rx="4" fill="rgba(12,28,6,.72)"/>
+                            <circle cx="62" cy="37" r="7" fill="rgba(12,28,6,.68)"/>
+                            <rect x="57" y="44" width="10" height="19" rx="4" fill="rgba(12,28,6,.68)"/>
+                          </svg>
+                        </div>
+                        <!-- Panel 3: Bright green – pyramid tent + hammock + rocks + dots -->
+                        <div style="flex:1;background:linear-gradient(160deg,#3D8C30,#7BC060);position:relative;overflow:hidden;">
+                          <svg viewBox="0 0 80 72" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                            <!-- hammock arc -->
+                            <path d="M8 32 Q28 42 50 32" fill="none" stroke="rgba(130,200,230,.8)" stroke-width="2" stroke-linecap="round"/>
+                            <!-- pyramid tent -->
+                            <polygon points="52,24 38,62 66,62" fill="#B8621A"/>
+                            <polygon points="52,24 44,62 60,62" fill="#8B4510"/>
+                            <rect x="46" y="56" width="12" height="6" rx="2" fill="rgba(0,0,0,.35)"/>
+                            <!-- rocks -->
+                            <ellipse cx="20" cy="62" rx="8" ry="5" fill="rgba(20,50,10,.6)"/>
+                            <ellipse cx="33" cy="63" rx="6" ry="4" fill="rgba(20,50,10,.5)"/>
+                            <!-- carousel dots -->
+                            <circle cx="34" cy="69" r="2" fill="rgba(255,255,255,.35)"/>
+                            <circle cx="40" cy="69" r="2" fill="rgba(255,255,255,.9)"/>
+                            <circle cx="46" cy="69" r="2" fill="rgba(255,255,255,.35)"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <!-- Body: info left + calendar right -->
+                      <div style="display:flex;background:#F5F7F2;">
+                        <!-- Left column -->
+                        <div style="flex:1;padding:9px 6px 9px 10px;min-width:0;">
+                          <div style="font-size:9.5px;font-weight:800;color:#111827;line-height:1.2;font-family:'Inter',sans-serif;">Escape to nature,</div>
+                          <div style="font-size:9.5px;font-weight:800;color:#2D6A35;line-height:1.2;margin-bottom:5px;font-family:'Inter',sans-serif;">Near Mango Trails</div>
+                          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;">
+                            <span style="background:#E8F5E9;color:#2D6A35;font-size:5.5px;font-weight:700;padding:2px 5px;border-radius:3px;font-family:'Inter',sans-serif;">🏕 CAMPING</span>
+                            <span style="background:#EEF2FF;color:#4338CA;font-size:5.5px;font-weight:700;padding:2px 5px;border-radius:3px;font-family:'Inter',sans-serif;">👥 10 SLOTS LEFT</span>
+                            <span style="background:#FEF9C3;color:#854D0E;font-size:5.5px;font-weight:700;padding:2px 5px;border-radius:3px;font-family:'Inter',sans-serif;">⭐ 4.8 RATING</span>
+                          </div>
+                          <!-- Price CTA card -->
+                          <div style="background:#1A3D1F;border-radius:7px;padding:7px 9px;margin-bottom:6px;">
+                            <div style="font-size:5.5px;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-family:'Inter',sans-serif;">All-Inclusive Stay</div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;">
+                              <div style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-.4px;line-height:1;font-family:'Inter',sans-serif;">₹1,999<span style="font-size:6px;font-weight:400;color:rgba(255,255,255,.5);"> /night</span></div>
+                              <div style="background:#5CB85C;border-radius:5px;padding:5px 7px;"><span style="font-size:6px;font-weight:700;color:#fff;font-family:'Inter',sans-serif;white-space:nowrap;">Secure Your Spot</span></div>
+                            </div>
+                          </div>
+                          <!-- Stats -->
+                          <div style="display:flex;gap:4px;">
+                            <div style="flex:1;background:#fff;border:1px solid #E5EDE5;border-radius:5px;padding:5px 3px;text-align:center;"><div style="font-size:12px;font-weight:800;color:#111827;letter-spacing:-.3px;line-height:1;font-family:'Inter',sans-serif;">39</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;font-family:'Inter',sans-serif;">Bookings</div></div>
+                            <div style="flex:1;background:#fff;border:1px solid #E5EDE5;border-radius:5px;padding:5px 3px;text-align:center;"><div style="font-size:12px;font-weight:800;color:#111827;letter-spacing:-.3px;line-height:1;font-family:'Inter',sans-serif;">3</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;font-family:'Inter',sans-serif;">Listings</div></div>
+                            <div style="flex:1;background:#fff;border:1px solid #E5EDE5;border-radius:5px;padding:5px 3px;text-align:center;"><div style="font-size:12px;font-weight:800;color:#111827;letter-spacing:-.3px;line-height:1;font-family:'Inter',sans-serif;">0</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;font-family:'Inter',sans-serif;">Conflicts</div></div>
+                          </div>
+                        </div>
+                        <!-- Right calendar -->
+                        <div style="width:108px;flex-shrink:0;background:#fff;border-radius:8px;margin:8px 8px 8px 4px;padding:8px 7px;box-shadow:0 1px 4px rgba(0,0,0,.06);">
+                          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+                            <div><div style="font-size:8px;font-weight:800;color:#111827;line-height:1.2;font-family:'Inter',sans-serif;">Select Date</div><div style="font-size:5.5px;color:#9CA3AF;margin-top:1px;font-family:'Inter',sans-serif;">Check availability for June</div></div>
+                            <div style="display:flex;gap:2px;margin-top:1px;"><div style="width:13px;height:13px;background:#F3F4F6;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#6B7280;">‹</div><div style="width:13px;height:13px;background:#F3F4F6;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#6B7280;">›</div></div>
+                          </div>
+                          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:3px;">
+                            <div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">S</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">M</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">T</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">W</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">T</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">F</div><div style="font-size:5px;font-weight:600;color:#9CA3AF;text-align:center;font-family:'Inter',sans-serif;">S</div>
+                          </div>
+                          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+                            <div></div>
+                            <div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">1</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">2</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">3</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">4</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">5</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">6</div>
+                            <div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">7</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">8</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">9</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">10</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">11</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">12</div><div style="text-align:center;font-size:5.5px;background:#DC2626;border-radius:3px;color:#fff;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">13</div>
+                            <div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">14</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">15</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">16</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">17</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">18</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">19</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">20</div>
+                            <div style="text-align:center;font-size:5.5px;background:#D1FAE5;border-radius:3px;color:#065F46;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">21</div><div style="text-align:center;font-size:5.5px;background:#D1FAE5;border-radius:3px;color:#065F46;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">22</div><div style="text-align:center;font-size:5.5px;background:#D1FAE5;border-radius:3px;color:#065F46;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">23</div><div style="text-align:center;font-size:5.5px;background:#D1FAE5;border-radius:3px;color:#065F46;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">24</div><div style="text-align:center;font-size:5.5px;background:#1A3D1F;border-radius:3px;color:#fff;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">25</div><div style="text-align:center;font-size:5.5px;background:#1A3D1F;border-radius:3px;color:#fff;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">26</div><div style="text-align:center;font-size:5.5px;background:#DC2626;border-radius:3px;color:#fff;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">27</div>
+                            <div style="text-align:center;font-size:5.5px;background:#DC2626;border-radius:3px;color:#fff;font-weight:700;padding:2px 0;font-family:'Inter',sans-serif;">28</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">29</div><div style="text-align:center;font-size:5.5px;color:#6B7280;padding:2px 0;font-family:'Inter',sans-serif;">30</div><div></div><div></div><div></div><div></div>
+                          </div>
+                          <!-- Legend -->
+                          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;">
+                            <div style="display:flex;align-items:center;gap:2px;"><div style="width:7px;height:7px;background:#D1FAE5;border-radius:2px;"></div><span style="font-size:5px;color:#9CA3AF;font-family:'Inter',sans-serif;">Available</span></div>
+                            <div style="display:flex;align-items:center;gap:2px;"><div style="width:7px;height:7px;background:#DC2626;border-radius:2px;"></div><span style="font-size:5px;color:#9CA3AF;font-family:'Inter',sans-serif;">Blocked</span></div>
+                            <div style="display:flex;align-items:center;gap:2px;"><div style="width:7px;height:7px;background:#1A3D1F;border-radius:2px;"></div><span style="font-size:5px;color:#9CA3AF;font-family:'Inter',sans-serif;">Your Choice</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ─── Converj ─── -->
+        <div class="case-item">
+          <div class="container">
+            <article class="case-card case-card--green" data-tilt data-reveal>
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__meta">
+                    <span class="case-card__tag">FinTech · Product Design</span>
+                    <span class="case-card__sep" aria-hidden="true"></span>
+                    <span class="case-card__year">Converj</span>
+                  </div>
+                  <div class="case-card__body">
+                    <span class="case-card__outcome">FinTech redesign · design system shipped</span>
+                    <h3 class="case-card__title">Redesigning a fintech product, from core to design system</h3>
+                    <p class="case-card__desc">Redesigned the core product and main website. Built features including invoice creation, OCR, and payment flows. Created a design system used across web and mobile, while contributing to product decisions beyond design.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="converj-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <div class="case-card__tools">
+                      <span class="case-card__tool">Product Design</span>
+                      <span class="case-card__tool">Design Systems</span>
+                      <span class="case-card__tool">OCR flows</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="case-card__media" style="background:linear-gradient(145deg,#08101E 0%,#0D1C36 55%,#0F2240 100%);">
+                  <div class="mock-screen">
+                    <div class="mock-screen__frame" style="overflow:hidden;background:#fff;">
+                      <!-- Window bar with real Converj logo -->
+                      <div class="mock-screen__bar" style="background:#fff;border-bottom:1px solid #E5E7EB;padding:0 10px;">
+                        <div class="mock-screen__dot"></div>
+                        <div class="mock-screen__dot"></div>
+                        <div class="mock-screen__dot"></div>
+                        <div style="flex:1;display:flex;align-items:center;margin-left:10px;">
+                          <img src="https://converj.com/logo/logo-rgb.svg" alt="Converj" style="height:14px;width:auto;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+                          <span style="display:none;font-size:8px;font-weight:700;color:#0D1C36;font-family:'Inter',sans-serif;">Converj</span>
+                        </div>
+                        <div style="font-size:7px;color:#6B7280;font-family:'Inter',sans-serif;margin-right:4px;">converj.com</div>
+                      </div>
+                      <!-- Real product screenshot -->
+                      <div style="overflow:hidden;line-height:0;">
+                        <img src="https://converj.com/home/automated-price.png" alt="Converj automated pricing" style="width:100%;display:block;object-fit:cover;object-position:top;" onerror="this.parentElement.style.background='#F4F5F7';this.style.display='none'"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ─── Design Team Building ─── -->
+        <div class="case-item">
+          <div class="container">
+            <article class="case-card case-card--peach" data-tilt data-reveal>
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__meta">
+                    <span class="case-card__tag">Leadership · People</span>
+                    <span class="case-card__sep" aria-hidden="true"></span>
+                    <span class="case-card__year">Design Team</span>
+                  </div>
+                  <div class="case-card__body">
+                    <span class="case-card__outcome">Design leadership · systems built</span>
+                    <h3 class="case-card__title">Building a design team from scratch</h3>
+                    <p class="case-card__desc">Hired and mentored junior designers, established workflows and design standards, and improved consistency and speed across projects. Turned a single-person design function into a structured, high-output team.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="design-leadership-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <div class="case-card__tools">
+                      <span class="case-card__tool">Hiring</span>
+                      <span class="case-card__tool">Mentoring</span>
+                      <span class="case-card__tool">Workflows</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="case-card__media">
+                  <div class="mock-screen">
+                    <div class="mock-screen__frame" style="background:#F8F9FB;">
+                      <div class="mock-screen__bar" style="background:#1C1A2E;">
+                        <div class="mock-screen__dot"></div>
+                        <div class="mock-screen__dot"></div>
+                        <div class="mock-screen__dot"></div>
+                        <div style="flex:1;font-size:8px;font-weight:600;color:rgba(255,255,255,.7);font-family:'Inter',sans-serif;margin-left:8px;">Design System · Components</div>
+                        <div style="font-size:8px;font-weight:700;color:#C4B5FD;font-family:'Inter',sans-serif;">v2.4</div>
+                      </div>
+                      <div class="mock-screen__body" style="background:#F4F5F7;padding:8px;gap:6px;">
+                        <!-- Token row -->
+                        <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;">
+                          <div style="font-size:7px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Color tokens</div>
+                          <div style="display:flex;gap:4px;">
+                            <div style="flex:1;height:18px;border-radius:4px;background:#1C1A2E;"></div>
+                            <div style="flex:1;height:18px;border-radius:4px;background:#7C3AED;"></div>
+                            <div style="flex:1;height:18px;border-radius:4px;background:#A78BFA;"></div>
+                            <div style="flex:1;height:18px;border-radius:4px;background:#EDE9FE;"></div>
+                            <div style="flex:1;height:18px;border-radius:4px;background:#F8F9FB;border:1px solid #E5E7EB;"></div>
+                          </div>
+                        </div>
+                        <!-- Component cards -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+                          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;">
+                            <div style="font-size:7px;font-weight:700;color:#374151;margin-bottom:5px;">Button</div>
+                            <div style="display:flex;gap:3px;">
+                              <div style="background:#1C1A2E;border-radius:4px;padding:3px 7px;font-size:7px;font-weight:700;color:#fff;">Primary</div>
+                              <div style="border:1px solid #D1D5DB;border-radius:4px;padding:3px 7px;font-size:7px;font-weight:600;color:#374151;">Ghost</div>
+                            </div>
+                          </div>
+                          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;">
+                            <div style="font-size:7px;font-weight:700;color:#374151;margin-bottom:5px;">Input</div>
+                            <div style="background:#F4F5F7;border:1px solid #D1D5DB;border-radius:4px;padding:3px 6px;font-size:7px;color:#9CA3AF;">Label...</div>
+                          </div>
+                          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;">
+                            <div style="font-size:7px;font-weight:700;color:#374151;margin-bottom:5px;">Badge</div>
+                            <div style="display:flex;gap:3px;flex-wrap:wrap;">
+                              <div style="background:#EDE9FE;color:#7C3AED;font-size:6px;font-weight:700;padding:2px 5px;border-radius:10px;">Active</div>
+                              <div style="background:#DCFCE7;color:#166534;font-size:6px;font-weight:700;padding:2px 5px;border-radius:10px;">Done</div>
+                            </div>
+                          </div>
+                          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;">
+                            <div style="font-size:7px;font-weight:700;color:#374151;margin-bottom:5px;">Typography</div>
+                            <div style="font-size:9px;font-weight:700;color:#111827;line-height:1.2;">Heading</div>
+                            <div style="font-size:7px;color:#6B7280;">Body text</div>
+                          </div>
+                        </div>
+                        <!-- Team row -->
+                        <div style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:7px;display:flex;align-items:center;gap:8px;">
+                          <div style="display:flex;gap:0;">
+                            <div style="width:22px;height:22px;border-radius:50%;background:#7C3AED;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;margin-right:-6px;">MA</div>
+                            <div style="width:22px;height:22px;border-radius:50%;background:#2D6A35;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;margin-right:-6px;">RK</div>
+                            <div style="width:22px;height:22px;border-radius:50%;background:#B45309;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;">PR</div>
+                          </div>
+                          <div style="flex:1;"><div style="font-size:8px;font-weight:600;color:#111827;">3 designers onboarded</div><div style="font-size:7px;color:#9CA3AF;">Using shared tokens &amp; components</div></div>
+                          <div style="background:#EDE9FE;color:#7C3AED;font-size:7px;font-weight:700;padding:2px 6px;border-radius:10px;">Active</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div><!-- /.case-stack -->
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         EXPERIENCE
+    ═══════════════════════════════════════════ -->
+    <section class="experience-section" id="experience" aria-labelledby="exp-title">
+      <div class="container">
+
+        <div class="services__header" style="margin-bottom: var(--s16);">
+          <h2 class="section-title" id="exp-title" data-reveal style="margin-bottom:0;">Experience</h2>
+          <p class="services__desc" data-reveal data-delay="2">
+            Across startups and early-stage teams - designing, building, and shipping products end to end.
+          </p>
+        </div>
+
+        <div class="exp-list" role="list">
+
+          <!-- Geoserve -->
+          <div class="exp-item" data-reveal role="listitem">
+            <div>
+              <p class="exp-item__period">Jan 2025 – Present</p>
+            </div>
+            <div>
+              <div style="display:flex; align-items:baseline; gap: var(--s4); flex-wrap:wrap; margin-bottom: var(--s1);">
+                <h3 class="exp-item__role">Product Design Consultant</h3>
+                <span style="font-size:var(--fs-sm); color:var(--text-tertiary);">at</span>
+                <span class="exp-item__role">Geoserve · Freelance</span>
+              </div>
+              <p class="exp-item__desc">
+                Led end-to-end design for web and mobile MVP within a six-month timeline. Partnered with product owners, developers, and stakeholders to define requirements and drive alignment. Expanded and refined the design system with new components and patterns. Introduced AI-assisted workflows for documentation, research synthesis, and design spec generation - reducing repetitive work and accelerating delivery.
+              </p>
+              <div class="case-card__tools" style="margin-top: var(--s4);">
+                <span class="case-card__tool">0-to-1 product</span>
+                <span class="case-card__tool">Design systems</span>
+                <span class="case-card__tool">AI Workflows</span>
+                <span class="case-card__tool">Maritime SaaS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Converj -->
+          <div class="exp-item" data-reveal role="listitem">
+            <div>
+              <p class="exp-item__period">Jul 2023 – Feb 2025</p>
+            </div>
+            <div>
+              <div style="display:flex; align-items:baseline; gap: var(--s4); flex-wrap:wrap; margin-bottom: var(--s1);">
+                <h3 class="exp-item__role">Lead Product Designer</h3>
+                <span style="font-size:var(--fs-sm); color:var(--text-tertiary);">at</span>
+                <span class="exp-item__role">Converj</span>
+              </div>
+              <p class="exp-item__desc">
+                Led a team of two designers to transform the product experience. Established a unified design system resulting in a 40% reduction in development time. Worked closely with the CEO, CBO, engineers, and stakeholders to align roadmaps and deliver user-centered solutions across web and mobile.
+              </p>
+              <div class="case-card__tools" style="margin-top: var(--s4);">
+                <span class="case-card__tool">Design Leadership</span>
+                <span class="case-card__tool">Design Systems</span>
+                <span class="case-card__tool">FinTech</span>
+                <span class="case-card__tool">Web + Mobile</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Red Baton -->
+          <div class="exp-item" data-reveal role="listitem">
+            <div>
+              <p class="exp-item__period">Feb 2018 – Jul 2023</p>
+            </div>
+            <div>
+              <div style="display:flex; align-items:baseline; gap: var(--s4); flex-wrap:wrap; margin-bottom: var(--s1);">
+                <h3 class="exp-item__role">Senior UI Designer</h3>
+                <span style="font-size:var(--fs-sm); color:var(--text-tertiary);">at</span>
+                <span class="exp-item__role">Red Baton</span>
+              </div>
+              <p class="exp-item__desc">
+                5+ years at a product design agency. Progressed from UI/UX Designer to Senior UI Designer, directing the team in creating UI solutions across web and mobile. Guided junior designers through mentoring and design sessions. Delivered process flows, wireframes, and pitch designs meeting measurable business goals.
+              </p>
+              <div class="case-card__tools" style="margin-top: var(--s4);">
+                <span class="case-card__tool">UI Design</span>
+                <span class="case-card__tool">Mentoring</span>
+                <span class="case-card__tool">Design Systems</span>
+                <span class="case-card__tool">Agency</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- centerfills -->
+          <div class="exp-item" data-reveal role="listitem">
+            <div>
+              <p class="exp-item__period">Jun 2017 – Jun 2018</p>
+            </div>
+            <div>
+              <div style="display:flex; align-items:baseline; gap: var(--s4); flex-wrap:wrap; margin-bottom: var(--s1);">
+                <h3 class="exp-item__role">Brand &amp; Web Designer</h3>
+                <span style="font-size:var(--fs-sm); color:var(--text-tertiary);">at</span>
+                <span class="exp-item__role">centerfills</span>
+              </div>
+              <p class="exp-item__desc">
+                Sole designer handling branding, website design and development, investment pitch design, and design direction for clients. Spearheaded branding initiatives that significantly increased brand recognition and engagement.
+              </p>
+              <div class="case-card__tools" style="margin-top: var(--s4);">
+                <span class="case-card__tool">Branding</span>
+                <span class="case-card__tool">Web Design</span>
+                <span class="case-card__tool">Visual Design</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.exp-list -->
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         WHAT MAKES ME DIFFERENT
+    ═══════════════════════════════════════════ -->
+    <section style="padding-block: var(--section-y); border-top: 1px solid var(--border);" id="approach" aria-labelledby="diff-title">
+      <div class="container">
+
+        <div class="services__header" style="margin-bottom: var(--s12);">
+          <div data-reveal>
+            <p class="label" style="margin-bottom: var(--s4);">What makes me different</p>
+            <h2 class="services__title" id="diff-title" style="max-width: 22ch;">
+              I operate closer to a product partner than a craft specialist
+            </h2>
+          </div>
+          <p class="services__desc" data-reveal data-delay="2">
+            9 years across product, systems, leadership, and now AI-augmented workflows. I've built 0-to-1 products, design teams, and design systems - and I've shipped all of them.
+          </p>
+        </div>
+
+        <!-- 4-pillar grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;" data-reveal data-delay="2">
+
+          <div class="service-item">
+            <p class="service-item__number">01</p>
+            <h3 class="service-item__title">Strategic product thinking</h3>
+            <p class="service-item__desc">I work with leadership on roadmap, scope, and prioritisation - not just features. Business goals and user needs get balanced before a single pixel moves.</p>
+          </div>
+
+          <div class="service-item">
+            <p class="service-item__number">02</p>
+            <h3 class="service-item__title">Design systems &amp; governance</h3>
+            <p class="service-item__desc">I don't build component libraries - I build systems with tokens, documentation, and governance that compound in value as products scale.</p>
+          </div>
+
+          <div class="service-item">
+            <p class="service-item__number">03</p>
+            <h3 class="service-item__title">AI-augmented workflows</h3>
+            <p class="service-item__desc">I've integrated AI into research synthesis, documentation, prototyping, and design-to-dev handoffs - shipping faster without cutting quality.</p>
+          </div>
+
+          <div class="service-item">
+            <p class="service-item__number">04</p>
+            <h3 class="service-item__title">Design leadership</h3>
+            <p class="service-item__desc">I've built design functions from scratch - hiring, mentoring, and establishing the standards that let teams move faster as they grow.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SPLIT - Services interactive + Testimonial
+    ═══════════════════════════════════════════ -->
+    <section class="ss-section" aria-label="Services and testimonials">
+      <div class="container">
+        <div class="ss-grid">
+
+          <!-- ── Left: interactive services list ── -->
+          <div class="ss-left" id="ss-left" data-reveal>
+
+            <!-- Decorative background cloud -->
+            <div class="ss-cloud" aria-hidden="true">
+              <span class="ss-cloud__item">MVP scoping</span>
+              <span class="ss-cloud__item">Product strategy</span>
+              <span class="ss-cloud__item">QA ownership</span>
+              <span class="ss-cloud__item">User research</span>
+              <span class="ss-cloud__item">Direction</span>
+              <span class="ss-cloud__item">Systems</span>
+              <span class="ss-cloud__item">Prototyping</span>
+            </div>
+
+            <!-- Description bubble -->
+            <div class="ss-bubble" id="ss-bubble" aria-live="polite">
+              <span id="ss-bubble-text"></span>
+            </div>
+
+            <!-- Clickable services list -->
+            <ul class="ss-list" role="list" aria-label="Services - click to learn more">
+              <li>
+                <button class="ss-item"
+                  data-index="1"
+                  data-desc="I define what ships first and what stays out. Scoping upfront saves months of wasted effort downstream."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  Product scoping
+                </button>
+              </li>
+              <li>
+                <button class="ss-item"
+                  data-index="2"
+                  data-desc="I work with founders on what to build, not just how. Strategy comes before execution."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  Product strategy
+                </button>
+              </li>
+              <li>
+                <button class="ss-item"
+                  data-index="3"
+                  data-desc="I talk to users before opening Figma. Real problems beat assumptions every time."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  UX research
+                </button>
+              </li>
+              <li>
+                <button class="ss-item"
+                  data-index="4"
+                  data-desc="I break what we build, then figure out why. Checking edge cases, logic gaps, and following through bugs."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  QA ownership
+                </button>
+              </li>
+              <li>
+                <button class="ss-item"
+                  data-index="5"
+                  data-desc="I build components that scale so teams move faster as the product grows, not slower."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  Design systems
+                </button>
+              </li>
+              <li>
+                <button class="ss-item"
+                  data-index="6"
+                  data-desc="I hire, mentor, and set standards so design quality compounds across the team over time."
+                  aria-pressed="false">
+                  <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                  Team building
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ── Right: testimonial card ── -->
+          <div class="ss-right" data-reveal data-delay="2">
+
+            <!-- Author header + nav -->
+            <div class="ss-testi-head">
+              <div class="ss-avatar" aria-hidden="true">ST</div>
+              <div class="ss-testi-author">
+                <p class="ss-testi-name">Shiju Thomas</p>
+                <p class="ss-testi-role">Manager · LinkedIn</p>
+              </div>
+              <div class="ss-testi-nav" role="group" aria-label="Testimonial navigation">
+                <button class="ss-t-btn ss-t-btn--prev" aria-label="Previous testimonial" disabled>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="ss-t-btn ss-t-btn--next" aria-label="Next testimonial">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quote slides -->
+            <div class="ss-testi-slides">
+              <div class="ss-testi-slide is-active"
+                data-author="Shiju Thomas"
+                data-role="Manager · LinkedIn"
+                data-initials="ST">
+                <div class="ss-testi-quote">
+                  <p>"A quiet yet creative and diligent designer with a rare combination of empathy, speed, and craft. Agile, timely with deliverables, and always commendable to work with."</p>
+                </div>
+              </div>
+              <div class="ss-testi-slide"
+                data-author="Krishna Maniyar"
+                data-role="Client · Micron Aerosols"
+                data-initials="KM">
+                <div class="ss-testi-quote">
+                  <p>"Meticulous, strong aesthetic sense, self-driven. Mubeen can single-handedly set up your digital product and get it running in record time. Extremely dependable."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="ss-testi-dots" role="tablist">
+              <button class="ss-testi-dot is-active" role="tab" aria-selected="true" aria-label="Testimonial 1"></button>
+              <button class="ss-testi-dot" role="tab" aria-selected="false" aria-label="Testimonial 2"></button>
+            </div>
+
+          </div><!-- /.ss-right -->
+
+        </div><!-- /.ss-grid -->
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         CONTACT
+    ═══════════════════════════════════════════ -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact__inner">
+          <div>
+            <h2 class="contact__headline" id="contact-title" data-reveal>
+              Building something?<br>Let's connect.
+            </h2>
+            <p class="contact__desc" data-reveal data-delay="2">
+              If you're building something and need clarity, structure, and execution, I'd love to hear about it.
+            </p>
+          </div>
+
+          <div class="contact__actions" data-reveal data-delay="3">
+            <div class="contact__email-row">
+              <a href="mailto:mubzansari96@gmail.com" class="contact__email">mubzansari96@gmail.com</a>
+              <button class="copy-btn" aria-label="Copy email address">
+                <svg class="icon-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <svg class="icon-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </button>
+            </div>
+            <div class="contact__cta-row">
+              <a href="#" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn
+              </a>
+              <a href="about.html" class="btn btn--ghost">About me</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari. All rights reserved.</p>
+        <nav class="footer__links" aria-label="Footer navigation">
+          <a href="#work"    class="footer__link">Work</a>
+          <a href="about.html" class="footer__link">About</a>
+          <a href="#contact" class="footer__link">Contact</a>
+        </nav>
+        <div class="social-links" aria-label="Social media links">
+          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

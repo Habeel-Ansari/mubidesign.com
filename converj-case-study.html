@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converj - Case Study by Mubeen Ansari</title>
+  <meta name="description" content="How I redesigned Converj's core fintech product, built OCR and payment flows, and created a cross-platform design system from scratch.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <style>
+    /* ── Converj mockup ── */
+    .cj-mockup {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      border: 1px solid rgba(0,0,0,0.07);
+      background: #F7FAF8;
+    }
+    .cj-topbar {
+      background: #fff; border-bottom: 1px solid #E5EBE8;
+      padding: 0 20px; height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cj-logo { font-size: 15px; font-weight: 800; color: #0A3322; letter-spacing: -0.4px; }
+    .cj-logo span { color: #22C55E; }
+    .cj-topbar-actions { display: flex; gap: 8px; align-items: center; }
+    .cj-avatar { width: 28px; height: 28px; border-radius: 50%; background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .cj-body { display: flex; height: 480px; }
+    .cj-sidebar { width: 200px; background: #fff; border-right: 1px solid #E5EBE8; padding: 16px 0; flex-shrink: 0; }
+    .cj-nav-item { padding: 8px 16px; font-size: 12px; font-weight: 500; color: #64748B; display: flex; align-items: center; gap: 8px; border-radius: 0; cursor: pointer; }
+    .cj-nav-item.active { background: #F0FDF4; color: #166534; font-weight: 600; border-right: 2px solid #22C55E; }
+    .cj-nav-item svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .cj-main { flex: 1; padding: 20px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
+    .cj-page-title { font-size: 16px; font-weight: 700; color: #0A3322; letter-spacing: -0.3px; }
+    .cj-page-sub { font-size: 11px; color: #64748B; margin-top: 2px; }
+    .cj-stat-row { display: flex; gap: 10px; flex-shrink: 0; }
+    .cj-stat { flex: 1; background: #fff; border: 1px solid #E5EBE8; border-radius: 10px; padding: 12px 14px; }
+    .cj-stat__label { font-size: 9px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    .cj-stat__val { font-size: 20px; font-weight: 800; color: #0A3322; letter-spacing: -0.5px; }
+    .cj-stat__delta { font-size: 9px; font-weight: 700; margin-top: 3px; }
+    .cj-stat__delta.up { color: #16A34A; }
+    .cj-stat__delta.dn { color: #DC2626; }
+    .cj-table-card { flex: 1; background: #fff; border: 1px solid #E5EBE8; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+    .cj-table-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #E5EBE8; }
+    .cj-table-title { font-size: 12px; font-weight: 600; color: #0A3322; }
+    .cj-btn { background: #22C55E; color: #fff; border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 600; }
+    .cj-btn-ghost { background: #F0FDF4; color: #166534; border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 600; border: 1px solid #BBF7D0; }
+    .cj-table-row { display: flex; align-items: center; padding: 9px 14px; border-bottom: 1px solid #F1F5F9; gap: 10px; }
+    .cj-row-icon { width: 30px; height: 30px; border-radius: 8px; background: #F0FDF4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cj-row-icon svg { width: 14px; height: 14px; stroke: #16A34A; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+    .cj-row-name { font-size: 11px; font-weight: 600; color: #0A3322; }
+    .cj-row-date { font-size: 9px; color: #94A3B8; }
+    .cj-row-amount { font-size: 12px; font-weight: 700; color: #0A3322; margin-left: auto; }
+    .cj-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+    .cj-badge--green { background: #DCFCE7; color: #166534; }
+    .cj-badge--yellow { background: #FEF9C3; color: #854D0E; }
+    .cj-badge--gray  { background: #F1F5F9; color: #475569; }
+
+    /* OCR screen */
+    .cj-ocr { display: flex; height: 480px; background: #F7FAF8; }
+    .cj-ocr-left { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .cj-ocr-drop { flex: 1; border: 2px dashed #BBF7D0; border-radius: 12px; background: #F0FDF4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+    .cj-ocr-drop svg { width: 32px; height: 32px; stroke: #22C55E; fill: none; stroke-width: 1.5; stroke-linecap: round; }
+    .cj-ocr-drop-label { font-size: 11px; font-weight: 600; color: #166534; }
+    .cj-ocr-drop-sub { font-size: 9px; color: #94A3B8; }
+    .cj-ocr-right { width: 280px; background: #fff; border-left: 1px solid #E5EBE8; padding: 16px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+    .cj-field-label { font-size: 9px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .cj-field-val { font-size: 12px; font-weight: 600; color: #0A3322; background: #F7FAF8; border: 1px solid #E5EBE8; border-radius: 6px; padding: 6px 10px; }
+    .cj-field-val.extracted { border-color: #BBF7D0; background: #F0FDF4; color: #166534; }
+    .cj-confirm-btn { background: #22C55E; color: #fff; border-radius: 8px; padding: 10px; font-size: 12px; font-weight: 700; text-align: center; margin-top: auto; }
+
+    /* Design system tokens preview */
+    .ds-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .ds-swatch { border-radius: 8px; height: 48px; }
+    .ds-token-row { display: flex; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #F1F5F9; }
+    .ds-token-chip { width: 24px; height: 24px; border-radius: 5px; flex-shrink: 0; }
+    .ds-token-name { font-size: 10px; font-weight: 600; color: #0A3322; }
+    .ds-token-val  { font-size: 9px; color: #94A3B8; margin-left: auto; }
+
+    /* Screenshots grid responsive */
+    .cj-screens-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 640px) {
+      .cj-screens-grid { grid-template-columns: 1fr; }
+      .cs-cover { aspect-ratio: auto !important; padding: 20px 16px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html"  class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html" class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · FinTech · Product Design · Design Systems</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Converj</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          Redesigning a fintech product end to end - from a fragmented core experience to a coherent product with OCR-powered invoice processing, payment flows, and a cross-platform design system that scaled the team's velocity.
+        </p>
+
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Lead Product Designer</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Company</p>
+            <p class="cs-meta-item__value">Converj - B2B FinTech</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Timeline</p>
+            <p class="cs-meta-item__value">Jul 2023 - Feb 2025 · 1 yr 8 mos</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">Full product redesign · OCR flows · Payment UX · Design system · Web + Mobile</p>
+          </div>
+        </div>
+
+        <!-- Cover mockup: Converj dashboard (real screenshot) -->
+        <div class="cs-cover" style="background:#0A1628;padding:32px 40px;display:flex;align-items:center;justify-content:center;" data-load-reveal data-delay="5">
+          <div style="width:100%;max-width:860px;border-radius:10px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.45);">
+            <div style="background:#fff;height:32px;display:flex;align-items:center;padding:0 14px;gap:6px;border-bottom:1px solid #E5E7EB;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#28C840;"></div>
+              <div style="flex:1;display:flex;justify-content:center;"><img src="https://converj.com/logo/logo-rgb.svg" alt="Converj" style="height:14px;display:block;" onerror="this.parentElement.textContent='converj.com'"/></div>
+            </div>
+            <img src="https://converj.com/home/automated-price.png" alt="Converj automated pricing dashboard" style="width:100%;display:block;" onerror="this.parentElement.style.display='none'"/>
+          </div>
+        </div>
+        <div style="display:none" class="cj-mockup-hidden"><div class="cj-mockup">
+            <div class="cj-topbar">
+              <div class="cj-logo">con<span>verj</span></div>
+              <div class="cj-topbar-actions">
+                <div style="font-size:11px;font-weight:600;color:#64748B;">Q2 2023</div>
+                <div class="cj-avatar">MA</div>
+              </div>
+            </div>
+            <div class="cj-body">
+              <!-- Sidebar -->
+              <div class="cj-sidebar">
+                <div class="cj-nav-item active">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                  Dashboard
+                </div>
+                <div class="cj-nav-item">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Invoices
+                </div>
+                <div class="cj-nav-item">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  Payments
+                </div>
+                <div class="cj-nav-item">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Vendors
+                </div>
+                <div class="cj-nav-item">
+                  <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  Reports
+                </div>
+              </div>
+              <!-- Main -->
+              <div class="cj-main">
+                <div>
+                  <div class="cj-page-title">Dashboard</div>
+                  <div class="cj-page-sub">Overview · June 2023</div>
+                </div>
+                <div class="cj-stat-row">
+                  <div class="cj-stat">
+                    <div class="cj-stat__label">Total invoiced</div>
+                    <div class="cj-stat__val">₹4.2L</div>
+                    <div class="cj-stat__delta up">↑ 18% vs last month</div>
+                  </div>
+                  <div class="cj-stat">
+                    <div class="cj-stat__label">Payments due</div>
+                    <div class="cj-stat__val">₹1.1L</div>
+                    <div class="cj-stat__delta dn">3 overdue</div>
+                  </div>
+                  <div class="cj-stat">
+                    <div class="cj-stat__label">Processed this week</div>
+                    <div class="cj-stat__val">14</div>
+                    <div class="cj-stat__delta up">↑ 6 via OCR</div>
+                  </div>
+                  <div class="cj-stat">
+                    <div class="cj-stat__label">Vendors active</div>
+                    <div class="cj-stat__val">38</div>
+                    <div class="cj-stat__delta up">↑ 4 new</div>
+                  </div>
+                </div>
+                <div class="cj-table-card">
+                  <div class="cj-table-head">
+                    <div class="cj-table-title">Recent invoices</div>
+                    <div style="display:flex;gap:6px;">
+                      <div class="cj-btn-ghost">Upload via OCR</div>
+                      <div class="cj-btn">+ New invoice</div>
+                    </div>
+                  </div>
+                  <div class="cj-table-row">
+                    <div class="cj-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div><div class="cj-row-name">Techflow Supplies - INV-2241</div><div class="cj-row-date">Jun 12 · Due Jun 26</div></div>
+                    <div class="cj-badge cj-badge--yellow">Pending</div>
+                    <div class="cj-row-amount">₹48,500</div>
+                  </div>
+                  <div class="cj-table-row">
+                    <div class="cj-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div><div class="cj-row-name">ArrowMark Co. - INV-2238</div><div class="cj-row-date">Jun 10 · Paid Jun 14</div></div>
+                    <div class="cj-badge cj-badge--green">Paid</div>
+                    <div class="cj-row-amount">₹1,12,000</div>
+                  </div>
+                  <div class="cj-table-row">
+                    <div class="cj-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div><div class="cj-row-name">BuildNext Ltd. - INV-2230</div><div class="cj-row-date">Jun 5 · Overdue</div></div>
+                    <div class="cj-badge" style="background:#FEE2E2;color:#DC2626;">Overdue</div>
+                    <div class="cj-row-amount">₹22,800</div>
+                  </div>
+                  <div class="cj-table-row">
+                    <div class="cj-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div><div class="cj-row-name">Zeta Components - INV-2228</div><div class="cj-row-date">Jun 3 · Processing</div></div>
+                    <div class="cj-badge cj-badge--gray">Processing</div>
+                    <div class="cj-row-amount">₹67,400</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div><!-- /.cj-mockup-hidden -->
+
+      </div>
+    </section>
+
+    <!-- BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- Business Challenge -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Business challenge</p>
+          <h2 class="cs-section__title">A product that worked technically but failed commercially</h2>
+          <p class="cs-section__text">
+            Converj was a B2B fintech platform for invoice management and payment processing, targeting small and mid-size businesses in India. The engineering team had built a functional product - invoices could be created, vendors could be managed, payments could be initiated. But the product was haemorrhaging users after signup.
+          </p>
+          <p class="cs-section__text">
+            The core issues were threefold. First, the onboarding and invoice creation flow required too many manual inputs - businesses were spending 15–20 minutes creating a single invoice that should have taken two. Second, the product had been built feature-by-feature without a coherent information architecture, making navigation confusing and feature discovery poor. Third, there was no design system - every new feature looked slightly different, eroding the sense of a unified, trustworthy product. In fintech, trust is the product.
+          </p>
+          <p class="cs-section__text">
+            The founding team brought me in to rebuild the product experience from the ground up - not a cosmetic refresh, but a fundamental rethinking of the core flows with a design system as the foundation.
+          </p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">~70%</div>
+            <div class="cs-metric__label">Reduction in invoice creation time via OCR</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">1→2</div>
+            <div class="cs-metric__label">Platforms covered by a single design system</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">Full</div>
+            <div class="cs-metric__label">Product surface redesigned end to end</div>
+          </div>
+        </div>
+
+        <!-- Discovery -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Discovery &amp; research</p>
+          <h2 class="cs-section__title">Understanding why users were dropping off</h2>
+          <p class="cs-section__text">
+            Before touching Figma, I spent two weeks in discovery: user interviews with existing customers, session recordings, and a structured audit of the existing product against competitor experiences. The goal was to separate the symptoms (drop-off, complaints) from the causes (specific friction points and mental model mismatches).
+          </p>
+          <p class="cs-section__text">
+            The most important finding was about invoice creation. Most users were receiving invoices from vendors - PDFs or scanned images - and manually re-typing every field into the product. This wasn't a UX preference issue; it was a workflow mismatch. The product assumed users would create invoices from scratch, but the majority use case was ingesting invoices that already existed elsewhere.
+          </p>
+          <p class="cs-section__text">
+            A second key finding: users didn't trust the payment initiation flow. The confirmation screens were ambiguous, the error states were unhelpful, and the status tracking post-payment was absent. In financial products, uncertainty at the payment step is a product-killer.
+          </p>
+        </div>
+
+        <!-- Strategy -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Defining the strategy</p>
+          <h2 class="cs-section__title">Three bets, one foundation</h2>
+          <p class="cs-section__text">
+            I worked with the founding team to define three strategic priorities, ranked by impact-to-effort ratio. First: OCR-powered invoice ingestion - this directly addressed the highest-friction workflow and had a clear technical path. Second: payment flow redesign - rebuilding the confirmation, status, and error experience to establish trust. Third: design system foundation - not a deliverable for its own sake, but the infrastructure that would make all future work faster and more consistent.
+          </p>
+          <p class="cs-section__text">
+            I recommended starting the design system alongside the OCR flow, not after it. This added some upfront work but meant every component we built for the OCR flow would immediately become a reusable asset. By the time we reached the payment redesign, the form components, button states, status indicators, and feedback patterns were already production-ready.
+          </p>
+        </div>
+
+        <!-- Process -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Design process</p>
+          <h2 class="cs-section__title">How I approached the redesign</h2>
+
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">Information architecture rebuild</h3>
+                <p class="cs-step__desc">Ran card-sorting sessions with six active users to map their mental models of invoice and payment management. The existing navigation grouped features by technical category (invoices, payments, vendors) but users thought in terms of tasks (what do I need to do today?). Rebuilt the IA around task frequency and decision flow, not feature type.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">OCR invoice flow design</h3>
+                <p class="cs-step__desc">Designed the end-to-end OCR ingestion flow: drag-and-drop upload, real-time field extraction with visual confidence indicators, editable extracted fields with inline validation, and a one-click confirmation screen. The key design challenge was communicating extraction confidence without alarming users about potential errors - I used a progressive disclosure model where low-confidence fields were surfaced for review first.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Payment flow redesign</h3>
+                <p class="cs-step__desc">Rebuilt the payment initiation and confirmation experience from scratch. Key changes: a clear, step-indicated flow (select → confirm → authorise → done), explicit confirmation screens showing exactly what will be debited and when, meaningful post-payment status tracking, and actionable error states that told users what went wrong and what to do next.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">04</span>
+              <div>
+                <h3 class="cs-step__title">Cross-platform design system</h3>
+                <p class="cs-step__desc">Built the design system in Figma with a token-first approach - colour, typography, spacing, and radius defined as tokens before any component was built. Created a core component library covering forms, tables, data cards, status indicators, and feedback patterns, all with documented variants, states, and usage guidelines. The system covered web and mobile (iOS and Android) from day one.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Product screenshots grid -->
+      <div style="background:#0A1628;padding:48px 0 56px;" data-reveal>
+        <div class="container">
+          <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:32px;">Product screens · converj.com</p>
+          <div class="cj-screens-grid">
+            <div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.4);">
+              <div style="background:#1A2840;height:28px;display:flex;align-items:center;padding:0 12px;gap:5px;">
+                <div style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#28C840;"></div>
+              </div>
+              <img src="https://converj.com/home/automated-price.png" alt="Converj automated pricing" style="width:100%;display:block;" onerror="this.parentElement.parentElement.style.display='none'"/>
+            </div>
+            <div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.4);">
+              <div style="background:#1A2840;height:28px;display:flex;align-items:center;padding:0 12px;gap:5px;">
+                <div style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#28C840;"></div>
+              </div>
+              <img src="https://converj.com/home/dynamic-discounting.png" alt="Converj dynamic discounting" style="width:100%;display:block;" onerror="this.parentElement.parentElement.style.display='none'"/>
+            </div>
+            <div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.4);">
+              <div style="background:#1A2840;height:28px;display:flex;align-items:center;padding:0 12px;gap:5px;">
+                <div style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#28C840;"></div>
+              </div>
+              <img src="https://converj.com/home/p2p-comprehensive.png" alt="Converj P2P comprehensive" style="width:100%;display:block;" onerror="this.parentElement.parentElement.style.display='none'"/>
+            </div>
+            <div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.4);">
+              <div style="background:#1A2840;height:28px;display:flex;align-items:center;padding:0 12px;gap:5px;">
+                <div style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:9px;height:9px;border-radius:50%;background:#28C840;"></div>
+              </div>
+              <img src="https://converj.com/home/advanced-analytics.png" alt="Converj advanced analytics" style="width:100%;display:block;" onerror="this.parentElement.parentElement.style.display='none'"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:none"><!-- old OCR mockup hidden --><div class="cj-ocr">
+              <!-- Left: upload area -->
+              <div class="cj-ocr-left">
+                <div>
+                  <div class="cj-page-title">Invoice OCR</div>
+                  <div class="cj-page-sub">Upload a PDF or image - we'll extract the fields automatically</div>
+                </div>
+                <div class="cj-ocr-drop">
+                  <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                  <div class="cj-ocr-drop-label">Drag &amp; drop invoice here</div>
+                  <div class="cj-ocr-drop-sub">PDF, JPG, PNG up to 10MB</div>
+                  <div class="cj-btn" style="margin-top:8px;font-size:11px;padding:6px 16px;">Browse files</div>
+                </div>
+                <!-- Extracted preview chip -->
+                <div style="background:#fff;border:1px solid #BBF7D0;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+                  <div style="width:32px;height:32px;border-radius:8px;background:#DCFCE7;display:flex;align-items:center;justify-content:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;font-weight:600;color:#166534;">TechFlow_Invoice_2241.pdf</div>
+                    <div style="font-size:9px;color:#94A3B8;">Extracted · 8 fields · 2 need review</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Right: extracted fields -->
+              <div class="cj-ocr-right">
+                <div style="font-size:12px;font-weight:700;color:#0A3322;margin-bottom:4px;">Extracted fields</div>
+                <div style="font-size:9px;color:#94A3B8;margin-bottom:10px;">Review and confirm before saving</div>
+                <div>
+                  <div class="cj-field-label">Vendor name</div>
+                  <div class="cj-field-val extracted">Techflow Supplies Pvt. Ltd.</div>
+                </div>
+                <div>
+                  <div class="cj-field-label">Invoice number</div>
+                  <div class="cj-field-val extracted">INV-2241</div>
+                </div>
+                <div>
+                  <div class="cj-field-label">Invoice date</div>
+                  <div class="cj-field-val extracted">12 June 2023</div>
+                </div>
+                <div>
+                  <div class="cj-field-label">Total amount</div>
+                  <div class="cj-field-val extracted">₹48,500.00</div>
+                </div>
+                <div>
+                  <div class="cj-field-label">Due date <span style="color:#F59E0B;font-size:8px;font-weight:700;background:#FEF9C3;padding:1px 5px;border-radius:4px;margin-left:4px;">Review</span></div>
+                  <div class="cj-field-val" style="border-color:#FDE68A;background:#FFFBEB;color:#92400E;">26 Jun 2023</div>
+                </div>
+                <div>
+                  <div class="cj-field-label">GST number <span style="color:#F59E0B;font-size:8px;font-weight:700;background:#FEF9C3;padding:1px 5px;border-radius:4px;margin-left:4px;">Review</span></div>
+                  <div class="cj-field-val" style="border-color:#FDE68A;background:#FFFBEB;color:#92400E;">27AAACT3518Q1Z5</div>
+                </div>
+                <div class="cj-confirm-btn">Confirm &amp; Save Invoice →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container container--narrow">
+
+        <!-- Design System section -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Systems thinking</p>
+          <h2 class="cs-section__title">Building the design system as product infrastructure</h2>
+          <p class="cs-section__text">
+            The design system wasn't a side project - it was the foundation that made everything else possible. I started with tokens: a semantic colour system (primary, success, warning, error, neutral - each with 10 shades), a typographic scale anchored to Inter, and a spacing system on a 4px base grid. Every component was built on top of these tokens, not hardcoded values.
+          </p>
+          <p class="cs-section__text">
+            The component library covered the core surfaces of a fintech product: data tables with sortable columns and bulk actions, form components with full validation state coverage, status badges and timeline indicators, invoice cards, payment confirmation modals, and feedback patterns (toasts, empty states, error screens). Every component had documented variants, usage guidance, and do/don't examples.
+          </p>
+          <p class="cs-section__text">
+            Crucially, the system was designed for web and mobile from the start. Rather than building web first and adapting for mobile later, I defined mobile-first touch targets, spacing, and interaction patterns at the token level - meaning iOS and Android implementations could share the same design logic with only platform-specific adaptations.
+          </p>
+          <p class="cs-section__text">
+            The practical outcome: the engineering team stopped asking design questions about edge cases, error states, and component variants - because those answers were documented in the system. Design QA rounds decreased, and new features were built more consistently.
+          </p>
+        </div>
+
+        <!-- Collaboration -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Collaboration</p>
+          <h2 class="cs-section__title">Beyond the design role</h2>
+          <p class="cs-section__text">
+            At a small fintech startup, the design role extended well beyond Figma. I joined product roadmap sessions with the founding team, contributed to feature prioritisation decisions, and was involved in early conversations about pricing model UX and onboarding flow design. When engineering raised implementation constraints, I was at the table to make real-time tradeoff decisions rather than being informed of them after the fact.
+          </p>
+          <p class="cs-section__text">
+            I also redesigned the company's main website to align with the product's refreshed visual language - ensuring that the experience a user had before signing up matched the experience inside the product. This consistency is often underestimated in B2B fintech, where first impressions directly influence purchase decisions.
+          </p>
+        </div>
+
+        <!-- Outcomes -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Outcomes</p>
+          <h2 class="cs-section__title">What changed</h2>
+          <p class="cs-section__text">
+            The OCR invoice ingestion flow reduced invoice creation time by approximately 70% for the most common use case - ingesting an existing vendor invoice - by eliminating manual data entry for eight standard fields. Users who had previously abandoned the creation flow began completing it.
+          </p>
+          <p class="cs-section__text">
+            The payment flow redesign addressed the trust gap. Explicit confirmation screens, real-time status tracking, and actionable error messages removed the ambiguity that had caused users to hesitate or abandon payment initiations.
+          </p>
+          <p class="cs-section__text">
+            The design system gave the engineering team a shared vocabulary and a self-serve reference for implementation decisions - reducing design QA meetings and increasing the consistency of shipped features. The system covered both web and mobile from launch, eliminating the typical platform divergence that accumulates into design debt over time.
+          </p>
+        </div>
+
+        <!-- Reflection -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Key learnings</p>
+          <h2 class="cs-section__title">What this project taught me</h2>
+          <p class="cs-section__text">
+            Fintech design is trust design. Every ambiguous label, every unclear confirmation, every missing status indicator is a moment where users lose confidence in a product handling their money. The design bar for clarity and feedback in financial interfaces is higher than in most other product categories - and it should be.
+          </p>
+          <p class="cs-section__text">
+            The OCR flow was also a lesson in designing around AI capability rather than around AI perfection. The system wasn't going to extract every field correctly every time. The design challenge was making it safe to be wrong - surfacing low-confidence fields for human review, making corrections easy, and never hiding errors. Trust in AI features is built through transparency, not through hiding failures.
+          </p>
+          <p class="cs-section__text">
+            Building the design system first felt like overhead at the time. Six months later, it was clearly the right call. Every feature that shipped after the system was in place shipped faster and with more consistency. The upfront investment compounded in exactly the way a systems investment should.
+          </p>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="design-leadership-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">Leadership · Design Ops · Team Building</p>
+              <h2 class="cs-next__title">Building a design team from scratch</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
+        <nav class="footer__links">
+          <a href="work.html"          class="footer__link">Work</a>
+          <a href="about.html"         class="footer__link">About</a>
+          <a href="index.html#contact" class="footer__link">Contact</a>
+        </nav>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

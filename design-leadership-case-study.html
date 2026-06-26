@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Design Team - Case Study by Mubeen Ansari</title>
+  <meta name="description" content="How I built and scaled a product design function - hiring, mentoring, design ops, component libraries, and measurable improvements to team output and product quality.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <style>
+    /* ── Leadership mockup: design team dashboard ── */
+    .dl-mockup {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      border: 1px solid rgba(0,0,0,0.07);
+      background: #F8F6FF;
+    }
+    .dl-topbar {
+      background: #fff; border-bottom: 1px solid #E8E4F4;
+      padding: 0 20px; height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dl-logo { font-size: 15px; font-weight: 800; color: #1E0A5C; letter-spacing: -0.4px; }
+    .dl-logo span { color: #7C3AED; }
+    .dl-topbar-right { display: flex; gap: 12px; align-items: center; }
+    .dl-pill { background: #F3F0FF; color: #5B21B6; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid #DDD6FE; }
+    .dl-body { display: flex; min-height: 420px; }
+    .dl-sidebar { width: 200px; background: #fff; border-right: 1px solid #E8E4F4; padding: 16px 0; flex-shrink: 0; }
+    .dl-nav { padding: 8px 16px; font-size: 12px; font-weight: 500; color: #6B7280; display: flex; align-items: center; gap: 8px; }
+    .dl-nav.active { color: #5B21B6; font-weight: 600; background: #F3F0FF; border-right: 2px solid #7C3AED; }
+    .dl-nav svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .dl-main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .dl-title { font-size: 16px; font-weight: 700; color: #1E0A5C; letter-spacing: -0.3px; }
+    .dl-sub { font-size: 11px; color: #6B7280; margin-top: 2px; }
+
+    /* Health metric cards */
+    .dl-metrics-row { display: flex; gap: 10px; flex-shrink: 0; }
+    .dl-metric-card { flex: 1; background: #fff; border: 1px solid #E8E4F4; border-radius: 10px; padding: 12px 14px; }
+    .dl-metric-label { font-size: 9px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    .dl-metric-val { font-size: 20px; font-weight: 800; color: #1E0A5C; letter-spacing: -0.5px; }
+    .dl-metric-delta { font-size: 9px; font-weight: 700; margin-top: 3px; color: #7C3AED; }
+
+    /* Kanban-style board -->
+    .dl-board { flex: 1; display: flex; gap: 10px; overflow: hidden; }
+    .dl-col { flex: 1; background: #F3F0FF; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .dl-col-header { font-size: 10px; font-weight: 700; color: #5B21B6; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 4px; }
+    .dl-card { background: #fff; border-radius: 8px; padding: 10px 12px; border: 1px solid #EDE9FE; }
+    .dl-card__title { font-size: 11px; font-weight: 600; color: #1E0A5C; margin-bottom: 5px; }
+    .dl-card__meta { font-size: 9px; color: #9CA3AF; }
+    .dl-card__tag { display: inline-block; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 10px; margin-top: 5px; }
+    .tag-sys  { background: #EDE9FE; color: #5B21B6; }
+    .tag-ops  { background: #FEF3C7; color: #92400E; }
+    .tag-hire { background: #D1FAE5; color: #065F46; }
+    .tag-rev  { background: #DBEAFE; color: #1E40AF; }
+    .dl-avatar-stack { display: flex; gap: -4px; margin-top: 6px; }
+    .dl-av { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #fff; font-size: 7px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-right: -4px; }
+
+    /* Component library preview */
+    .comp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .comp-card { background: #fff; border: 1px solid #E8E4F4; border-radius: 10px; padding: 14px; }
+    .comp-card__label { font-size: 9px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .comp-btn { border-radius: 7px; padding: 7px 14px; font-size: 11px; font-weight: 600; text-align: center; margin-bottom: 6px; }
+    .comp-btn--primary { background: #7C3AED; color: #fff; }
+    .comp-btn--secondary { background: #F3F0FF; color: #5B21B6; border: 1px solid #DDD6FE; }
+    .comp-btn--ghost { background: transparent; color: #6B7280; border: 1px solid #E5E7EB; }
+    .comp-input { border: 1px solid #E8E4F4; border-radius: 7px; padding: 7px 10px; font-size: 11px; color: #374151; margin-bottom: 4px; width: 100%; box-sizing: border-box; }
+    .comp-input:last-child { margin-bottom: 0; }
+    .comp-input.focus { border-color: #7C3AED; box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
+    .comp-badge-row { display: flex; gap: 5px; flex-wrap: wrap; }
+    .comp-badge { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+
+    /* Progress bar used in "before/after" section */
+    .dl-bar-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .dl-bar-row { display: flex; align-items: center; gap: 10px; }
+    .dl-bar-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); width: 160px; flex-shrink: 0; }
+    .dl-bar-track { flex: 1; height: 8px; background: #F3F0FF; border-radius: 4px; overflow: hidden; }
+    .dl-bar-fill { height: 100%; border-radius: 4px; background: #7C3AED; }
+    .dl-bar-fill.before { background: #E5E7EB; }
+    .dl-bar-val { font-size: 11px; font-weight: 700; color: #1E0A5C; width: 40px; text-align: right; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html"  class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html" class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · Design Leadership · Team Building · Design Ops</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Building a design team from scratch</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          How I grew and shaped a product design function at a scaling startup - from solo contributor to leading a team, building the systems that let designers do their best work, and raising the quality bar across the entire product.
+        </p>
+
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Design Lead (player-coach)</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Timeline</p>
+            <p class="cs-meta-item__value">2020 – 2022 · ~2 years</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Team</p>
+            <p class="cs-meta-item__value">Grew from 1 → 3 designers + 1 researcher</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">Hiring · Mentoring · Design Ops · Component Library · Process Design</p>
+          </div>
+        </div>
+
+        <!-- Cover mockup: team ops dashboard -->
+        <div class="cs-cover" style="background:#F0EDFB;padding:32px 40px;" data-load-reveal data-delay="5">
+          <div class="dl-mockup">
+            <div class="dl-topbar">
+              <div class="dl-logo">design<span>ops</span></div>
+              <div class="dl-topbar-right">
+                <div class="dl-pill">Q3 2021 - Sprint 14</div>
+              </div>
+            </div>
+            <div class="dl-body">
+              <!-- Sidebar -->
+              <div class="dl-sidebar">
+                <div class="dl-nav active">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Team
+                </div>
+                <div class="dl-nav">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                  Components
+                </div>
+                <div class="dl-nav">
+                  <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Reviews
+                </div>
+                <div class="dl-nav">
+                  <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  Standards
+                </div>
+                <div class="dl-nav">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  1:1s
+                </div>
+              </div>
+              <!-- Main: kanban -->
+              <div class="dl-main">
+                <div>
+                  <div class="dl-title">Design team · Sprint 14</div>
+                  <div class="dl-sub">4 designers · 3 active workstreams · 2 reviews pending</div>
+                </div>
+                <!-- Mini metrics -->
+                <div class="dl-metrics-row">
+                  <div class="dl-metric-card">
+                    <div class="dl-metric-label">Components shipped</div>
+                    <div class="dl-metric-val">84</div>
+                    <div class="dl-metric-delta">↑ 12 this sprint</div>
+                  </div>
+                  <div class="dl-metric-card">
+                    <div class="dl-metric-label">Design QA pass rate</div>
+                    <div class="dl-metric-val">91%</div>
+                    <div class="dl-metric-delta">↑ from 64% (6 mo ago)</div>
+                  </div>
+                  <div class="dl-metric-card">
+                    <div class="dl-metric-label">Avg review cycle</div>
+                    <div class="dl-metric-val">1.4d</div>
+                    <div class="dl-metric-delta">↓ from 3.2 days</div>
+                  </div>
+                </div>
+                <!-- Kanban board -->
+                <div class="dl-board">
+                  <div class="dl-col">
+                    <div class="dl-col-header">In progress</div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Search & filter patterns</div>
+                      <div class="dl-card__meta">Priya · Component library</div>
+                      <div class="dl-card__tag tag-sys">System</div>
+                    </div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Onboarding flow v2</div>
+                      <div class="dl-card__meta">Rohan · Product</div>
+                      <div class="dl-card__tag tag-rev">Review tomorrow</div>
+                    </div>
+                  </div>
+                  <div class="dl-col">
+                    <div class="dl-col-header">In review</div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Design review: Notifications</div>
+                      <div class="dl-card__meta">Mubeen → Priya · Eng handoff</div>
+                      <div class="dl-card__tag tag-rev">Pending feedback</div>
+                    </div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Documentation: Data tables</div>
+                      <div class="dl-card__meta">All · Design Ops</div>
+                      <div class="dl-card__tag tag-ops">Ops</div>
+                    </div>
+                  </div>
+                  <div class="dl-col">
+                    <div class="dl-col-header">Done this sprint</div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Hire: Mid-level designer</div>
+                      <div class="dl-card__meta">Offer accepted · Start Sep 1</div>
+                      <div class="dl-card__tag tag-hire">Hiring</div>
+                    </div>
+                    <div class="dl-card">
+                      <div class="dl-card__title">Error state patterns</div>
+                      <div class="dl-card__meta">Shipped to Storybook</div>
+                      <div class="dl-card__tag tag-sys">System</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- Business context -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">The situation</p>
+          <h2 class="cs-section__title">Design as an afterthought - and what it costs</h2>
+          <p class="cs-section__text">
+            When I took on a design lead role at a Series A startup in 2020, the product org had a familiar problem: design had been reactive for too long. There was one designer (me) supporting a product and engineering team of twenty, no component library, no design review process, and no shared source of truth in Figma. Features shipped with inconsistent UI patterns, onboarding drop-off was high, and engineering spent considerable time resolving design questions mid-sprint.
+          </p>
+          <p class="cs-section__text">
+            The business had just raised funding and was accelerating hiring. Leadership wanted to scale the product quickly - which meant either design became a bottleneck, or we built the systems and team that would let design scale with the product. I was given the mandate to build the design function.
+          </p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">1 → 4</div>
+            <div class="cs-metric__label">Team growth over 18 months</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">91%</div>
+            <div class="cs-metric__label">Design QA pass rate (up from 64%)</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">~57%</div>
+            <div class="cs-metric__label">Reduction in average review cycle time</div>
+          </div>
+        </div>
+
+        <!-- Strategy -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Approach</p>
+          <h2 class="cs-section__title">Infrastructure first, headcount second</h2>
+          <p class="cs-section__text">
+            My first instinct was to hire immediately - I was the only designer and there was too much work. But I spent the first six weeks mapping the actual workflow: where was design being blocked, where were the most expensive errors, where was engineering losing time waiting on design decisions? The answer pointed not at headcount, but at infrastructure.
+          </p>
+          <p class="cs-section__text">
+            Without a component library, every designer (including a new hire) would recreate the same work. Without a design review process, quality would remain inconsistent regardless of team size. Without documented standards, a new hire would take months to produce work that fit the product's visual language. I decided to build the infrastructure first, then hire into it - so that each new team member could be productive from week one, not month three.
+          </p>
+          <p class="cs-section__text">
+            The four-part plan: establish a component library, define and document the design review process, create a simple but consistent hiring process, and then scale the team against that foundation.
+          </p>
+        </div>
+
+        <!-- Process -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">What I built</p>
+          <h2 class="cs-section__title">The four pillars of the design function</h2>
+
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">Component library</h3>
+                <p class="cs-step__desc">Built a shared Figma component library from scratch, starting with audit of existing UI patterns across the product. Unified inconsistent components (we had six button variants that should have been two), defined a token system for colour, typography, and spacing, and documented every component with usage guidelines and do/don't examples. Library shipped to Storybook so engineering had a living, browsable reference that stayed in sync with Figma.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">Design review process</h3>
+                <p class="cs-step__desc">Introduced a lightweight, structured review process with clear stages: concept review (rough direction, early in a sprint), design review (high fidelity, before engineering kickoff), and eng handoff review (spec check before build). Each stage had a defined checklist - not to create bureaucracy, but to make it easy for designers to self-review before asking for feedback. Average review cycle dropped from 3.2 days to 1.4 days over six months.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Hiring and onboarding</h3>
+                <p class="cs-step__desc">Wrote the design job descriptions, defined the hiring rubric, and ran the portfolio review and design exercise stages. Hired two mid-level product designers and one researcher over 18 months. Built an onboarding guide covering the product's design language, review process, Figma conventions, and engineering workflow - reducing time-to-productive from what had been months (for previous contractors) to under three weeks.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">04</span>
+              <div>
+                <h3 class="cs-step__title">Mentoring and career development</h3>
+                <p class="cs-step__desc">Ran weekly 1:1s with each team member focused on craft feedback, career trajectory, and removing blockers. Moved from instinct-based feedback to structured critique: leading with what the design is trying to accomplish before commenting on execution. Created monthly "design reflection" sessions - not retrospectives, but focused reviews of shipped work asking what we'd do differently. Two designers were promoted over the two-year period.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Component library visual -->
+      <div style="background:#F0EDFB;padding:48px 0 56px;" data-reveal>
+        <div class="container">
+          <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:20px;">Component library - core patterns</p>
+          <div class="comp-grid">
+            <div class="comp-card">
+              <div class="comp-card__label">Buttons</div>
+              <div class="comp-btn comp-btn--primary">Primary action</div>
+              <div class="comp-btn comp-btn--secondary">Secondary</div>
+              <div class="comp-btn comp-btn--ghost">Ghost / tertiary</div>
+            </div>
+            <div class="comp-card">
+              <div class="comp-card__label">Form inputs</div>
+              <div style="font-size:10px;font-weight:600;color:#374151;margin-bottom:3px;">Label text</div>
+              <input class="comp-input focus" type="text" placeholder="Focused state" readonly>
+              <input class="comp-input" type="text" placeholder="Default state" readonly>
+              <div style="font-size:9px;color:#DC2626;margin-top:3px;">Error: This field is required</div>
+            </div>
+            <div class="comp-card">
+              <div class="comp-card__label">Status badges</div>
+              <div class="comp-badge-row" style="margin-bottom:8px;">
+                <div class="comp-badge" style="background:#D1FAE5;color:#065F46;">Active</div>
+                <div class="comp-badge" style="background:#FEF3C7;color:#92400E;">Pending</div>
+                <div class="comp-badge" style="background:#FEE2E2;color:#DC2626;">Error</div>
+              </div>
+              <div class="comp-badge-row">
+                <div class="comp-badge" style="background:#DBEAFE;color:#1E40AF;">In review</div>
+                <div class="comp-badge" style="background:#F3F4F6;color:#6B7280;">Draft</div>
+                <div class="comp-badge" style="background:#EDE9FE;color:#5B21B6;">Beta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container container--narrow">
+
+        <!-- Team dynamics / management philosophy -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Leadership approach</p>
+          <h2 class="cs-section__title">What I learned about leading a design team</h2>
+          <p class="cs-section__text">
+            The most counterintuitive lesson: good design leadership reduces the need for your own design decisions. Early in my leadership, I'd jump in with solutions. A year later, the team was making better decisions than I would have alone - because they understood the constraints, the patterns, and the reasoning behind our standards. My job shifted from making good decisions to creating the conditions for the team to make good decisions without me in the room.
+          </p>
+          <p class="cs-section__text">
+            I introduced a practice I called "design reasoning" - for any significant design decision, the designer needed to articulate the user need it addressed, the alternative they considered and rejected, and the engineering constraint they worked within. This wasn't bureaucratic; it was a thinking scaffold. It made feedback conversations much more productive because both sides understood the problem before debating the solution.
+          </p>
+          <p class="cs-section__text">
+            On the process side, I avoided over-engineering design ops. The temptation when building a team is to create process for every possible scenario. We kept it simple: clear stages for when work gets reviewed, a shared component library, and weekly syncs that focused on blockers - not status. The team had autonomy within those guardrails.
+          </p>
+        </div>
+
+        <!-- AI integration context -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">AI &amp; tooling</p>
+          <h2 class="cs-section__title">Scaling team output with AI-assisted workflows</h2>
+          <p class="cs-section__text">
+            As AI tools matured, I piloted their integration into the team's workflow. The highest-leverage applications were documentation and research synthesis - two tasks that consumed significant designer time without producing directly shippable work. By using AI to generate first-draft component documentation and to synthesise research notes into insight summaries, we returned time to the work that required human judgment: the design decisions themselves.
+          </p>
+          <p class="cs-section__text">
+            I also introduced AI-assisted spec generation in the eng handoff stage - designers would use AI to produce a first-pass spec document that they'd then review and refine. This reduced the time between design completion and engineering kickoff, and meant the specs were more thorough because the tedious parts were handled by AI.
+          </p>
+          <p class="cs-section__text">
+            The net effect: the team was able to handle more surface area without proportionally more headcount. The constraint wasn't designer hours - it was designer judgment. AI tooling reduced the former; good process developed the latter.
+          </p>
+        </div>
+
+        <!-- Outcomes -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Outcomes</p>
+          <h2 class="cs-section__title">What the team looked like two years later</h2>
+          <p class="cs-section__text">
+            The team grew from one to four - two mid-level product designers and one researcher - with a structured onboarding process that got new hires productive in under three weeks. The component library shipped 84 production-ready components over 18 months, eliminating the inconsistency that had previously been a constant source of design debt and engineering rework.
+          </p>
+          <p class="cs-section__text">
+            Design QA pass rate - the percentage of shipped features that passed the design review checklist without requiring revision - went from 64% to 91% over six months, driven by the structured review process and the team's growing familiarity with shared standards.
+          </p>
+          <p class="cs-section__text">
+            Average review cycle time dropped from 3.2 days to 1.4 days. This wasn't from rushing reviews - it was from giving designers better tools to self-review before asking for feedback, reducing the back-and-forth that slowed things down. Two team members were promoted during this period.
+          </p>
+        </div>
+
+        <!-- Progress bars before/after -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Before &amp; after</p>
+          <h2 class="cs-section__title">Measurable shifts in team health</h2>
+          <div class="dl-bar-wrap" style="margin-top:32px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+              <!-- Before -->
+              <div>
+                <p style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;">Before</p>
+                <div class="dl-bar-row">
+                  <div class="dl-bar-label">QA pass rate</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill before" style="width:64%;"></div></div>
+                  <div class="dl-bar-val" style="color:#6B7280;">64%</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Review cycle</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill before" style="width:100%;"></div></div>
+                  <div class="dl-bar-val" style="color:#6B7280;">3.2d</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Team size</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill before" style="width:25%;"></div></div>
+                  <div class="dl-bar-val" style="color:#6B7280;">1</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Documented components</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill before" style="width:0%;"></div></div>
+                  <div class="dl-bar-val" style="color:#6B7280;">0</div>
+                </div>
+              </div>
+              <!-- After -->
+              <div>
+                <p style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;">After (18 months)</p>
+                <div class="dl-bar-row">
+                  <div class="dl-bar-label">QA pass rate</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill" style="width:91%;"></div></div>
+                  <div class="dl-bar-val">91%</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Review cycle</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill" style="width:44%;"></div></div>
+                  <div class="dl-bar-val">1.4d</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Team size</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill" style="width:100%;"></div></div>
+                  <div class="dl-bar-val">4</div>
+                </div>
+                <div class="dl-bar-row" style="margin-top:10px;">
+                  <div class="dl-bar-label">Documented components</div>
+                  <div class="dl-bar-track"><div class="dl-bar-fill" style="width:84%;"></div></div>
+                  <div class="dl-bar-val">84</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Key learnings</p>
+          <h2 class="cs-section__title">What I'd do differently</h2>
+          <p class="cs-section__text">
+            I would have started the component library even earlier - before the first hire. I waited until I had a designer to share the library with, but the act of building it forced design decisions that clarified our visual language. It would have been more valuable to have that clarity before bringing someone new into the system.
+          </p>
+          <p class="cs-section__text">
+            I also underestimated how much of a design lead's job is stakeholder management, not team management. Managing up - building trust with product and engineering leadership, advocating for design investment, communicating the value of design ops work that doesn't produce immediate visible output - took as much energy as managing the team itself. I got better at this over time, but wish I'd treated it as a skill to develop explicitly rather than a tax on my time.
+          </p>
+          <p class="cs-section__text">
+            The most durable lesson: a design team's output ceiling is set by its infrastructure, not its talent. Talented designers working without shared systems produce inconsistent work. Average designers working with excellent systems produce consistently good work. Invest in the infrastructure first.
+          </p>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="geoserve-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">B2B SaaS · Maritime · Design Systems</p>
+              <h2 class="cs-next__title">GeoServe - Maritime intelligence platform</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
+        <nav class="footer__links">
+          <a href="work.html"          class="footer__link">Work</a>
+          <a href="about.html"         class="footer__link">About</a>
+          <a href="index.html#contact" class="footer__link">Contact</a>
+        </nav>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

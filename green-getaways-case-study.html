@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Getaways - Case Study by Mubeen Ansari</title>
+  <meta name="description" content="How I replaced a manual, error-prone booking process at Green Getaways with a self-service WordPress booking engine - custom plugins, automated confirmations, and an admin calendar that cut the team's workload significantly.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <style>
+    /* ── Green Getaways booking mockup ── */
+    .gg-mockup {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      border: 1px solid rgba(0,0,0,0.07);
+      background: #F8FAF8;
+    }
+    .gg-topbar {
+      background: #1A3D1F; padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .gg-logo { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .gg-logo span { color: #86EFAC; }
+    .gg-nav { display: flex; gap: 20px; }
+    .gg-nav-link { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
+    .gg-nav-link.active { color: #fff; }
+    .gg-book-btn { background: #4ADE80; color: #14532D; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; }
+
+    .gg-hero-banner {
+      background: linear-gradient(135deg, #1A3D1F 0%, #2D6A35 50%, #4A9650 100%);
+      padding: 28px 32px 0; display: flex; gap: 24px; align-items: flex-end; overflow: hidden;
+    }
+    .gg-hero-text { flex: 1; padding-bottom: 20px; }
+    .gg-hero-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #86EFAC; margin-bottom: 8px; }
+    .gg-hero-title { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+    .gg-hero-sub { font-size: 11px; color: rgba(255,255,255,0.7); }
+    .gg-prop-imgs { display: flex; gap: 8px; align-items: flex-end; }
+    .gg-prop-img { border-radius: 10px 10px 0 0; overflow: hidden; flex-shrink: 0; }
+
+    .gg-booking-widget {
+      background: #fff; border: 1px solid #D1E8D1; border-radius: 14px;
+      margin: -30px 32px 0; padding: 20px; position: relative; z-index: 2;
+      box-shadow: 0 8px 32px rgba(26,61,31,0.12);
+    }
+    .gg-bw-title { font-size: 13px; font-weight: 700; color: #1A3D1F; margin-bottom: 16px; }
+    .gg-bw-row { display: flex; gap: 10px; align-items: flex-end; }
+    .gg-bw-field { flex: 1; }
+    .gg-bw-label { font-size: 9px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .gg-bw-input {
+      background: #F0F7F0; border: 1.5px solid #D1E8D1; border-radius: 8px;
+      padding: 8px 12px; font-size: 12px; font-weight: 600; color: #1A3D1F;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .gg-bw-input svg { width: 13px; height: 13px; stroke: #4A9650; fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+    .gg-bw-btn {
+      background: #22C55E; color: #fff; border-radius: 8px;
+      padding: 10px 18px; font-size: 12px; font-weight: 700;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .gg-avail-row {
+      display: flex; gap: 6px; margin-top: 14px; align-items: center;
+    }
+    .gg-avail-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; }
+    .gg-avail-text { font-size: 10px; color: #6B7280; }
+    .gg-avail-badge { background: #DCFCE7; color: #166534; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: auto; }
+
+    .gg-props-section { padding: 28px 32px 24px; }
+    .gg-props-title { font-size: 13px; font-weight: 700; color: #1A3D1F; margin-bottom: 14px; }
+    .gg-props-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .gg-prop-card { background: #fff; border: 1px solid #E5EDE5; border-radius: 10px; overflow: hidden; }
+    .gg-prop-card-img {
+      height: 80px; display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .gg-prop-card-body { padding: 10px 12px; }
+    .gg-prop-card-name { font-size: 11px; font-weight: 700; color: #1A3D1F; margin-bottom: 2px; }
+    .gg-prop-card-loc { font-size: 9px; color: #9CA3AF; margin-bottom: 8px; }
+    .gg-prop-card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .gg-prop-card-price { font-size: 12px; font-weight: 800; color: #1A3D1F; }
+    .gg-prop-card-price span { font-size: 9px; font-weight: 400; color: #9CA3AF; }
+    .gg-prop-card-btn { background: #F0F7F0; color: #1A3D1F; font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid #D1E8D1; }
+
+    /* Admin calendar mockup */
+    .gg-admin-mockup {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      border: 1px solid rgba(0,0,0,0.07);
+      background: #F8FAF8;
+    }
+    .gg-admin-topbar {
+      background: #fff; border-bottom: 1px solid #E5EDE5; padding: 0 20px; height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .gg-admin-logo { font-size: 13px; font-weight: 700; color: #1A3D1F; }
+    .gg-admin-tag { background: #FEF9C3; color: #854D0E; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+    .gg-admin-body { display: flex; height: 460px; }
+    .gg-admin-sidebar { width: 190px; background: #fff; border-right: 1px solid #E5EDE5; padding: 16px 0; flex-shrink: 0; }
+    .gg-admin-nav { padding: 7px 16px; font-size: 11px; font-weight: 500; color: #6B7280; display: flex; align-items: center; gap: 8px; }
+    .gg-admin-nav.active { background: #F0F7F0; color: #166534; font-weight: 600; border-right: 2px solid #22C55E; }
+    .gg-admin-nav svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; }
+    .gg-admin-main { flex: 1; padding: 18px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
+    .gg-admin-header { display: flex; align-items: center; justify-content: space-between; }
+    .gg-admin-page-title { font-size: 14px; font-weight: 700; color: #1A3D1F; }
+    .gg-admin-btn { background: #22C55E; color: #fff; border-radius: 6px; padding: 5px 12px; font-size: 10px; font-weight: 700; }
+    .gg-stats-row { display: flex; gap: 10px; flex-shrink: 0; }
+    .gg-stat { flex: 1; background: #fff; border: 1px solid #E5EDE5; border-radius: 8px; padding: 10px 12px; }
+    .gg-stat__label { font-size: 8px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .gg-stat__val { font-size: 18px; font-weight: 800; color: #1A3D1F; }
+    .gg-stat__delta { font-size: 9px; font-weight: 600; margin-top: 2px; color: #16A34A; }
+    .gg-cal-card { flex: 1; background: #fff; border: 1px solid #E5EDE5; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .gg-cal-head { padding: 10px 14px; border-bottom: 1px solid #E5EDE5; display: flex; align-items: center; justify-content: space-between; }
+    .gg-cal-title { font-size: 11px; font-weight: 700; color: #1A3D1F; }
+    .gg-cal-nav { display: flex; gap: 4px; }
+    .gg-cal-arrow { width: 22px; height: 22px; background: #F0F7F0; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #1A3D1F; }
+    .gg-cal-grid { padding: 10px 14px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; flex: 1; }
+    .gg-cal-day-head { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #9CA3AF; text-align: center; padding: 3px 0; }
+    .gg-cal-day { height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: #374151; position: relative; }
+    .gg-cal-day.booked { background: #DCFCE7; color: #166534; font-weight: 700; }
+    .gg-cal-day.partial { background: #FEF9C3; color: #854D0E; font-weight: 700; }
+    .gg-cal-day.blocked { background: #FEE2E2; color: #DC2626; font-weight: 700; }
+    .gg-cal-day.today { border: 1.5px solid #22C55E; }
+    .gg-cal-legend { padding: 8px 14px; border-top: 1px solid #E5EDE5; display: flex; gap: 12px; }
+    .gg-legend-item { display: flex; align-items: center; gap: 5px; font-size: 9px; color: #6B7280; }
+    .gg-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Real listing page mockup ── */
+    .gg-site-hdr {
+      background:#fff; border-bottom:1px solid #E5EDE5; padding:0 20px; height:46px;
+      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+    }
+    .gg-site-logo { display:flex; align-items:center; gap:8px; }
+    .gg-site-logo-icon { width:28px; height:28px; background:#2D6A35; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+    .gg-site-logo-text { font-size:12px; font-weight:800; color:#1A3D1F; }
+    .gg-site-logo-text span { color:#9CA3AF; font-weight:400; }
+    .gg-site-nav { display:flex; align-items:center; gap:0; }
+    .gg-site-navlink { font-size:10px; font-weight:500; color:#374151; padding:0 10px; display:flex; align-items:center; gap:2px; }
+    .gg-site-navlink.bold { font-weight:600; }
+    .gg-site-cart { width:28px; height:28px; background:#1A3D1F; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; }
+    .gg-site-cart svg { width:14px; height:14px; stroke:#fff; fill:none; stroke-width:2; }
+    .gg-site-cart-badge { position:absolute; top:-3px; right:-3px; background:#22C55E; color:#fff; font-size:7px; font-weight:700; width:12px; height:12px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .gg-photos-strip { display:flex; gap:0; height:200px; overflow:hidden; flex-shrink:0; }
+    .gg-photo-panel { flex:1; position:relative; overflow:hidden; }
+    .gg-photo-arrow { position:absolute; top:50%; transform:translateY(-50%); width:28px; height:28px; background:rgba(255,255,255,.85); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:#374151; z-index:2; }
+    .gg-photo-arrow-l { left:8px; }
+    .gg-photo-arrow-r { right:8px; }
+    /* People silhouettes for photo panels */
+    .gg-photo-water { background:linear-gradient(170deg, #8B3A0F 0%, #C25A1A 40%, #A0522D 70%, #6B4226 100%); }
+    .gg-photo-farm { background:linear-gradient(160deg, #2D4A1A 0%, #3D6B25 40%, #5A8C35 70%, #7AAA48 100%); }
+    .gg-photo-camp { background:linear-gradient(150deg, #3A8C35 0%, #5AAA48 30%, #7BC060 60%, #90C570 100%); }
+    .gg-listing-body { display:flex; gap:24px; padding:20px 20px; background:#FAF7F0; flex:1; }
+    .gg-listing-content { flex:1; min-width:0; }
+    .gg-listing-title { font-size:16px; font-weight:800; color:#1A3D1F; line-height:1.3; margin-bottom:8px; }
+    .gg-listing-meta { font-size:10px; color:#4B5563; margin-bottom:4px; }
+    .gg-listing-slots { font-size:10px; color:#4B5563; margin-bottom:12px; }
+    .gg-listing-exp-label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#1A3D1F; margin-bottom:8px; }
+    .gg-listing-desc { font-size:10px; color:#4B5563; line-height:1.65; }
+    .gg-book-sidebar { width:200px; flex-shrink:0; }
+    .gg-book-card { background:#fff; border:1px solid #E5EDE5; border-radius:12px; padding:16px; box-shadow:0 4px 20px rgba(26,61,31,.08); }
+    .gg-book-price { font-size:16px; font-weight:800; color:#1A3D1F; margin-bottom:12px; }
+    .gg-book-price span { font-size:10px; font-weight:400; color:#9CA3AF; }
+    .gg-book-add-btn { background:#fff; border:1.5px solid #D1D5DB; border-radius:7px; padding:8px 12px; font-size:10px; font-weight:600; color:#374151; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .gg-book-fields { display:flex; gap:0; border:1.5px solid #D1D5DB; border-radius:7px; overflow:hidden; margin-bottom:12px; }
+    .gg-book-field { flex:1; padding:7px 10px; border-right:1px solid #D1D5DB; }
+    .gg-book-field:last-child { border-right:none; }
+    .gg-book-field-label { font-size:7px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#374151; margin-bottom:2px; }
+    .gg-book-field-val { font-size:10px; color:#9CA3AF; }
+    .gg-book-cta { background:#1A3D1F; color:#fff; border-radius:7px; padding:10px; text-align:center; font-size:11px; font-weight:700; }
+
+    /* ── WP Admin Booking Availability ── */
+    .gg-wp-mockup { width:100%; border-radius:12px; overflow:hidden; font-family:'Inter',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); display:flex; flex-direction:column; }
+    .gg-wp-topbar { background:#1D2327; height:32px; display:flex; align-items:center; padding:0 12px; gap:16px; flex-shrink:0; }
+    .gg-wp-topbar-item { font-size:9px; color:rgba(240,246,252,.7); display:flex; align-items:center; gap:4px; }
+    .gg-wp-topbar-item.live { color:#A2FF9B; }
+    .gg-wp-topbar-howdy { margin-left:auto; font-size:9px; color:rgba(240,246,252,.7); }
+    .gg-wp-body { display:flex; flex:1; min-height:0; }
+    .gg-wp-sidebar { width:155px; background:#1D2327; padding:8px 0; flex-shrink:0; overflow-y:auto; }
+    .gg-wp-menu-item { padding:5px 10px; font-size:9px; color:rgba(240,246,252,.7); display:flex; align-items:center; gap:6px; }
+    .gg-wp-menu-item svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:1.8; flex-shrink:0; }
+    .gg-wp-menu-item.active { background:#0073AA; color:#fff; }
+    .gg-wp-menu-sep { height:1px; background:rgba(255,255,255,.07); margin:4px 0; }
+    .gg-wp-main { flex:1; background:#F0F0F1; overflow-y:auto; padding:16px; }
+    .gg-wp-page-title { font-size:16px; font-weight:700; color:#1D2327; margin-bottom:12px; }
+    .gg-wp-notice { background:#fff; border-left:4px solid #F0A500; padding:10px 14px; margin-bottom:12px; border-radius:0 4px 4px 0; display:flex; align-items:flex-start; gap:8px; }
+    .gg-wp-notice-icon { width:28px; height:28px; background:#D63638; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; flex-shrink:0; }
+    .gg-wp-notice-title { font-size:11px; font-weight:700; color:#1D2327; margin-bottom:2px; }
+    .gg-wp-notice-desc { font-size:9px; color:#646970; }
+    .gg-wp-notice-desc strong { color:#1D2327; }
+    .gg-wp-notice-btn { display:inline-block; background:#2271B1; color:#fff; border-radius:3px; padding:4px 10px; font-size:9px; font-weight:600; margin-top:6px; }
+    .gg-wp-tabs { display:flex; gap:0; border-bottom:1px solid #C3C4C7; margin-bottom:14px; }
+    .gg-wp-tab { padding:7px 14px; font-size:10px; font-weight:500; color:#50575E; border:1px solid transparent; border-bottom:none; margin-bottom:-1px; cursor:default; }
+    .gg-wp-tab.active { background:#F0F0F1; border-color:#C3C4C7; color:#1D2327; font-weight:600; }
+    .gg-wp-content-grid { display:flex; gap:14px; }
+    .gg-wp-panel { background:#fff; border:1px solid #C3C4C7; border-radius:4px; padding:14px; }
+    .gg-wp-panel-title { font-size:11px; font-weight:700; color:#1D2327; margin-bottom:12px; }
+    .gg-mini-cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .gg-mini-cal-arrow { width:24px; height:24px; background:#2271B1; border-radius:3px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:700; }
+    .gg-mini-cal-month { font-size:11px; font-weight:700; color:#1D2327; }
+    .gg-mini-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+    .gg-mini-cal-dh { font-size:8px; font-weight:600; color:#646970; text-align:center; padding:2px; }
+    .gg-mini-cal-d { height:28px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:500; color:#1D2327; }
+    .gg-mini-cal-d.avail { color:#646970; }
+    .gg-mini-cal-d.blocked { background:#D63638; color:#fff; font-weight:700; border-radius:3px; }
+    .gg-mini-cal-d.today { background:#D63638; color:#fff; font-weight:700; }
+    .gg-mini-cal-d.green { color:#1D2327; }
+    .gg-mini-cal-d.empty { opacity:0; }
+    .gg-mini-cal-legend { display:flex; gap:12px; margin-top:8px; }
+    .gg-mini-cal-leg-item { display:flex; align-items:center; gap:4px; font-size:8px; color:#50575E; }
+    .gg-mini-cal-leg-dot { width:8px; height:8px; border-radius:50%; }
+    .gg-max-guests { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
+    .gg-guest-box { border:1px solid #C3C4C7; border-radius:3px; padding:10px; text-align:center; }
+    .gg-guest-label { font-size:8px; font-weight:600; color:#50575E; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+    .gg-guest-val { font-size:22px; font-weight:700; color:#1D2327; }
+    .gg-guest-hint { font-size:7px; color:#9CA3AF; margin-top:2px; }
+    .gg-blocked-dates { margin-bottom:12px; }
+    .gg-blocked-label { font-size:10px; font-weight:700; color:#1D2327; margin-bottom:8px; }
+    .gg-blocked-chips { display:flex; flex-wrap:wrap; gap:5px; }
+    .gg-blocked-chip { background:#D63638; color:#fff; border-radius:3px; padding:3px 8px; font-size:9px; font-weight:600; display:flex; align-items:center; gap:4px; }
+    .gg-save-btn { background:#1A3D1F; color:#fff; border-radius:3px; padding:9px 0; text-align:center; font-size:11px; font-weight:700; width:100%; }
+
+    /* ── GG Bookings admin ── */
+    .gg-bookings-wrap { width:100%; border-radius:12px; overflow:hidden; font-family:'Inter',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); background:#fff; }
+    .gg-bookings-topbar { background:#fff; border-bottom:1px solid #E5EDE5; padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .gg-bookings-logo-icon { width:24px; height:24px; background:#2D6A35; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:11px; }
+    .gg-bookings-title { font-size:14px; font-weight:800; color:#1A3D1F; }
+    .gg-bookings-count { background:#1A3D1F; color:#fff; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; }
+    .gg-bookings-stats { display:flex; gap:0; padding:0 18px 14px; flex-wrap:wrap; }
+    .gg-bstat { flex:1; min-width:100px; background:#F9FBF9; border:1px solid #E5EDE5; padding:12px 14px; }
+    .gg-bstat:first-child { border-radius:8px 0 0 8px; }
+    .gg-bstat:last-child { border-radius:0 8px 8px 0; }
+    .gg-bstat-label { font-size:8px; font-weight:600; color:#9CA3AF; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+    .gg-bstat-val { font-size:18px; font-weight:800; color:#1A3D1F; }
+    .gg-bstat-val.revenue { font-size:14px; }
+    .gg-bstat-val.confirmed { color:#166534; }
+    .gg-bstat-val.pending { color:#9CA3AF; }
+    .gg-bookings-filter { padding:0 18px 12px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #E5EDE5; }
+    .gg-filter-link { font-size:10px; font-weight:600; color:#9CA3AF; }
+    .gg-filter-link.active { color:#166534; }
+    .gg-filter-link .num { font-weight:400; }
+    .gg-filter-sep { color:#D1D5DB; font-size:10px; }
+    .gg-search-row { display:flex; align-items:center; gap:6px; margin-left:auto; }
+    .gg-search-input { border:1px solid #D1D5DB; border-radius:4px; padding:4px 10px; font-size:10px; color:#9CA3AF; width:200px; }
+    .gg-search-btn { background:#1A3D1F; color:#fff; border-radius:4px; padding:4px 12px; font-size:10px; font-weight:600; }
+    .gg-bookings-table { width:100%; border-collapse:collapse; font-size:10px; }
+    .gg-bookings-table th { background:#1A3D1F; color:#fff; padding:8px 10px; text-align:left; font-size:9px; font-weight:600; letter-spacing:.03em; white-space:nowrap; }
+    .gg-bookings-table td { padding:8px 10px; border-bottom:1px solid #F3F4F6; color:#374151; white-space:nowrap; vertical-align:top; }
+    .gg-bookings-table tr:last-child td { border-bottom:none; }
+    .gg-td-date { font-size:9px; color:#9CA3AF; }
+    .gg-td-time { font-size:8px; color:#D1D5DB; }
+    .gg-badge-adults { background:#DCFCE7; color:#166534; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
+    .gg-badge-kids { background:#FEF3C7; color:#92400E; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
+    .gg-badge-toddler { background:#FEF9C3; color:#854D0E; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
+    .gg-status-confirmed { color:#166534; font-weight:700; font-size:9px; }
+    .gg-blurred { filter:blur(4px); user-select:none; pointer-events:none; color:#374151; }
+    .gg-pay-id { font-size:8px; font-family:monospace; }
+
+    /* Booking steps flow */
+    .gg-steps-visual {
+      background: #F0F7F0; border-radius: 12px; padding: 24px 28px;
+      border: 1px solid #D1E8D1;
+    }
+    .gg-flow-row { display: flex; align-items: center; gap: 0; }
+    .gg-flow-step {
+      flex: 1; background: #fff; border: 1px solid #D1E8D1; border-radius: 10px;
+      padding: 14px 16px; text-align: center;
+    }
+    .gg-flow-step__num { font-size: 9px; font-weight: 700; color: #4A9650; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+    .gg-flow-step__label { font-size: 11px; font-weight: 700; color: #1A3D1F; margin-bottom: 3px; }
+    .gg-flow-step__sub { font-size: 9px; color: #6B7280; line-height: 1.4; }
+    .gg-flow-arrow { width: 28px; flex-shrink: 0; text-align: center; color: #4A9650; font-size: 14px; }
+    .gg-flow-step.automated { background: #F0F7F0; border-color: #4A9650; }
+    .gg-auto-tag { display: inline-block; background: #DCFCE7; color: #166534; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 6px; margin-top: 4px; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html" class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html" class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · WordPress · UX Design · Booking Systems</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Green Getaways</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          Replacing a manual, error-prone booking process with a self-service WordPress booking engine - custom plugins, automated confirmations, and an admin calendar that freed the team from spreadsheet chaos.
+        </p>
+
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">UI/UX Designer - Web</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Company</p>
+            <p class="cs-meta-item__value">Green Getaways - Eco Travel</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Timeline</p>
+            <p class="cs-meta-item__value">2019 - 2020 · Red Baton era</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">WordPress booking plugin · Booking pages · Admin dashboard · Automated confirmations</p>
+          </div>
+        </div>
+
+        <!-- Cover mockup: Real Green Getaways listing page -->
+        <div class="cs-cover" style="background:#E8F5E2;padding:32px 40px 0;" data-load-reveal data-delay="5">
+          <div class="gg-mockup" style="display:flex;flex-direction:column;background:#FAF7F0;">
+            <!-- Real site header -->
+            <div class="gg-site-hdr">
+              <div class="gg-site-logo">
+                <div class="gg-site-logo-icon">🌿</div>
+                <div class="gg-site-logo-text">Green Getaways<span>.</span></div>
+              </div>
+              <div class="gg-site-nav">
+                <span class="gg-site-navlink bold">Events</span>
+                <span class="gg-site-navlink bold">Stays</span>
+                <span class="gg-site-navlink bold">Our Products</span>
+                <span class="gg-site-navlink">Subscriptions <svg style="width:8px;height:8px;stroke:#374151;fill:none;stroke-width:2;display:inline;" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                <span class="gg-site-navlink">About <svg style="width:8px;height:8px;stroke:#374151;fill:none;stroke-width:2;display:inline;" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </div>
+              <div class="gg-site-cart">
+                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <div class="gg-site-cart-badge">0</div>
+              </div>
+            </div>
+
+            <!-- Photo slider: 3 panels matching real photos -->
+            <div class="gg-photos-strip">
+              <div class="gg-photo-panel gg-photo-water" style="position:relative;">
+                <div class="gg-photo-arrow gg-photo-arrow-l">‹</div>
+                <!-- Rain/water play scene -->
+                <svg style="position:absolute;bottom:0;width:100%;height:85%;" viewBox="0 0 170 140" preserveAspectRatio="none">
+                  <!-- People silhouettes -->
+                  <ellipse cx="40" cy="130" rx="18" ry="8" fill="rgba(0,0,0,.2)"/>
+                  <rect x="33" y="85" width="14" height="38" rx="6" fill="rgba(0,0,0,.35)"/>
+                  <circle cx="40" cy="78" r="9" fill="rgba(0,0,0,.35)"/>
+                  <ellipse cx="90" cy="130" rx="16" ry="8" fill="rgba(0,0,0,.2)"/>
+                  <rect x="83" y="88" width="14" height="36" rx="6" fill="rgba(0,0,0,.3)"/>
+                  <circle cx="90" cy="81" r="8" fill="rgba(0,0,0,.3)"/>
+                  <ellipse cx="138" cy="132" rx="16" ry="7" fill="rgba(0,0,0,.2)"/>
+                  <rect x="131" y="90" width="14" height="36" rx="6" fill="rgba(0,0,0,.28)"/>
+                  <circle cx="138" cy="83" r="8" fill="rgba(0,0,0,.28)"/>
+                  <!-- Water spray lines -->
+                  <line x1="40" y1="30" x2="30" y2="75" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+                  <line x1="40" y1="30" x2="50" y2="72" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+                  <line x1="55" y1="25" x2="45" y2="70" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+                  <line x1="60" y1="20" x2="35" y2="68" stroke="rgba(255,255,255,.35)" stroke-width=".8"/>
+                  <!-- Red soil ground -->
+                  <rect x="0" y="122" width="170" height="18" fill="rgba(100,40,10,.4)" rx="0"/>
+                </svg>
+              </div>
+              <div class="gg-photo-panel gg-photo-farm" style="position:relative;">
+                <!-- Farm/garden scene -->
+                <svg style="position:absolute;bottom:0;width:100%;height:90%;" viewBox="0 0 170 140" preserveAspectRatio="none">
+                  <!-- Foliage bg -->
+                  <ellipse cx="80" cy="50" rx="70" ry="55" fill="rgba(0,0,0,.1)"/>
+                  <!-- People -->
+                  <rect x="48" y="78" width="13" height="44" rx="5" fill="rgba(0,0,0,.45)"/>
+                  <circle cx="54" cy="71" r="9" fill="rgba(0,0,0,.45)"/>
+                  <rect x="72" y="80" width="13" height="42" rx="5" fill="rgba(0,0,0,.4)"/>
+                  <circle cx="78" cy="73" r="9" fill="rgba(0,0,0,.4)"/>
+                  <rect x="97" y="82" width="13" height="40" rx="5" fill="rgba(0,0,0,.38)"/>
+                  <circle cx="103" cy="75" r="8" fill="rgba(0,0,0,.38)"/>
+                  <!-- Plants -->
+                  <ellipse cx="30" cy="95" rx="22" ry="30" fill="rgba(0,0,0,.2)"/>
+                  <ellipse cx="140" cy="90" rx="25" ry="35" fill="rgba(0,0,0,.2)"/>
+                  <ellipse cx="160" cy="100" rx="18" ry="28" fill="rgba(0,0,0,.18)"/>
+                  <!-- Ground path -->
+                  <rect x="0" y="120" width="170" height="20" fill="rgba(0,0,0,.25)"/>
+                </svg>
+              </div>
+              <div class="gg-photo-panel gg-photo-camp" style="position:relative;">
+                <div class="gg-photo-arrow gg-photo-arrow-r">›</div>
+                <!-- Camping scene -->
+                <svg style="position:absolute;bottom:0;width:100%;height:90%;" viewBox="0 0 170 140" preserveAspectRatio="none">
+                  <!-- Tent -->
+                  <polygon points="55,115 85,50 115,115" fill="rgba(180,90,20,.7)" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+                  <rect x="65" y="100" width="22" height="15" fill="rgba(0,0,0,.4)"/>
+                  <!-- Hammock -->
+                  <line x1="10" y1="70" x2="50" y2="80" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+                  <path d="M10,70 Q30,95 50,80" fill="rgba(100,160,200,.5)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+                  <!-- People sitting -->
+                  <circle cx="130" cy="100" r="8" fill="rgba(0,0,0,.4)"/>
+                  <circle cx="148" cy="102" r="7" fill="rgba(0,0,0,.35)"/>
+                  <circle cx="120" cy="103" r="7" fill="rgba(0,0,0,.32)"/>
+                  <!-- Grass -->
+                  <rect x="0" y="115" width="170" height="25" fill="rgba(30,80,20,.4)"/>
+                  <!-- Sky dots (stars) -->
+                  <circle cx="20" cy="20" r="1" fill="rgba(255,255,255,.5)"/>
+                  <circle cx="150" cy="15" r="1.2" fill="rgba(255,255,255,.5)"/>
+                  <circle cx="100" cy="25" r="1" fill="rgba(255,255,255,.4)"/>
+                </svg>
+                <!-- Slider dots -->
+                <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;">
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:#fff;"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Listing body: content + sidebar -->
+            <div class="gg-listing-body">
+              <div class="gg-listing-content">
+                <div class="gg-listing-title">Overnight Camping at Mango Trails near Bangalore</div>
+                <div class="gg-listing-meta">Time: 12:00 PM Check-in on · 12:00 PM Checkout</div>
+                <div class="gg-listing-slots">Slots: Event limited to only 10 folks.</div>
+                <div class="gg-listing-exp-label">✦ About this Experience</div>
+                <div class="gg-listing-desc">A night at Mango Trails is the kind of escape that resets you without effort. Just 55 minutes from Bangalore, this camping experience lets you step out of routine and into a slower, earthy rhythm. As the sun drops, the farm shifts into a different world — quiet, cool, and wrapped in the sounds of the forest.</div>
+                <div class="gg-listing-desc" style="margin-top:8px;">You pitch your tent under the mango trees, unwind with a warm cup of tea, settle around the bonfire with music and stories, and enjoy a simple, delicious farm-cooked dinner. When the fire settles into embers and the sky turns deeper, you fall asleep to crickets, cool starlight — no traffic, no screens.</div>
+              </div>
+              <div class="gg-book-sidebar">
+                <div class="gg-book-card">
+                  <div class="gg-book-price">₹1,999 <span>/ person · per night</span></div>
+                  <div class="gg-book-add-btn">Add guests <span style="font-weight:700;">→</span></div>
+                  <div class="gg-book-fields">
+                    <div class="gg-book-field">
+                      <div class="gg-book-field-label">CHECK-IN</div>
+                      <div class="gg-book-field-val">Select</div>
+                    </div>
+                    <div class="gg-book-field">
+                      <div class="gg-book-field-label">CHECK-OUT</div>
+                      <div class="gg-book-field-val">Select</div>
+                    </div>
+                  </div>
+                  <div class="gg-book-cta">Check Availability</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- The Problem -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">The problem</p>
+          <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
+          <p class="cs-section__text">
+            Green Getaways ran a collection of eco-friendly stays across South India - forest cabins, hillside camps, backwater cottages. A good product. But the operational layer holding it together was a patchwork of WhatsApp threads, shared Google Sheets, and email chains.
+          </p>
+          <p class="cs-section__text">
+            Every booking followed the same exhausting path: a guest enquired via the website contact form or WhatsApp, a staff member manually checked availability on a shared spreadsheet, sent a confirmation message, updated the spreadsheet, and then chased the guest for payment. If two staff members handled overlapping enquiries without seeing each other's updates, you got a double-booking. This happened regularly.
+          </p>
+          <p class="cs-section__text">
+            Beyond the errors, the workload was unsustainable. The team was spending 3-4 hours a day just processing booking enquiries - time that should have been going into guest experience. They needed a system that handled the routine so the team didn't have to.
+          </p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">100%</div>
+            <div class="cs-metric__label">Bookings handled through the self-service system post-launch</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">Zero</div>
+            <div class="cs-metric__label">Double-bookings after the system went live</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">3-4 hrs</div>
+            <div class="cs-metric__label">Daily admin time eliminated from the team's workload</div>
+          </div>
+        </div>
+
+        <!-- Discovery -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Discovery</p>
+          <h2 class="cs-section__title">Mapping the mess before building the fix</h2>
+          <p class="cs-section__text">
+            Before writing a line of code or opening Figma, I spent time with the team tracing what actually happened during a booking - start to finish. I mapped every touchpoint: initial enquiry, availability check, confirmation, payment, reminder, and the post-stay follow-up. The map was uncomfortable to look at. There were 11 manual handoffs across two spreadsheets, three messaging apps, and an email inbox.
+          </p>
+          <p class="cs-section__text">
+            Two problems dominated. First: no single source of truth for availability. When the spreadsheet was behind by even an hour, staff were confirming bookings that couldn't be honoured. Second: no automation for any part of the process - every confirmation, reminder, and receipt was written and sent manually. The team wasn't being careless; the system was just built for a much smaller operation.
+          </p>
+          <p class="cs-section__text">
+            I also looked at what guests were experiencing. The contact form on the existing site said "we'll get back to you within 24 hours." In the booking industry, 24 hours is an eternity. Guests were going to competitors who offered instant confirmation simply because the waiting was too uncertain.
+          </p>
+        </div>
+
+        <!-- Strategy -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Approach</p>
+          <h2 class="cs-section__title">WordPress as the platform, automation as the goal</h2>
+          <p class="cs-section__text">
+            The client already had a WordPress site. The brief was clear: work within WordPress, build something the non-technical team could manage themselves, and make it actually solve the problem rather than add another thing to maintain.
+          </p>
+          <p class="cs-section__text">
+            I decided to build a custom booking plugin rather than forcing a third-party plugin to fit the client's specific requirements. The available plugins were either too generic (assuming hotel-style room blocks) or too complex for a small team to manage. A custom plugin meant I could design the admin experience to match exactly how the team worked, not how a plugin developer assumed they worked.
+          </p>
+          <p class="cs-section__text">
+            The core architecture: a property taxonomy in WordPress (each property as a custom post type with availability managed per-property), a booking form that queried real-time availability before confirming, and a WooCommerce integration to handle payments inline. Confirmations, reminders, and receipts were automated via email triggers on booking status changes.
+          </p>
+        </div>
+
+        <!-- Process -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Design &amp; build process</p>
+          <h2 class="cs-section__title">Designing the booking flow end to end</h2>
+
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">Booking flow UX - the guest experience</h3>
+                <p class="cs-step__desc">Designed the end-to-end guest journey: property browse, availability check, booking form, payment, and confirmation. The key decision was showing real-time availability as the guest selected dates - not after they'd filled out the form. This reduced the "I went through the whole process and it's not available" drop-off that was frustrating guests on the old contact-form approach.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">Custom WordPress booking plugin</h3>
+                <p class="cs-step__desc">Built a custom plugin with per-property availability calendars, booking state management (pending, confirmed, cancelled), and an availability query system that checked for conflicts before allowing a booking to proceed. This was the core piece that eliminated double-bookings - the availability state was managed server-side, not in a shared spreadsheet that could be out of sync.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Admin dashboard design</h3>
+                <p class="cs-step__desc">Designed the admin view around the team's actual workflow: a monthly calendar showing all bookings across properties, colour-coded by status. The team could see at a glance what was booked, what was pending, what needed attention. Availability blocking for maintenance or personal stays was a single click. No spreadsheets, no manual cross-referencing.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">04</span>
+              <div>
+                <h3 class="cs-step__title">Automated confirmation and reminder emails</h3>
+                <p class="cs-step__desc">Set up a full email automation sequence triggered by booking status changes: instant confirmation on booking, payment receipt, 7-day reminder with directions and check-in instructions, and a post-stay follow-up requesting a review. The templates were designed to feel personal, not automated. The team had previously written each of these manually - this eliminated all of it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking flow visual -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">The booking flow</p>
+          <h2 class="cs-section__title">From enquiry to confirmation - fully automated</h2>
+          <p class="cs-section__text">
+            The old process involved 11 manual steps across multiple tools. The new flow reduced this to zero manual steps for standard bookings - the system handled everything from availability check to payment receipt.
+          </p>
+
+          <div class="gg-steps-visual" style="margin-top:24px;">
+            <div style="font-size:10px;font-weight:700;color:#4A9650;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;">New automated booking flow</div>
+            <div class="gg-flow-row">
+              <div class="gg-flow-step">
+                <div class="gg-flow-step__num">Step 1</div>
+                <div class="gg-flow-step__label">Guest searches</div>
+                <div class="gg-flow-step__sub">Selects dates, guests, and property on the site</div>
+              </div>
+              <div class="gg-flow-arrow">→</div>
+              <div class="gg-flow-step automated">
+                <div class="gg-flow-step__num">Step 2</div>
+                <div class="gg-flow-step__label">Availability check</div>
+                <div class="gg-flow-step__sub">Real-time query against booking database</div>
+                <div class="gg-auto-tag">Automated</div>
+              </div>
+              <div class="gg-flow-arrow">→</div>
+              <div class="gg-flow-step">
+                <div class="gg-flow-step__num">Step 3</div>
+                <div class="gg-flow-step__label">Guest books &amp; pays</div>
+                <div class="gg-flow-step__sub">WooCommerce handles payment inline</div>
+              </div>
+              <div class="gg-flow-arrow">→</div>
+              <div class="gg-flow-step automated">
+                <div class="gg-flow-step__num">Step 4</div>
+                <div class="gg-flow-step__label">Confirmation sent</div>
+                <div class="gg-flow-step__sub">Instant email to guest + admin notified</div>
+                <div class="gg-auto-tag">Automated</div>
+              </div>
+              <div class="gg-flow-arrow">→</div>
+              <div class="gg-flow-step automated">
+                <div class="gg-flow-step__num">Step 5</div>
+                <div class="gg-flow-step__label">Reminders &amp; receipt</div>
+                <div class="gg-flow-step__sub">7-day reminder + post-stay follow-up</div>
+                <div class="gg-auto-tag">Automated</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin: WP Booking Availability -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Admin dashboard · Screen 01</p>
+          <h2 class="cs-section__title">WordPress Booking Availability - per property, per day</h2>
+          <p class="cs-section__text">
+            The admin panel gave the team per-property availability calendars with blocked date management. Staff could toggle dates directly from the WordPress dashboard, set guest capacity limits, and see which dates were blocked at a glance - no spreadsheet, no manual cross-referencing.
+          </p>
+
+          <div style="margin-top:24px;">
+            <div class="gg-wp-mockup">
+              <!-- WP top admin bar -->
+              <div class="gg-wp-topbar">
+                <div class="gg-wp-topbar-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> GoDaddy</div>
+                <div class="gg-wp-topbar-item">🌿 Green Getaways <span class="gg-wp-topbar-item live" style="margin-left:4px;">Live</span></div>
+                <div class="gg-wp-topbar-item">↺ 1</div>
+                <div class="gg-wp-topbar-item">💬 0</div>
+                <div class="gg-wp-topbar-item">+ New</div>
+                <div class="gg-wp-topbar-howdy">Howdy, mubeen</div>
+              </div>
+              <div class="gg-wp-body" style="height:520px;">
+                <!-- Sidebar -->
+                <div class="gg-wp-sidebar">
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>GoDaddy</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Dashboard</div>
+                  <div class="gg-wp-menu-sep"></div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>Posts</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Media</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>Pages</div>
+                  <div class="gg-wp-menu-sep"></div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>Farm Plots</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5L22 9.5l-5 5 1.18 7-6.18-3.25L5.82 21.5l1.18-7-5-5 7-1z"/></svg>Mango Trees</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>Bookings</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>GG Leads</div>
+                  <div class="gg-wp-menu-item active"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Booking Availability</div>
+                  <div class="gg-wp-menu-sep"></div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Explore Spots</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Birds</div>
+                  <div class="gg-wp-menu-sep"></div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.51l1.38-7.49H6"/></svg>WooCommerce</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Products</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payments</div>
+                </div>
+                <!-- Main content -->
+                <div class="gg-wp-main">
+                  <div class="gg-wp-page-title">Booking Availability</div>
+                  <!-- License warning -->
+                  <div class="gg-wp-notice">
+                    <div class="gg-wp-notice-icon">E</div>
+                    <div>
+                      <div class="gg-wp-notice-title">Your License Is Inactive</div>
+                      <div class="gg-wp-notice-desc">Your license key has been <strong>cancelled</strong> (most likely due to a refund request). Please consider acquiring a new license.</div>
+                      <div class="gg-wp-notice-btn">Activate License</div>
+                    </div>
+                    <div style="margin-left:auto;font-size:14px;color:#9CA3AF;cursor:default;">✕</div>
+                  </div>
+                  <!-- Property tabs -->
+                  <div class="gg-wp-tabs">
+                    <div class="gg-wp-tab active">Camping at Mango Trails</div>
+                    <div class="gg-wp-tab">Work from Mango Farm</div>
+                    <div class="gg-wp-tab">Day Outing at Mango Trails</div>
+                  </div>
+                  <!-- Two-panel layout -->
+                  <div class="gg-wp-content-grid">
+                    <!-- Calendar panel -->
+                    <div class="gg-wp-panel" style="width:260px;flex-shrink:0;">
+                      <div class="gg-wp-panel-title">Block / Unblock Dates</div>
+                      <div class="gg-mini-cal-nav">
+                        <div class="gg-mini-cal-arrow">‹</div>
+                        <div class="gg-mini-cal-month">June 2026</div>
+                        <div class="gg-mini-cal-arrow">›</div>
+                      </div>
+                      <div class="gg-mini-cal-grid">
+                        <div class="gg-mini-cal-dh">Su</div><div class="gg-mini-cal-dh">Mo</div><div class="gg-mini-cal-dh">Tu</div><div class="gg-mini-cal-dh">We</div><div class="gg-mini-cal-dh">Th</div><div class="gg-mini-cal-dh">Fr</div><div class="gg-mini-cal-dh">Sa</div>
+                        <!-- Week 1 - Jun starts on Monday -->
+                        <div class="gg-mini-cal-d empty"></div>
+                        <div class="gg-mini-cal-d avail">1</div><div class="gg-mini-cal-d avail">2</div><div class="gg-mini-cal-d avail">3</div><div class="gg-mini-cal-d avail">4</div><div class="gg-mini-cal-d avail">5</div><div class="gg-mini-cal-d avail">6</div>
+                        <div class="gg-mini-cal-d avail">7</div><div class="gg-mini-cal-d avail">8</div><div class="gg-mini-cal-d avail">9</div><div class="gg-mini-cal-d avail">10</div><div class="gg-mini-cal-d avail">11</div><div class="gg-mini-cal-d avail">12</div><div class="gg-mini-cal-d blocked">13</div>
+                        <div class="gg-mini-cal-d avail">14</div><div class="gg-mini-cal-d avail">15</div><div class="gg-mini-cal-d avail">16</div><div class="gg-mini-cal-d avail">17</div><div class="gg-mini-cal-d avail">18</div><div class="gg-mini-cal-d avail">19</div><div class="gg-mini-cal-d avail">20</div>
+                        <div class="gg-mini-cal-d avail">21</div><div class="gg-mini-cal-d avail">22</div><div class="gg-mini-cal-d avail">23</div><div class="gg-mini-cal-d avail">24</div><div class="gg-mini-cal-d green">25</div><div class="gg-mini-cal-d green">26</div><div class="gg-mini-cal-d blocked">27</div>
+                        <div class="gg-mini-cal-d today">28</div><div class="gg-mini-cal-d avail">29</div><div class="gg-mini-cal-d avail">30</div>
+                      </div>
+                      <div class="gg-mini-cal-legend">
+                        <div class="gg-mini-cal-leg-item"><div class="gg-mini-cal-leg-dot" style="background:#fff;border:1px solid #C3C4C7;"></div>Available</div>
+                        <div class="gg-mini-cal-leg-item"><div class="gg-mini-cal-leg-dot" style="background:#D63638;"></div>Blocked</div>
+                      </div>
+                    </div>
+                    <!-- Right panel -->
+                    <div class="gg-wp-panel" style="flex:1;">
+                      <div class="gg-wp-panel-title">Maximum Guests per Day</div>
+                      <div style="font-size:9px;color:#646970;margin-bottom:10px;">Set 0 for unlimited.</div>
+                      <div class="gg-max-guests">
+                        <div class="gg-guest-box">
+                          <div class="gg-guest-label">MAX ADULTS</div>
+                          <div class="gg-guest-val">15</div>
+                          <div class="gg-guest-hint">0 = unlimited</div>
+                        </div>
+                        <div class="gg-guest-box">
+                          <div class="gg-guest-label">MAX CHILDREN</div>
+                          <div class="gg-guest-val">5</div>
+                          <div class="gg-guest-hint">0 = unlimited</div>
+                        </div>
+                        <div class="gg-guest-box">
+                          <div class="gg-guest-label">MAX PETS</div>
+                          <div class="gg-guest-val">5</div>
+                          <div class="gg-guest-hint">0 = unlimited</div>
+                        </div>
+                      </div>
+                      <div class="gg-blocked-dates">
+                        <div class="gg-blocked-label">Blocked Dates</div>
+                        <div class="gg-blocked-chips">
+                          <div class="gg-blocked-chip">2026-06-13 ✕</div>
+                          <div class="gg-blocked-chip">2026-06-27 ✕</div>
+                          <div class="gg-blocked-chip">2026-06-28 ✕</div>
+                          <div class="gg-blocked-chip">2026-07-11 ✕</div>
+                        </div>
+                      </div>
+                      <div class="gg-save-btn">Save Changes</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin: GG Bookings list -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Admin dashboard · Screen 02</p>
+          <h2 class="cs-section__title">GG Bookings - revenue, pipeline, and guest details in one panel</h2>
+          <p class="cs-section__text">
+            The custom bookings admin consolidated everything the team needed: total revenue, confirmed vs pending counts, guest breakdown, and a full searchable booking list. All guest PII (emails, phone numbers, payment IDs) is redacted below.
+          </p>
+
+          <div style="margin-top:24px;overflow-x:auto;">
+            <div class="gg-bookings-wrap">
+              <div class="gg-bookings-topbar">
+                <div class="gg-bookings-logo-icon">🌿</div>
+                <div class="gg-bookings-title">GG Bookings</div>
+                <div class="gg-bookings-count">39 total</div>
+              </div>
+              <!-- Stats row -->
+              <div class="gg-bookings-stats" style="padding:14px 18px;">
+                <div class="gg-bstat"><div class="gg-bstat-label">Revenue</div><div class="gg-bstat-val revenue">₹7,51,602</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">Confirmed</div><div class="gg-bstat-val confirmed">39</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">Pending</div><div class="gg-bstat-val pending">0</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">🧑 Adults</div><div class="gg-bstat-val">87</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">👧 Kids</div><div class="gg-bstat-val">7</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">🍼 Toddlers</div><div class="gg-bstat-val">6</div></div>
+                <div class="gg-bstat"><div class="gg-bstat-label">🐾 Pets</div><div class="gg-bstat-val">1</div></div>
+              </div>
+              <!-- Filter bar -->
+              <div class="gg-bookings-filter">
+                <span class="gg-filter-link active">All <span class="num">(39)</span></span>
+                <span class="gg-filter-sep">|</span>
+                <span class="gg-filter-link active" style="color:#166534;">Confirmed <span class="num">(39)</span></span>
+                <span class="gg-filter-sep">|</span>
+                <span class="gg-filter-link">Pending <span class="num">(0)</span></span>
+                <div class="gg-search-row">
+                  <input class="gg-search-input" placeholder="Search property, guests, email, phone..." readonly>
+                  <div class="gg-search-btn">Search</div>
+                </div>
+              </div>
+              <!-- Bookings table -->
+              <table class="gg-bookings-table">
+                <thead>
+                  <tr>
+                    <th>Date</th><th>Property</th><th>Adults</th><th>Kids</th><th>Toddlers</th><th>Pets</th><th>Check-in</th><th>Nights</th><th>Total</th><th>Payment ID</th><th>Status</th><th>Email</th><th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="gg-td-date">19 Jun 2026</div><div class="gg-td-time">12:47</div></td>
+                    <td>Overnight Camping at Mango Trails</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>20 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
+                    <td>1</td><td>Rs.3,998</td>
+                    <td><span class="gg-blurred gg-pay-id">pay_T3UkYw2KmYVVi0</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">poorvika@gmail.com</span></td>
+                    <td><span class="gg-blurred">+918496881720</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">19 Jun 2026</div><div class="gg-td-time">04:30</div></td>
+                    <td>Day Outing at Mango Trails</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>21 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
+                    <td>—</td><td>—</td>
+                    <td><span class="gg-td-date">manual</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">chugh.rashmi@gmail.com</span></td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">18 Jun 2026</div><div class="gg-td-time">06:05</div></td>
+                    <td>Day Outing at Mango Trails</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>20 Jun 2026</div><div class="gg-td-date">→ 20 Jun 2026</div></td>
+                    <td>1</td><td>Rs.5,996.00</td>
+                    <td><span class="gg-blurred gg-pay-id">pay_T2jNvCINftsZP7</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">shweta@gmail.com</span></td>
+                    <td><span class="gg-blurred">7892733799</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">16 Jun 2026</div><div class="gg-td-time">17:33</div></td>
+                    <td>Day Outing at Mango Trails</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td><span class="gg-badge-toddler">1</span></td><td>—</td>
+                    <td><div>21 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
+                    <td>1</td><td>Rs.2,998</td>
+                    <td><span class="gg-blurred gg-pay-id">pay_T20189E1S1T8ch</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">divz1903@gmail.com</span></td>
+                    <td><span class="gg-blurred">919986663678</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">14 Jun 2026</div><div class="gg-td-time">15:51</div></td>
+                    <td>Day Outing at Mango Trails</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>16 Jun 2026</div><div class="gg-td-date">→ 16 Jun 2026</div></td>
+                    <td>1</td><td>Rs.5,996</td>
+                    <td><span class="gg-blurred gg-pay-id">pay_T1ZD0hZT8TWc7u</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">siamese@gmail.com</span></td>
+                    <td><span class="gg-blurred">919820283953</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">13 Jun 2026</div><div class="gg-td-time">02:27</div></td>
+                    <td>Overnight Camping at Mango Trails</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>13 Jun 2026</div><div class="gg-td-date">→ 14 Jun 2026</div></td>
+                    <td>1</td><td>—</td>
+                    <td><span class="gg-td-date">manual</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td>—</td>
+                    <td><span class="gg-blurred">7719066713</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="gg-td-date">12 Jun 2026</div><div class="gg-td-time">17:35</div></td>
+                    <td>Overnight Camping at Mango Trails</td>
+                    <td><span class="gg-badge-adults">1</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><div>14 Jun 2026</div><div class="gg-td-date">→ 15 Jun 2026</div></td>
+                    <td>1</td><td>Rs.1,999</td>
+                    <td><span class="gg-blurred gg-pay-id">pay_T0nvA3UThbKhFl</span></td>
+                    <td><span class="gg-status-confirmed">Confirmed</span></td>
+                    <td><span class="gg-blurred">pankajani@gmail.com</span></td>
+                    <td><span class="gg-blurred">+919986397446</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key decisions -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Key decisions</p>
+          <h2 class="cs-section__title">What made the difference</h2>
+
+          <div class="cs-callout" style="margin-bottom: 24px;">
+            <p class="cs-callout__text">
+              The most impactful design decision was making the availability check happen as the guest picked dates, not after the booking form was submitted. The old contact-form flow let guests go through the entire process before finding out a property was unavailable. The new system surfaced availability state in real time, which reduced false-start drop-off and made the confirmation feel trustworthy.
+            </p>
+          </div>
+
+          <p class="cs-section__text">
+            Building a custom plugin rather than configuring an off-the-shelf solution was a harder decision to justify upfront - it took more time to build. But every off-the-shelf booking plugin I evaluated was designed around hotel room logic: fixed rooms, fixed capacity, same availability across all rooms. Green Getaways' properties had variable sleeping capacities, different rate structures, and specific blocked periods for maintenance. A custom plugin meant the data model could reflect reality, not force reality to fit the plugin.
+          </p>
+          <p class="cs-section__text">
+            The admin experience was designed with the assumption that whoever was managing bookings would not be technical. Every action - confirming a booking, blocking dates, viewing guest details - was accessible from the calendar view with no more than two clicks. The team reported they needed less than 15 minutes of training to use it confidently.
+          </p>
+        </div>
+
+        <!-- Outcome -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Outcome</p>
+          <h2 class="cs-section__title">What changed after launch</h2>
+          <p class="cs-section__text">
+            The immediate, measurable change was the elimination of double-bookings. In the six months before launch, the team had handled at least three double-booking incidents that required compensation, re-booking guests into alternative properties, and the associated guest relations fallout. After launch: zero.
+          </p>
+          <p class="cs-section__text">
+            The operational impact was significant. The 3-4 hours of daily booking admin - checking the spreadsheet, confirming by WhatsApp, sending emails manually - went to near-zero. The team's workload shifted away from processing and toward hospitality: improving the properties, responding to guest questions, and thinking about the product rather than managing the back-office.
+          </p>
+          <p class="cs-section__text">
+            Conversion also improved. Guests who previously waited up to 24 hours for a confirmation were now getting instant booking confirmations. The "book now and get immediate confirmation" framing tested better with returning guests who had previously found the waiting period frustrating enough to book elsewhere.
+          </p>
+        </div>
+
+        <!-- Reflection -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Reflection</p>
+          <h2 class="cs-section__title">What I'd do differently</h2>
+          <p class="cs-section__text">
+            The plugin worked well, but the WooCommerce integration added complexity I'd underestimated - particularly around partial payments, cancellation handling, and refund flows. With hindsight I'd have invested more time in defining the edge cases (what happens to availability when a booking is cancelled? when a payment fails mid-flow?) before building, rather than handling them as they emerged.
+          </p>
+          <p class="cs-section__text">
+            I'd also push harder for a guest account feature earlier. Returning guests had to re-enter their details every booking, and the team couldn't build a guest history view. A lightweight guest account system would have enabled both a better repeat-booking experience and useful occupancy analytics for the team.
+          </p>
+        </div>
+
+        <!-- Next project -->
+        <div class="cs-next" data-reveal>
+          <p class="cs-next__label">Next case study</p>
+          <a href="converj-case-study.html" class="cs-next__link">
+            Converj - FinTech product redesign &amp; design system
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">&copy; 2024 Mubeen Ansari</p>
+        <div class="footer__links">
+          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="footer__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://dribbble.com/Mubzansari96" class="footer__link" target="_blank" rel="noopener noreferrer">Dribbble</a>
+          <a href="index.html#contact" class="footer__link">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
