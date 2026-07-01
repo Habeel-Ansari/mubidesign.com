@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Green Getaways - Case Study by Mubeen Ansari</title>
-  <meta name="description" content="How I replaced a manual, error-prone booking process at Green Getaways with a self-service WordPress booking engine - custom plugins, automated confirmations, and an admin calendar that cut the team's workload significantly.">
+  <meta name="description" content="How I built a self-service booking engine for Green Getaways as a co-founder - a React booking frontend, WordPress backend, Razorpay payments, and automated confirmations, built in two weeks with Claude Code.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -323,28 +323,28 @@
     <!-- HERO -->
     <section class="cs-hero">
       <div class="container">
-        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · WordPress · UX Design · Booking Systems</p>
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · WordPress · React · Booking Systems</p>
         <h1 class="cs-hero__title" data-load-reveal data-delay="2">Green Getaways</h1>
         <p class="cs-hero__desc" data-load-reveal data-delay="3">
-          Replacing a manual, error-prone booking process with a self-service WordPress booking engine - custom plugins, automated confirmations, and an admin calendar that freed the team from spreadsheet chaos.
+          I built a self-service booking engine to replace the manual, spreadsheet-driven mess we had going. Real-time availability, automated confirmations, an admin calendar that actually works. Took two weeks, and I built it as a co-founder of the business, not as an outside hire.
         </p>
 
         <div class="cs-meta" data-load-reveal data-delay="4">
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Role</p>
-            <p class="cs-meta-item__value">UI/UX Designer - Web</p>
+            <p class="cs-meta-item__value">Co-founder · Product &amp; Design</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Company</p>
-            <p class="cs-meta-item__value">Green Getaways - Eco Travel</p>
+            <p class="cs-meta-item__value">Green Getaways · Eco Travel</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Timeline</p>
-            <p class="cs-meta-item__value">2019 - 2020 · Red Baton era</p>
+            <p class="cs-meta-item__value">2026 · 2 weeks</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Scope</p>
-            <p class="cs-meta-item__value">WordPress booking plugin · Booking pages · Admin dashboard · Automated confirmations</p>
+            <p class="cs-meta-item__value">React booking frontend · WordPress backend &amp; admin · Razorpay integration · Automated confirmations</p>
           </div>
         </div>
 
@@ -488,13 +488,10 @@
           <p class="cs-section__label">The problem</p>
           <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
           <p class="cs-section__text">
-            Green Getaways ran a collection of eco-friendly stays across South India - forest cabins, hillside camps, backwater cottages. A good product. But the operational layer holding it together was a patchwork of WhatsApp threads, shared Google Sheets, and email chains.
+            Green Getaways runs eco-friendly stays around Bangalore. Camping, farm stays, day outings. The product was solid, but the booking process behind it wasn't. Every enquiry came in through WhatsApp or a contact form, got checked against a shared spreadsheet, confirmed by hand, then chased for payment. When two of us checked the same spreadsheet at once, we'd end up with a double-booking. It happened more than I'd like to admit.
           </p>
           <p class="cs-section__text">
-            Every booking followed the same exhausting path: a guest enquired via the website contact form or WhatsApp, a staff member manually checked availability on a shared spreadsheet, sent a confirmation message, updated the spreadsheet, and then chased the guest for payment. If two staff members handled overlapping enquiries without seeing each other's updates, you got a double-booking. This happened regularly.
-          </p>
-          <p class="cs-section__text">
-            Beyond the errors, the workload was unsustainable. The team was spending 3-4 hours a day just processing booking enquiries - time that should have been going into guest experience. They needed a system that handled the routine so the team didn't have to.
+            On top of the errors, it was eating 3-4 hours a day that should've gone into actually looking after guests.
           </p>
         </div>
 
@@ -502,45 +499,27 @@
         <div class="cs-metrics" data-reveal>
           <div class="cs-metric">
             <div class="cs-metric__value">100%</div>
-            <div class="cs-metric__label">Bookings handled through the self-service system post-launch</div>
+            <div class="cs-metric__label">Bookings handled self-service post-launch</div>
           </div>
           <div class="cs-metric">
             <div class="cs-metric__value">Zero</div>
-            <div class="cs-metric__label">Double-bookings after the system went live</div>
+            <div class="cs-metric__label">Double-bookings after launch</div>
           </div>
           <div class="cs-metric">
             <div class="cs-metric__value">3-4 hrs</div>
-            <div class="cs-metric__label">Daily admin time eliminated from the team's workload</div>
+            <div class="cs-metric__label">Daily admin time eliminated</div>
           </div>
         </div>
 
-        <!-- Discovery -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Discovery</p>
-          <h2 class="cs-section__title">Mapping the mess before building the fix</h2>
-          <p class="cs-section__text">
-            Before writing a line of code or opening Figma, I spent time with the team tracing what actually happened during a booking - start to finish. I mapped every touchpoint: initial enquiry, availability check, confirmation, payment, reminder, and the post-stay follow-up. The map was uncomfortable to look at. There were 11 manual handoffs across two spreadsheets, three messaging apps, and an email inbox.
-          </p>
-          <p class="cs-section__text">
-            Two problems dominated. First: no single source of truth for availability. When the spreadsheet was behind by even an hour, staff were confirming bookings that couldn't be honoured. Second: no automation for any part of the process - every confirmation, reminder, and receipt was written and sent manually. The team wasn't being careless; the system was just built for a much smaller operation.
-          </p>
-          <p class="cs-section__text">
-            I also looked at what guests were experiencing. The contact form on the existing site said "we'll get back to you within 24 hours." In the booking industry, 24 hours is an eternity. Guests were going to competitors who offered instant confirmation simply because the waiting was too uncertain.
-          </p>
-        </div>
-
-        <!-- Strategy -->
+        <!-- Approach -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">Approach</p>
-          <h2 class="cs-section__title">WordPress as the platform, automation as the goal</h2>
+          <h2 class="cs-section__title">React for the booking experience, WordPress underneath</h2>
           <p class="cs-section__text">
-            The client already had a WordPress site. The brief was clear: work within WordPress, build something the non-technical team could manage themselves, and make it actually solve the problem rather than add another thing to maintain.
+            The plan was simple enough: keep WordPress as the backend and admin layer, since that's where we already worked, and build a custom React frontend for the actual booking flow, where speed and real-time availability mattered most. Off-the-shelf booking plugins all assumed hotel-style fixed rooms, which didn't fit. We needed per-property capacity, flexible rates, and blocked dates for maintenance.
           </p>
           <p class="cs-section__text">
-            I decided to build a custom booking plugin rather than forcing a third-party plugin to fit the client's specific requirements. The available plugins were either too generic (assuming hotel-style room blocks) or too complex for a small team to manage. A custom plugin meant I could design the admin experience to match exactly how the team worked, not how a plugin developer assumed they worked.
-          </p>
-          <p class="cs-section__text">
-            The core architecture: a property taxonomy in WordPress (each property as a custom post type with availability managed per-property), a booking form that queried real-time availability before confirming, and a WooCommerce integration to handle payments inline. Confirmations, reminders, and receipts were automated via email triggers on booking status changes.
+            The core pieces: a property structure in WordPress with per-property availability, a React booking interface that checks availability live as guests pick dates, and Razorpay handling payment inline. Confirmations, reminders, and receipts fire automatically when a booking's status changes. Built end-to-end with Claude Code over two weeks.
           </p>
         </div>
 
@@ -553,29 +532,29 @@
             <div class="cs-step">
               <span class="cs-step__num">01</span>
               <div>
-                <h3 class="cs-step__title">Booking flow UX - the guest experience</h3>
-                <p class="cs-step__desc">Designed the end-to-end guest journey: property browse, availability check, booking form, payment, and confirmation. The key decision was showing real-time availability as the guest selected dates - not after they'd filled out the form. This reduced the "I went through the whole process and it's not available" drop-off that was frustrating guests on the old contact-form approach.</p>
+                <h3 class="cs-step__title">Booking flow UX</h3>
+                <p class="cs-step__desc">Designed the guest journey from browse to availability check to booking to payment to confirmation, with real-time availability shown as dates are selected, not after the form is submitted. That one change killed the "went through the whole flow only to find it's unavailable" drop-off we kept seeing before.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">02</span>
               <div>
-                <h3 class="cs-step__title">Custom WordPress booking plugin</h3>
-                <p class="cs-step__desc">Built a custom plugin with per-property availability calendars, booking state management (pending, confirmed, cancelled), and an availability query system that checked for conflicts before allowing a booking to proceed. This was the core piece that eliminated double-bookings - the availability state was managed server-side, not in a shared spreadsheet that could be out of sync.</p>
+                <h3 class="cs-step__title">React booking interface</h3>
+                <p class="cs-step__desc">Built the booking frontend in React, talking to a WordPress backend that manages per-property availability and booking state: pending, confirmed, cancelled. Availability lives server-side now, not in a spreadsheet that can fall out of sync.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">03</span>
               <div>
-                <h3 class="cs-step__title">Admin dashboard design</h3>
-                <p class="cs-step__desc">Designed the admin view around the team's actual workflow: a monthly calendar showing all bookings across properties, colour-coded by status. The team could see at a glance what was booked, what was pending, what needed attention. Availability blocking for maintenance or personal stays was a single click. No spreadsheets, no manual cross-referencing.</p>
+                <h3 class="cs-step__title">WordPress admin dashboard</h3>
+                <p class="cs-step__desc">A monthly calendar across all properties, colour-coded by status, with one-click date blocking for maintenance. No spreadsheets, no manual cross-checking.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">04</span>
               <div>
-                <h3 class="cs-step__title">Automated confirmation and reminder emails</h3>
-                <p class="cs-step__desc">Set up a full email automation sequence triggered by booking status changes: instant confirmation on booking, payment receipt, 7-day reminder with directions and check-in instructions, and a post-stay follow-up requesting a review. The templates were designed to feel personal, not automated. The team had previously written each of these manually - this eliminated all of it.</p>
+                <h3 class="cs-step__title">Automated emails</h3>
+                <p class="cs-step__desc">Instant confirmation, payment receipt, a 7-day pre-arrival reminder, and a post-stay follow-up, all triggered automatically and written to feel personal rather than templated.</p>
               </div>
             </div>
           </div>
@@ -584,9 +563,9 @@
         <!-- Booking flow visual -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">The booking flow</p>
-          <h2 class="cs-section__title">From enquiry to confirmation - fully automated</h2>
+          <h2 class="cs-section__title">From enquiry to confirmation, fully automated</h2>
           <p class="cs-section__text">
-            The old process involved 11 manual steps across multiple tools. The new flow reduced this to zero manual steps for standard bookings - the system handled everything from availability check to payment receipt.
+            The old process took 11 manual steps across spreadsheets, WhatsApp, and email. The new flow needs zero manual steps for a standard booking.
           </p>
 
           <div class="gg-steps-visual" style="margin-top:24px;">
@@ -608,7 +587,7 @@
               <div class="gg-flow-step">
                 <div class="gg-flow-step__num">Step 3</div>
                 <div class="gg-flow-step__label">Guest books &amp; pays</div>
-                <div class="gg-flow-step__sub">WooCommerce handles payment inline</div>
+                <div class="gg-flow-step__sub">Razorpay handles payment inline</div>
               </div>
               <div class="gg-flow-arrow">→</div>
               <div class="gg-flow-step automated">
@@ -631,9 +610,9 @@
         <!-- Admin: WP Booking Availability -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">Admin dashboard · Screen 01</p>
-          <h2 class="cs-section__title">WordPress Booking Availability - per property, per day</h2>
+          <h2 class="cs-section__title">Booking availability, per property, per day</h2>
           <p class="cs-section__text">
-            The admin panel gave the team per-property availability calendars with blocked date management. Staff could toggle dates directly from the WordPress dashboard, set guest capacity limits, and see which dates were blocked at a glance - no spreadsheet, no manual cross-referencing.
+            Per-property calendars with blocked-date management. Staff toggle dates directly, set guest capacity limits, and see blocked dates at a glance. No spreadsheet required anymore.
           </p>
 
           <div style="margin-top:24px;">
@@ -666,9 +645,8 @@
                   <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Explore Spots</div>
                   <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Birds</div>
                   <div class="gg-wp-menu-sep"></div>
-                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.51l1.38-7.49H6"/></svg>WooCommerce</div>
-                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Products</div>
-                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payments</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Razorpay</div>
+                  <div class="gg-wp-menu-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>Payouts</div>
                 </div>
                 <!-- Main content -->
                 <div class="gg-wp-main">
@@ -756,9 +734,9 @@
         <!-- Admin: GG Bookings list -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">Admin dashboard · Screen 02</p>
-          <h2 class="cs-section__title">GG Bookings - revenue, pipeline, and guest details in one panel</h2>
+          <h2 class="cs-section__title">Bookings panel, revenue, pipeline, and guest details in one place</h2>
           <p class="cs-section__text">
-            The custom bookings admin consolidated everything the team needed: total revenue, confirmed vs pending counts, guest breakdown, and a full searchable booking list. All guest PII (emails, phone numbers, payment IDs) is redacted below.
+            Revenue, confirmed vs. pending counts, guest breakdown by type, and a full searchable booking list. (Guest PII redacted in the screenshot.)
           </p>
 
           <div style="margin-top:24px;overflow-x:auto;">
@@ -888,15 +866,15 @@
 
           <div class="cs-callout" style="margin-bottom: 24px;">
             <p class="cs-callout__text">
-              The most impactful design decision was making the availability check happen as the guest picked dates, not after the booking form was submitted. The old contact-form flow let guests go through the entire process before finding out a property was unavailable. The new system surfaced availability state in real time, which reduced false-start drop-off and made the confirmation feel trustworthy.
+              Showing availability live, as guests pick dates, was the single biggest improvement over the old contact-form flow. It cut false-start drop-off and made the booking feel trustworthy right from the start.
             </p>
           </div>
 
           <p class="cs-section__text">
-            Building a custom plugin rather than configuring an off-the-shelf solution was a harder decision to justify upfront - it took more time to build. But every off-the-shelf booking plugin I evaluated was designed around hotel room logic: fixed rooms, fixed capacity, same availability across all rooms. Green Getaways' properties had variable sleeping capacities, different rate structures, and specific blocked periods for maintenance. A custom plugin meant the data model could reflect reality, not force reality to fit the plugin.
+            Building custom rather than configuring an off-the-shelf plugin took longer upfront, but every existing option assumed hotel-style room logic that just didn't match our actual capacity and rate structure. Going custom meant the data model could match reality instead of fighting it.
           </p>
           <p class="cs-section__text">
-            The admin experience was designed with the assumption that whoever was managing bookings would not be technical. Every action - confirming a booking, blocking dates, viewing guest details - was accessible from the calendar view with no more than two clicks. The team reported they needed less than 15 minutes of training to use it confidently.
+            I built the admin side assuming whoever ran it day-to-day wouldn't be technical. Every action takes two clicks or fewer from the calendar view.
           </p>
         </div>
 
@@ -905,13 +883,10 @@
           <p class="cs-section__label">Outcome</p>
           <h2 class="cs-section__title">What changed after launch</h2>
           <p class="cs-section__text">
-            The immediate, measurable change was the elimination of double-bookings. In the six months before launch, the team had handled at least three double-booking incidents that required compensation, re-booking guests into alternative properties, and the associated guest relations fallout. After launch: zero.
+            Double-bookings went to zero immediately. The 3-4 hours of daily admin work, the spreadsheet checks, the manual WhatsApp confirmations, the manually written emails, dropped to near-zero. That freed us up to focus on the guest experience instead of the back-office.
           </p>
           <p class="cs-section__text">
-            The operational impact was significant. The 3-4 hours of daily booking admin - checking the spreadsheet, confirming by WhatsApp, sending emails manually - went to near-zero. The team's workload shifted away from processing and toward hospitality: improving the properties, responding to guest questions, and thinking about the product rather than managing the back-office.
-          </p>
-          <p class="cs-section__text">
-            Conversion also improved. Guests who previously waited up to 24 hours for a confirmation were now getting instant booking confirmations. The "book now and get immediate confirmation" framing tested better with returning guests who had previously found the waiting period frustrating enough to book elsewhere.
+            Guests who previously waited up to 24 hours for confirmation now get it instantly, and that noticeably improved conversion with guests who'd previously found the wait frustrating enough to book elsewhere.
           </p>
         </div>
 
@@ -920,10 +895,10 @@
           <p class="cs-section__label">Reflection</p>
           <h2 class="cs-section__title">What I'd do differently</h2>
           <p class="cs-section__text">
-            The plugin worked well, but the WooCommerce integration added complexity I'd underestimated - particularly around partial payments, cancellation handling, and refund flows. With hindsight I'd have invested more time in defining the edge cases (what happens to availability when a booking is cancelled? when a payment fails mid-flow?) before building, rather than handling them as they emerged.
+            The Razorpay integration brought more complexity than I expected, particularly around partial payments, cancellations, and refund flows. Next time I'd map those edge cases out before building, instead of handling them as they came up.
           </p>
           <p class="cs-section__text">
-            I'd also push harder for a guest account feature earlier. Returning guests had to re-enter their details every booking, and the team couldn't build a guest history view. A lightweight guest account system would have enabled both a better repeat-booking experience and useful occupancy analytics for the team.
+            I'd also prioritize a guest account feature sooner. Returning guests currently have to re-enter their details every time, and a lightweight account system would unlock both a better repeat-booking experience and real occupancy data for us.
           </p>
         </div>
 
