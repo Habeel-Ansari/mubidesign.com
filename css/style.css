@@ -651,6 +651,7 @@ body.no-cursor * { cursor: none !important; }
   font-size: var(--fs-sm);
   color: var(--text-secondary);
   width: fit-content;
+  margin-bottom: var(--s5);
 }
 
 .hero__badge-dot {
@@ -674,6 +675,7 @@ body.no-cursor * { cursor: none !important; }
   letter-spacing: -0.01em;
   font-weight: 400;
   max-width: 22ch;
+  margin-bottom: var(--s5);
 }
 
 .hero__headline em {
@@ -682,10 +684,11 @@ body.no-cursor * { cursor: none !important; }
 }
 
 .hero__sub {
-  font-size: var(--fs-lg);
+  font-size: 20px;
   color: var(--text-secondary);
   line-height: 1.55;
   max-width: 52ch;
+  margin-bottom: var(--s6);
 }
 
 .hero__actions {
@@ -693,6 +696,7 @@ body.no-cursor * { cursor: none !important; }
   align-items: center;
   gap: var(--s3);
   flex-wrap: wrap;
+  margin-bottom: var(--s3);
 }
 
 .hero__scribble {
