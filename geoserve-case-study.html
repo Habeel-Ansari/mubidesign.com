@@ -8,15 +8,16 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260701">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
   <style>
     /* ── Shared mockup base ── */
     .gs-mockup {
       width:100%; border-radius:12px; overflow:hidden;
-      font-family:'Inter',system-ui,sans-serif; font-size:12px;
+      font-family:var(--font-sans); font-size:13px;
       box-shadow:0 24px 64px rgba(0,0,0,.18);
       border:1px solid rgba(0,0,0,.07);
     }
@@ -31,7 +32,7 @@
     .gs-nico.active { background:#E8F0FF; color:#1852FE; }
     .gs-nico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
     .gs-sep { width:24px; height:1px; background:#C9D2E2; margin:4px 0; }
-    .gs-avatar { width:28px; height:28px; border-radius:50%; background:#0F1F3D; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px; margin-top:auto; }
+    .gs-avatar { width:28px; height:28px; border-radius:50%; background:#0F1F3D; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; margin-top:auto; }
 
     /* ── Dashboard ── */
     .gs-dash { display:flex; height:480px; background:#F0F2F7; }
@@ -51,9 +52,9 @@
     .gs-bstat+.gs-bstat { padding-left:20px; border-left:1px solid rgba(255,255,255,.2); }
     .gs-bstat-label { font-size:9px; font-weight:500; color:#93C5FD; text-transform:uppercase; letter-spacing:.03em; margin-bottom:2px; }
     .gs-bstat-val { font-size:18px; font-weight:700; color:#fff; letter-spacing:-.4px; }
-    .gs-bstat-sub { font-size:8px; color:#94A3B8; margin-top:1px; }
+    .gs-bstat-sub { font-size:9px; color:#94A3B8; margin-top:1px; }
     .gs-banner-btns { display:flex; gap:8px; position:relative; z-index:1; }
-    .gs-banner-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:6px; padding:6px 10px; font-size:10px; font-weight:600; color:#fff; display:flex; align-items:center; gap:5px; }
+    .gs-banner-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:6px; padding:6px 10px; font-size:11px; font-weight:600; color:#fff; display:flex; align-items:center; gap:5px; }
     .gs-banner-btn svg { width:12px; height:12px; stroke:#fff; fill:none; stroke-width:1.8; stroke-linecap:round; }
 
     /* 3-column layout */
@@ -70,9 +71,9 @@
     .gs-ctab.active { background:#1852FE; color:#fff; }
     .gs-crude-price { font-size:22px; font-weight:800; color:#0E1A33; letter-spacing:-.5px; }
     .gs-crude-row { display:flex; align-items:center; gap:6px; margin-top:3px; }
-    .gs-crude-cur { font-size:10px; color:#8995AB; }
+    .gs-crude-cur { font-size:11px; color:#8995AB; }
     .gs-crude-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:10px; background:#dcfce7; color:#16a34a; }
-    .gs-crude-live { font-size:8px; color:#8995AB; margin-top:2px; }
+    .gs-crude-live { font-size:9px; color:#8995AB; margin-top:2px; }
     .gs-chartline { height:40px; width:100%; margin-top:8px; }
 
     /* Follow-ups */
@@ -81,61 +82,61 @@
     .gs-fu-item { padding:7px 12px; border-bottom:1px solid #F4F6FA; display:flex; align-items:center; gap:8px; }
     .gs-fu-badge { width:22px; height:18px; border-radius:4px; background:#FEF9C3; color:#854D0E; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
     .gs-fu-badge.amber { background:#FEF3C7; color:#92400E; }
-    .gs-fu-label { font-size:10px; font-weight:500; color:#0E1A33; flex:1; }
+    .gs-fu-label { font-size:11px; font-weight:600; color:#0E1A33; flex:1; }
     .gs-fu-arr { width:12px; height:12px; color:#C9D2E2; }
 
     /* Port pricing (center) */
     .gs-port-inner { padding:10px 12px; height:100%; display:flex; flex-direction:column; }
     .gs-port-search { display:flex; align-items:center; gap:6px; background:#F4F6FA; border:1px solid #E4E9F2; border-radius:6px; padding:5px 10px; margin-bottom:8px; }
     .gs-port-search svg { width:11px; height:11px; stroke:#8995AB; fill:none; stroke-width:2; }
-    .gs-port-search-txt { font-size:10px; color:#8995AB; }
+    .gs-port-search-txt { font-size:11px; color:#8995AB; }
     .gs-port-row { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #F0F2F7; }
-    .gs-port-flag { width:26px; height:26px; border-radius:6px; background:linear-gradient(135deg,#1852FE,#5BA6FF); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:8px; flex-shrink:0; }
-    .gs-port-name { font-size:10px; font-weight:600; color:#0E1A33; }
-    .gs-port-sub { font-size:8px; color:#8995AB; }
+    .gs-port-flag { width:26px; height:26px; border-radius:6px; background:linear-gradient(135deg,#1852FE,#5BA6FF); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:9px; flex-shrink:0; }
+    .gs-port-name { font-size:11px; font-weight:600; color:#0E1A33; }
+    .gs-port-sub { font-size:9px; color:#8995AB; }
     .gs-port-prices-badge { margin-left:auto; background:#EAF1FE; color:#1852FE; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; }
-    .gs-port-add { color:#C9D2E2; font-size:14px; margin-left:4px; }
+    .gs-port-add { color:#C9D2E2; font-size:15px; margin-left:4px; }
 
     /* News/updates (right) */
     .gs-news-tabs { display:flex; gap:0; padding:8px 12px; border-bottom:1px solid #E4E9F2; }
-    .gs-ntab { font-size:10px; font-weight:600; color:#8995AB; padding:3px 0; margin-right:12px; }
+    .gs-ntab { font-size:11px; font-weight:600; color:#8995AB; padding:3px 0; margin-right:12px; }
     .gs-ntab.active { color:#1852FE; border-bottom:2px solid #1852FE; }
     .gs-msg-item { padding:8px 12px; border-bottom:1px solid #F4F6FA; }
     .gs-msg-top { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
-    .gs-msg-av { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; flex-shrink:0; }
-    .gs-msg-name { font-size:10px; font-weight:600; color:#0E1A33; }
-    .gs-msg-time { font-size:8px; color:#8995AB; margin-left:auto; }
+    .gs-msg-av { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
+    .gs-msg-name { font-size:11px; font-weight:600; color:#0E1A33; }
+    .gs-msg-time { font-size:9px; color:#8995AB; margin-left:auto; }
     .gs-msg-txt { font-size:9px; color:#374151; line-height:1.45; padding-left:28px; }
 
     /* ── Fuel Price Screen ── */
     .gs-fuel { display:flex; height:460px; background:#F0F2F7; }
     .gs-fuel-main { flex:1; display:flex; flex-direction:column; padding:14px; gap:10px; overflow:hidden; }
     .gs-fuel-topbar { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
-    .gs-fuel-title { font-size:14px; font-weight:700; color:#0E1A33; }
+    .gs-fuel-title { font-size:15px; font-weight:700; color:#0E1A33; }
     .gs-fuel-sub { font-size:9px; color:#8995AB; }
     .gs-live-badge { display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid #E4E9F2; border-radius:20px; padding:3px 9px; font-size:9px; font-weight:600; color:#16a34a; }
     .gs-live-dot { width:6px; height:6px; border-radius:50%; background:#16a34a; }
     .gs-fuel-tabs { display:flex; background:#fff; border:1px solid #E4E9F2; border-radius:7px; padding:3px; gap:2px; }
-    .gs-fuel-tab { padding:3px 10px; border-radius:4px; font-size:10px; font-weight:600; color:#8995AB; }
+    .gs-fuel-tab { padding:3px 10px; border-radius:4px; font-size:11px; font-weight:600; color:#8995AB; }
     .gs-fuel-tab.active { background:#1852FE; color:#fff; }
     .gs-price-hero-row { display:flex; align-items:baseline; gap:8px; flex-shrink:0; }
     .gs-price-big { font-size:30px; font-weight:800; color:#0E1A33; letter-spacing:-1px; }
     .gs-price-unit { font-size:13px; font-weight:600; color:#8995AB; }
-    .gs-price-up { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#16a34a; padding:3px 8px; border-radius:20px; font-size:10px; font-weight:700; }
+    .gs-price-up { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#16a34a; padding:3px 8px; border-radius:20px; font-size:11px; font-weight:700; }
     .gs-stat-cards { display:flex; gap:7px; flex-shrink:0; }
     .gs-scard { flex:1; background:#fff; border:1px solid #E4E9F2; border-radius:10px; padding:8px 10px; }
-    .gs-scard-label { font-size:8px; font-weight:600; color:#8995AB; text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; display:flex; align-items:center; justify-content:space-between; }
+    .gs-scard-label { font-size:9px; font-weight:600; color:#8995AB; text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; display:flex; align-items:center; justify-content:space-between; }
     .gs-scard-icon { width:18px; height:18px; border-radius:4px; display:flex; align-items:center; justify-content:center; }
     .gs-scard-icon svg { width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:2.2; }
     .ic-g { background:#dcfce7; color:#16a34a; }
     .ic-r { background:#fee2e2; color:#dc2626; }
     .ic-b { background:#EAF1FE; color:#1852FE; }
-    .gs-scard-val { font-size:14px; font-weight:800; color:#0E1A33; letter-spacing:-.3px; }
+    .gs-scard-val { font-size:15px; font-weight:800; color:#0E1A33; letter-spacing:-.3px; }
     .gs-scard-val.up { color:#16a34a; }
     .gs-scard-val.dn { color:#dc2626; }
     .gs-scard-footer { display:flex; align-items:center; justify-content:space-between; margin-top:3px; }
-    .gs-scard-sub { font-size:8px; color:#8995AB; }
-    .gs-scard-delta { font-size:8px; font-weight:700; padding:1px 5px; border-radius:6px; }
+    .gs-scard-sub { font-size:9px; color:#8995AB; }
+    .gs-scard-delta { font-size:9px; font-weight:700; padding:1px 5px; border-radius:6px; }
     .gs-scard-delta.up { background:#dcfce7; color:#16a34a; }
     .gs-scard-delta.dn { background:#fee2e2; color:#dc2626; }
     .gs-range { margin-top:3px; height:3px; background:#f1f5f9; border-radius:99px; position:relative; }
@@ -153,80 +154,75 @@
     /* ── Port Map ── */
     .gs-map { display:flex; height:480px; }
     .gs-map-area { flex:1; background:#0D1B2A; position:relative; overflow:hidden; }
-    .gs-map-grid {
-      position:absolute; inset:0;
-      background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-      background-size:36px 36px;
-    }
     .gs-map-topbar { position:absolute; top:10px; left:10px; display:flex; gap:6px; z-index:5; }
     .gs-search-box { width:200px; height:28px; background:#fff; border-radius:5px; display:flex; align-items:center; gap:6px; padding:0 9px; box-shadow:0 3px 10px rgba(0,0,0,.25); }
     .gs-search-box svg { width:11px; height:11px; stroke:#8995AB; fill:none; stroke-width:2; }
-    .gs-search-text { font-size:10px; color:#8995AB; }
+    .gs-search-text { font-size:11px; color:#8995AB; }
     /* Route line visual */
     .gs-route-line { position:absolute; top:50%; left:20%; width:55%; height:1px; background:linear-gradient(to right,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0)); transform:translateY(-50%) rotate(-5deg); }
     .gs-route-a { position:absolute; top:50%; left:18%; width:14px; height:14px; border-radius:50%; background:#4ADE80; border:2px solid #fff; transform:translate(-50%,-50%); z-index:3; }
     .gs-route-b { position:absolute; top:46%; left:72%; width:14px; height:14px; border-radius:50%; background:#EF4444; border:2px solid #fff; transform:translate(-50%,-50%); z-index:3; }
-    .gs-route-label-a { position:absolute; top:50%; left:18%; transform:translate(-50%,-220%); background:#4ADE80; color:#fff; font-size:8px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
-    .gs-route-label-b { position:absolute; top:46%; left:72%; transform:translate(-50%,-220%); background:#EF4444; color:#fff; font-size:8px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
+    .gs-route-label-a { position:absolute; top:50%; left:18%; transform:translate(-50%,-220%); background:#4ADE80; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
+    .gs-route-label-b { position:absolute; top:46%; left:72%; transform:translate(-50%,-220%); background:#EF4444; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
     /* Port callout on map */
-    .gs-map-callout { position:absolute; top:42%; left:58%; transform:translate(-50%,-50%); background:#fff; border:1px solid #E4E9F2; border-radius:8px; padding:7px 10px; font-family:'Inter',sans-serif; z-index:5; box-shadow:0 4px 16px rgba(0,0,0,.2); white-space:nowrap; }
+    .gs-map-callout { position:absolute; top:42%; left:58%; transform:translate(-50%,-50%); background:#fff; border:1px solid #E4E9F2; border-radius:8px; padding:7px 10px; font-family:var(--font-sans); z-index:5; box-shadow:0 4px 16px rgba(0,0,0,.2); white-space:nowrap; }
     .gs-map-callout-name { font-size:11px; font-weight:700; color:#0E1A33; }
-    .gs-map-callout-sub { font-size:8px; color:#8995AB; }
+    .gs-map-callout-sub { font-size:9px; color:#8995AB; }
 
     .gs-map-left { width:240px; flex-shrink:0; background:#fff; border-right:1px solid #E4E9F2; overflow-y:auto; display:flex; flex-direction:column; }
     .gs-map-left-hdr { padding:10px 12px; border-bottom:1px solid #E4E9F2; }
-    .gs-port-tag { display:inline-block; background:#EAF1FE; color:#1852FE; font-size:8px; font-weight:700; padding:2px 6px; border-radius:3px; margin-bottom:4px; }
+    .gs-port-tag { display:inline-block; background:#EAF1FE; color:#1852FE; font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; margin-bottom:4px; }
     .gs-port-title { font-size:13px; font-weight:700; color:#0E1A33; }
-    .gs-port-coord { font-size:8px; color:#8995AB; }
+    .gs-port-coord { font-size:9px; color:#8995AB; }
     .gs-grades-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin:8px 12px; }
     .gs-grade-box { background:#F4F7FB; border-radius:6px; padding:6px 8px; }
-    .gs-grade-lbl { font-size:7px; font-weight:700; text-transform:uppercase; color:#8995AB; margin-bottom:3px; }
-    .gs-grade-price { font-size:12px; font-weight:800; color:#0E1A33; }
-    .gs-grade-unit { font-size:7px; color:#8995AB; }
+    .gs-grade-lbl { font-size:9px; font-weight:700; text-transform:uppercase; color:#8995AB; margin-bottom:3px; }
+    .gs-grade-price { font-size:13px; font-weight:800; color:#0E1A33; }
+    .gs-grade-unit { font-size:9px; color:#8995AB; }
     .gs-map-section { padding:8px 12px; border-top:1px solid #E4E9F2; }
     .gs-map-section-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#8995AB; margin-bottom:6px; display:flex; align-items:center; gap:5px; }
     .gs-weather-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
     .gs-weather-box { background:#F4F7FB; border-radius:5px; padding:5px 6px; text-align:center; }
-    .gs-weather-icon { font-size:12px; margin-bottom:2px; }
-    .gs-weather-lbl { font-size:7px; color:#8995AB; }
-    .gs-weather-val { font-size:10px; font-weight:700; color:#0E1A33; }
+    .gs-weather-icon { font-size:13px; margin-bottom:2px; }
+    .gs-weather-lbl { font-size:9px; color:#8995AB; }
+    .gs-weather-val { font-size:11px; font-weight:700; color:#0E1A33; }
     .gs-seller-row { display:flex; align-items:center; gap:7px; padding:5px 0; border-bottom:1px solid #F4F6FA; }
-    .gs-seller-av { width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; flex-shrink:0; }
+    .gs-seller-av { width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
     .gs-seller-name { font-size:9px; font-weight:600; color:#0E1A33; flex:1; }
-    .gs-seller-sub { font-size:8px; color:#8995AB; }
-    .gs-seller-price { font-size:10px; font-weight:700; color:#0E1A33; }
+    .gs-seller-sub { font-size:9px; color:#8995AB; }
+    .gs-seller-price { font-size:11px; font-weight:700; color:#0E1A33; }
     .gs-map-right { width:200px; flex-shrink:0; background:#fff; border-left:1px solid #E4E9F2; overflow-y:auto; }
     .gs-overlays-hdr { padding:10px 12px; border-bottom:1px solid #E4E9F2; display:flex; align-items:center; justify-content:space-between; }
-    .gs-overlays-title { font-size:12px; font-weight:700; color:#0E1A33; }
+    .gs-overlays-title { font-size:13px; font-weight:700; color:#0E1A33; }
     .gs-overlays-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:10px 12px; }
     .gs-overlay-btn { background:#EAF1FE; border-radius:7px; padding:8px 5px; display:flex; flex-direction:column; align-items:center; gap:4px; }
     .gs-overlay-btn svg { width:16px; height:16px; stroke:#1852FE; fill:none; stroke-width:1.8; stroke-linecap:round; }
-    .gs-overlay-btn-lbl { font-size:8px; font-weight:600; color:#1852FE; text-align:center; }
+    .gs-overlay-btn-lbl { font-size:9px; font-weight:600; color:#1852FE; text-align:center; }
     .gs-base-section { padding:0 12px 10px; }
     .gs-base-title { font-size:9px; font-weight:700; color:#8995AB; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
     .gs-base-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
     .gs-base-btn { background:#F4F7FB; border-radius:6px; padding:7px 4px; display:flex; flex-direction:column; align-items:center; gap:3px; }
     .gs-base-btn svg { width:14px; height:14px; stroke:#5A6B85; fill:none; stroke-width:1.8; stroke-linecap:round; }
-    .gs-base-btn-lbl { font-size:7px; font-weight:600; color:#5A6B85; text-align:center; }
-    .gs-calc-btn { margin:0 12px 12px; background:#1852FE; border-radius:8px; padding:9px; text-align:center; font-size:10px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .gs-base-btn-lbl { font-size:9px; font-weight:600; color:#5A6B85; text-align:center; }
+    .gs-calc-btn { margin:0 12px 12px; background:#1852FE; border-radius:8px; padding:9px; text-align:center; font-size:11px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; gap:6px; }
     .gs-calc-btn svg { width:12px; height:12px; stroke:#fff; fill:none; stroke-width:2; }
 
     /* ── Research visuals ── */
     .gs-interview-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px; }
     .gs-icard { background:#F8FAFF; border:1px solid #E4E9F2; border-radius:12px; padding:18px; }
     .gs-icard-top { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-    .gs-icard-av { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#fff; flex-shrink:0; }
-    .gs-icard-name { font-size:12px; font-weight:700; color:#0E1A33; }
-    .gs-icard-role { font-size:10px; color:#8995AB; }
+    .gs-icard-av { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#fff; flex-shrink:0; }
+    .gs-icard-name { font-size:14px; font-weight:700; color:#0E1A33; }
+    .gs-icard-role { font-size:12px; color:#8995AB; }
     .gs-icard-insights { display:flex; flex-direction:column; gap:6px; }
-    .gs-icard-insight { display:flex; align-items:flex-start; gap:6px; font-size:10px; color:#374151; line-height:1.45; }
+    .gs-icard-insight { display:flex; align-items:flex-start; gap:6px; font-size:13px; color:#374151; line-height:1.5; }
     .gs-icard-insight::before { content:''; width:5px; height:5px; border-radius:50%; background:#1852FE; flex-shrink:0; margin-top:4px; }
 
     .gs-themes-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:24px; }
     .gs-theme-card { background:#fff; border:1.5px solid #E4E9F2; border-radius:10px; padding:14px; }
     .gs-theme-num { font-size:11px; font-weight:800; color:#1852FE; margin-bottom:6px; }
-    .gs-theme-title { font-size:11px; font-weight:700; color:#0E1A33; margin-bottom:5px; }
-    .gs-theme-desc { font-size:10px; color:#8995AB; line-height:1.45; }
+    .gs-theme-title { font-size:14px; font-weight:700; color:#0E1A33; margin-bottom:5px; }
+    .gs-theme-desc { font-size:13px; color:#8995AB; line-height:1.5; }
 
     /* ── Key highlights ── */
     .gs-highlights { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
@@ -234,17 +230,39 @@
     .gs-hl-icon { width:36px; height:36px; border-radius:9px; background:#EAF1FE; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
     .gs-hl-icon svg { width:18px; height:18px; stroke:#1852FE; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
     .gs-hl-stat { font-size:22px; font-weight:800; color:#0E1A33; letter-spacing:-.5px; margin-bottom:4px; }
-    .gs-hl-label { font-size:11px; font-weight:600; color:#374151; margin-bottom:4px; }
-    .gs-hl-desc { font-size:10px; color:#8995AB; line-height:1.45; }
+    .gs-hl-label { font-size:14px; font-weight:600; color:#374151; margin-bottom:4px; }
+    .gs-hl-desc { font-size:13px; color:#8995AB; line-height:1.5; }
 
     /* Claude Code badge */
     .gs-claude-badge {
       display:inline-flex; align-items:center; gap:7px;
       background:linear-gradient(135deg,#1A0A3C,#3B1FA8);
       border-radius:8px; padding:6px 12px;
-      font-size:10px; font-weight:700; color:#C4B5FD; letter-spacing:.02em;
+      font-size:11px; font-weight:700; color:#C4B5FD; letter-spacing:.02em;
     }
-    .gs-claude-badge::before { content:'✦'; font-size:12px; color:#A78BFA; }
+    .gs-claude-badge::before { content:'✦'; font-size:13px; color:#A78BFA; }
+
+    /* ── Real Leaflet map inside the port-map mockup ── */
+    #gs-leaflet-map { background:#0D1B2A; }
+    #gs-leaflet-map .leaflet-control-attribution {
+      background: rgba(0,0,0,0.45); color: rgba(255,255,255,0.45);
+      font-size: 8px; padding: 1px 5px; border-radius: 3px 0 0 0;
+    }
+    #gs-leaflet-map .leaflet-control-attribution a { color: rgba(255,255,255,0.6); }
+    #gs-leaflet-map .leaflet-tile-pane { filter: saturate(1.3) brightness(0.95) hue-rotate(190deg); }
+
+    /* ── Mobile: product mockups render as a uniformly shrunk screenshot ── */
+    @media (max-width: 768px) {
+      .gs-mockup { zoom:0.5; }
+      .gs-col-m { flex:0 0 260px; }
+      .gs-fuel-main { min-width:600px; }
+      .gs-map-area { min-width:300px; }
+      .cs-cover { aspect-ratio:auto; }
+
+      .gs-interview-grid { grid-template-columns:1fr; }
+      .gs-themes-row { grid-template-columns:1fr; }
+      .gs-highlights { grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body>
@@ -298,8 +316,15 @@
         <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · Maritime SaaS · 0-to-1 · Product Design</p>
         <h1 class="cs-hero__title" data-load-reveal data-delay="2">GeoStem</h1>
         <p class="cs-hero__desc" data-load-reveal data-delay="3">
-          A 0-to-1 maritime fuel trading intelligence platform - live commodity pricing, global port bunkering rates, deal pipeline, and an interactive port map. Built with a design system from day one and shipped to production in under 5 months.
+          Replaced 4 fragmented trading tools with one live intelligence platform - commodity pricing, port bunkering rates, deal pipeline, and an interactive port map. Built the design system from day one; shipped to production in 5 months, with UI design-to-dev handoff in just 5 days.
         </p>
+
+        <div style="margin-bottom:var(--s8);" data-load-reveal data-delay="3">
+          <a href="https://geostemnew.netlify.app/" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+            View Final UI
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
 
         <div class="cs-meta" data-load-reveal data-delay="4">
           <div class="cs-meta-item">
@@ -321,6 +346,8 @@
         </div>
 
         <!-- COVER: Dashboard mockup matching real screenshot -->
+        <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 01 - Dashboard Overview</p>
+        <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
         <div class="cs-cover" style="background:#E8EDF5;padding:32px 40px 0;" data-load-reveal data-delay="5">
           <div class="gs-mockup gs-dash">
             <!-- Nav rail -->
@@ -370,7 +397,7 @@
                 <div class="gs-col-l">
                   <div class="gs-card" style="height:auto;flex-shrink:0;">
                     <div class="gs-price-widget">
-                      <div class="gs-crude-tabs"><div class="gs-ctab active">Brent</div><div class="gs-ctab">Crude</div><div class="gs-ctab">Natural GAS</div></div>
+                      <div class="gs-crude-tabs"><div class="gs-ctab active">Brent</div><div class="gs-ctab">Crude</div><div class="gs-ctab">Natural Gas</div></div>
                       <div class="gs-crude-price">64.65</div>
                       <div class="gs-crude-row"><span class="gs-crude-cur">USD</span><span class="gs-crude-badge">+0.12%</span></div>
                       <div class="gs-crude-live">As of 12:23:36 AM EST.</div>
@@ -389,9 +416,9 @@
                       <svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </div>
                     <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Unassigned Jobs</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Invoice approval</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Invoice Approval</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                     <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Pending Credit Approval</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge amber" style="font-size:8px;">99+</div><div class="gs-fu-label">Partly Booked</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                    <div class="gs-fu-item"><div class="gs-fu-badge amber" style="font-size:9px;">99+</div><div class="gs-fu-label">Partly Booked</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                     <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Delivery Pending</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                     <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Uninvoiced</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                   </div>
@@ -400,7 +427,7 @@
                 <div class="gs-col-m">
                   <div class="gs-card">
                     <div class="gs-card-hdr" style="padding:10px 12px;">
-                      <div><div style="font-size:12px;font-weight:600;color:#0E1A33;">Port Fuel Pricing</div><div style="font-size:9px;color:#8995AB;">Most traded ports & updates on price.</div></div>
+                      <div><div style="font-size:13px;font-weight:600;color:#0E1A33;">Port Fuel Pricing</div><div style="font-size:9px;color:#8995AB;">Most traded ports & updates on price.</div></div>
                       <div style="font-size:9px;font-weight:600;color:#1852FE;cursor:pointer;">+ Add price indication</div>
                     </div>
                     <div class="gs-port-inner">
@@ -418,12 +445,12 @@
                 <!-- Right: Updates & News -->
                 <div class="gs-col-r">
                   <div class="gs-card">
-                    <div style="padding:10px 12px;border-bottom:1px solid #E4E9F2;"><div style="font-size:12px;font-weight:600;color:#0E1A33;">Updates &amp; News</div><div style="font-size:9px;color:#8995AB;">Daily updates on fuel, port, and trader information.</div></div>
+                    <div style="padding:10px 12px;border-bottom:1px solid #E4E9F2;"><div style="font-size:13px;font-weight:600;color:#0E1A33;">Updates &amp; News</div><div style="font-size:9px;color:#8995AB;">Daily updates on fuel, port, and trader information.</div></div>
                     <div class="gs-news-tabs"><div class="gs-ntab active">Trader Updates</div><div class="gs-ntab">News</div></div>
-                    <div style="display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid #E4E9F2;"><div style="background:#EAF1FE;color:#1852FE;font-size:8px;font-weight:700;padding:2px 8px;border-radius:10px;">All</div><div style="font-size:9px;font-weight:600;color:#8995AB;padding:2px 8px;">By me</div></div>
+                    <div style="display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid #E4E9F2;"><div style="background:#EAF1FE;color:#1852FE;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;">All</div><div style="font-size:9px;font-weight:600;color:#8995AB;padding:2px 8px;">By Me</div></div>
                     <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#EAF1FE;color:#1852FE;">AF</div><div class="gs-msg-name">Aaron Freights</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Bunker prices at Salalah have dropped 3% this week. Recommend adjusting the inquiry threshold accordingly for this port.</div></div>
                     <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#FEF3C7;color:#92400E;">G</div><div class="gs-msg-name">George</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Noted. I will update the pricing sheet for Salalah and loop in the compliance team before EOD.</div></div>
-                    <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#DCFCE7;color:#166534;">Y</div><div class="gs-msg-name">You</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">The XYZ port in Singapore has had this pricing for the past week.</div></div>
+                    <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#DCFCE7;color:#166534;">Y</div><div class="gs-msg-name">You</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Singapore VLSFO has held steady at this price for the past week.</div></div>
                   </div>
                 </div>
               </div>
@@ -442,11 +469,22 @@
           <p class="cs-section__label">Business challenge</p>
           <h2 class="cs-section__title">A trading team running on Bloomberg, WhatsApp, and manual spreadsheets</h2>
           <p class="cs-section__text">
-            Maritime fuel trading is a time-critical, margin-thin business. When I joined Geoserve, the trading team managed their entire operation across multiple external tools with no single source of truth - prices were stale by the time they were referenced, deal pipeline visibility was non-existent, and critical follow-ups were scattered across email threads.
+            Maritime fuel trading is time-critical and margin-thin - a stale price isn't a UX flaw, it's a trading loss. When I joined Geoserve, the trading team ran their entire operation across Bloomberg, WhatsApp, and manual spreadsheets, with no single source of truth. Prices were stale by the time anyone referenced them, deal pipeline visibility didn't exist, and follow-ups got buried in email threads.
           </p>
           <p class="cs-section__text">
-            The opportunity: a unified intelligence platform purpose-built for the way traders actually work - live commodity pricing, global port bunkering rates, active deal status, and a real-time port map in one fast interface.
+            The opportunity: build one platform around how traders actually work - live commodity pricing, global port bunkering rates, active deal status, and a real-time port map, in one fast interface.
           </p>
+        </div>
+
+        <!-- Constraints -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Constraints &amp; roadblocks</p>
+          <h2 class="cs-section__title">Building for a domain with zero tolerance for slow or wrong</h2>
+          <ul class="cs-section__text" style="padding-left:20px;margin:0;">
+            <li style="margin-bottom:8px;"><strong>Time-critical domain:</strong> a slow or stale interface directly costs a trader money - not a usability complaint, a revenue one.</li>
+            <li style="margin-bottom:8px;"><strong>Three conflicting KPI sets:</strong> Senior Trader, Trader, and Sales needed fundamentally different performance signals from the same dashboard - no single view could serve all three without compromise.</li>
+            <li><strong>No system to extend:</strong> there was no existing product to inherit. Every token, component, and pattern had to be defined from scratch, in parallel with shipping the first module.</li>
+          </ul>
         </div>
 
         <!-- Metrics -->
@@ -577,20 +615,20 @@
               <span class="cs-step__num">04</span>
               <div>
                 <h3 class="cs-step__title">Built in Claude Code - shared with dev in 5 days</h3>
-                <p class="cs-step__desc">The entire UI was built in Claude Code as a fully interactive prototype - all screens, interaction states, data edge cases (empty states, loading, error, partial data), and responsive behaviour. Shared with the dev team in 5 days. This meant developers didn't write UI code from scratch - they connected their backend to a production-ready interface. Result: significantly faster go-live and fewer UI bugs in production.</p>
+                <p class="cs-step__desc">The entire UI was built in Claude Code as a fully interactive prototype - all screens, interaction states, data edge cases (empty states, loading, error, partial data), and responsive behaviour. Shared with the dev team in 5 days. Developers connected a backend to a production-ready interface instead of building UI from scratch - no UI rebuild, no guesswork on edge cases at launch.</p>
               </div>
             </div>
           </div>
 
           <!-- Claude Code callout -->
-          <div class="cs-callout" style="margin-top:28px;background:linear-gradient(135deg,#0F0B2A,#1E0A5C);border-color:rgba(167,139,250,0.3);">
+          <div class="cs-callout" style="margin-top:28px;padding:28px;border-radius:20px;background:linear-gradient(135deg,#0F0B2A,#1E0A5C);border:1px solid rgba(167,139,250,0.3);">
             <div style="display:flex;align-items:flex-start;gap:14px;">
               <div style="width:36px;height:36px;border-radius:9px;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </div>
               <div>
                 <div style="font-size:11px;font-weight:700;color:#C4B5FD;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;">Built with Claude Code</div>
-                <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;margin:0;">The full platform UI was designed and built in Claude Code as an interactive prototype with all edge cases - empty states, loading states, error handling, and real data formats. Shared with the engineering team in 5 days. Developers connected the backend to a production-ready interface rather than building UI from scratch, which accelerated the go-live timeline and reduced UI bugs significantly.</p>
+                <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;margin:0;">Every screen was interactive before a single engineer touched the codebase - real data formats, real error states, real empty states. That's what made the 5-day handoff possible: there was nothing left to design once dev picked it up.</p>
               </div>
             </div>
           </div>
@@ -601,7 +639,8 @@
       <!-- Screen 2: Live Fuel Price -->
       <div style="background:#EEF2F8;padding:48px 0 56px;" data-reveal>
         <div class="container">
-          <p style="font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:20px;">Screen 02 - Live Fuel Price</p>
+          <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 02 - Live Fuel Price</p>
+          <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
           <div class="gs-mockup gs-fuel">
             <div class="gs-nav">
               <div class="gs-burger"><svg width="16" height="16" viewBox="0 0 24 24" stroke="#5A6B85" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
@@ -622,7 +661,7 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
                   <div class="gs-live-badge"><div class="gs-live-dot"></div>Live</div>
-                  <div class="gs-fuel-tabs"><div class="gs-fuel-tab active">Brent</div><div class="gs-fuel-tab">Crude</div><div class="gs-fuel-tab">Natural GAS</div></div>
+                  <div class="gs-fuel-tabs"><div class="gs-fuel-tab active">Brent</div><div class="gs-fuel-tab">Crude</div><div class="gs-fuel-tab">Natural Gas</div></div>
                 </div>
               </div>
               <div class="gs-price-hero-row">
@@ -664,7 +703,8 @@
       <!-- Screen 3: Port Map -->
       <div style="background:#F4F7FC;padding:48px 0 56px;" data-reveal>
         <div class="container">
-          <p style="font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:20px;">Screen 03 - Port Map</p>
+          <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 03 - Port Map</p>
+          <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
           <div class="gs-mockup" style="display:flex;">
             <!-- Nav rail -->
             <div class="gs-nav">
@@ -723,19 +763,7 @@
             </div>
             <!-- Map area -->
             <div class="gs-map-area" style="flex:1;">
-              <div class="gs-map-grid"></div>
-              <!-- Simplified continents as blobs -->
-              <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 600 480" preserveAspectRatio="none">
-                <!-- North America blob -->
-                <path d="M20,80 Q60,60 100,90 Q130,110 120,150 Q110,190 80,200 Q50,210 30,180 Q10,150 20,80Z" fill="rgba(255,255,255,0.06)"/>
-                <!-- South America -->
-                <path d="M80,220 Q110,210 120,240 Q130,280 100,320 Q70,360 60,300 Q50,260 80,220Z" fill="rgba(255,255,255,0.06)"/>
-                <!-- Europe/Africa blob -->
-                <path d="M200,40 Q240,30 260,60 Q280,90 260,130 Q240,170 220,160 Q200,150 190,110 Q180,70 200,40Z" fill="rgba(255,255,255,0.06)"/>
-                <path d="M210,170 Q240,160 250,190 Q260,230 240,290 Q220,350 200,320 Q180,290 190,240 Q200,200 210,170Z" fill="rgba(255,255,255,0.06)"/>
-                <!-- Asia blob -->
-                <path d="M280,30 Q360,20 420,50 Q480,80 460,130 Q440,180 380,170 Q320,160 290,120 Q260,80 280,30Z" fill="rgba(255,255,255,0.06)"/>
-              </svg>
+              <div id="gs-leaflet-map" style="position:absolute;inset:0;"></div>
               <!-- Route -->
               <div class="gs-route-line"></div>
               <div class="gs-route-a"></div>
@@ -763,7 +791,7 @@
                 <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="gs-overlay-btn-lbl">Pressure</div></div>
                 <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><path d="M19 16.9A5 5 0 0018 7h-1.26A8 8 0 101 9M13 17l-5 5M13 17l5 5"/></svg><div class="gs-overlay-btn-lbl">Storm</div></div>
                 <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg><div class="gs-overlay-btn-lbl">Nautical</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="gs-overlay-btn-lbl">No-go's</div></div>
+                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="gs-overlay-btn-lbl">No-Go Zones</div></div>
                 <div class="gs-overlay-btn" style="grid-column:span 3;flex-direction:row;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24"><path d="M8 3v3m0 0l-3 3m3-3l3 3M16 21v-3m0 0l3-3m-3 3l-3-3"/></svg><div class="gs-overlay-btn-lbl">Ice lines</div></div>
               </div>
               <div class="gs-base-section">
@@ -786,8 +814,19 @@
           <p class="cs-section__label">Outcomes</p>
           <h2 class="cs-section__title">What shipped and what it changed</h2>
           <p class="cs-section__text">
-            GeoStem consolidated 3-4 external tools into one fast interface. Traders reported spending significantly less time locating information during active sessions, and deal pipeline visibility - previously non-existent - was now surfaced in a single view. The shared design system continues to pay dividends across voyage reporting, validation screens, and onboarding flows.
+            GeoStem replaced 4 fragmented tools with one fast interface. Deal pipeline visibility - previously non-existent - is now a single view traders check without switching tabs. And the design system built for the first module is already paying for itself: reused across voyage reporting, validation screens, and onboarding flows without a single redesign.
           </p>
+        </div>
+
+        <!-- Learnings -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Learnings &amp; growth</p>
+          <h2 class="cs-section__title">What this project taught me</h2>
+          <ul class="cs-section__text" style="padding-left:20px;margin:0;">
+            <li style="margin-bottom:8px;">Interviewing three roles with genuinely different KPIs before opening Figma is what kept the three-panel layout from becoming a generic dashboard template.</li>
+            <li style="margin-bottom:8px;">In a time-critical domain like trading, a workflow gap - like traders being locked out of entering price indications - is a business risk, not a UX nitpick. Treat it with the same urgency as a bug.</li>
+            <li>Shipping a fully interactive prototype, not static mockups, is what actually collapses design-to-dev handoff time. The 5-day build was possible because every edge case was already resolved before engineering saw it.</li>
+          </ul>
         </div>
 
         <!-- KEY HIGHLIGHTS -->
@@ -828,8 +867,8 @@
             </div>
             <div class="gs-hl">
               <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-              <div class="gs-hl-stat">Fewer bugs</div>
-              <div class="gs-hl-label">Faster go-live, fewer UI bugs</div>
+              <div class="gs-hl-stat">Zero rebuilds</div>
+              <div class="gs-hl-label">Faster go-live, no UI guesswork</div>
               <div class="gs-hl-desc">Shipping an interactive prototype with all edge cases pre-handled meant developers spent zero time on UI guesswork - just backend wiring.</div>
             </div>
           </div>
@@ -876,5 +915,29 @@
   </footer>
 
   <script src="js/main.js?v=20260701"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      var el = document.getElementById('gs-leaflet-map');
+      if (!el || typeof L === 'undefined') return;
+      var map = L.map(el, {
+        center: [36.1408, -5.3536], // Gibraltar
+        zoom: 11,
+        zoomControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        touchZoom: false,
+        attributionControl: true
+      });
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+    })();
+  </script>
 </body>
 </html>

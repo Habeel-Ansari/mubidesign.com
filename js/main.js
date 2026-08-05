@@ -94,6 +94,11 @@ function initHeader() {
       ticking = true;
     }
   }, { passive: true });
+
+  // Re-sync immediately and on bfcache restore, so the header can't get
+  // stuck hidden if scroll position changes without a 'scroll' event firing.
+  update();
+  window.addEventListener('pageshow', update);
 }
 
 // ──────────────────────────────────────────────
@@ -596,10 +601,12 @@ function initCursor() {
   // Expand ring on interactive elements
   const hoverEls = 'a, button, [data-tilt], .case-card, .ss-item, .nav__link';
   document.addEventListener('mouseover', e => {
-    if (e.target.closest(hoverEls)) ring.classList.add('is-hovering');
+    const match = e.target.closest(hoverEls);
+    if (match && !match.contains(e.relatedTarget)) ring.classList.add('is-hovering');
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest(hoverEls)) ring.classList.remove('is-hovering');
+    const match = e.target.closest(hoverEls);
+    if (match && !match.contains(e.relatedTarget)) ring.classList.remove('is-hovering');
   });
 
   // Hide when leaving window

@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Green Getaways - Case Study by Mubeen Ansari</title>
-  <meta name="description" content="How I built a self-service booking engine for Green Getaways as a co-founder - a React booking frontend, WordPress backend, Razorpay payments, and automated confirmations, built in two weeks with Claude Code.">
+  <meta name="description" content="How I built a booking system for Green Getaways as a co-founder - live availability, instant confirmations, and an admin calendar, built in two weeks with Claude Code.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260701">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
@@ -276,6 +276,14 @@
     .gg-flow-arrow { width: 28px; flex-shrink: 0; text-align: center; color: #4A9650; font-size: 14px; }
     .gg-flow-step.automated { background: #F0F7F0; border-color: #4A9650; }
     .gg-auto-tag { display: inline-block; background: #DCFCE7; color: #166534; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 6px; margin-top: 4px; letter-spacing: 0.04em; }
+
+    /* ── Mobile: product mockups render as a uniformly shrunk screenshot ── */
+    @media (max-width: 768px) {
+      .gg-mockup, .gg-admin-mockup, .gg-wp-mockup, .gg-bookings-wrap { zoom: 0.5; }
+      .gg-listing-content { flex-shrink: 0; width: 420px; }
+      .gg-flow-row { flex-shrink: 0; width: 640px; }
+      .gg-steps-visual { overflow-x: auto; }
+    }
   </style>
 </head>
 <body>
@@ -326,7 +334,7 @@
         <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · WordPress · React · Booking Systems</p>
         <h1 class="cs-hero__title" data-load-reveal data-delay="2">Green Getaways</h1>
         <p class="cs-hero__desc" data-load-reveal data-delay="3">
-          I built a self-service booking engine to replace the manual, spreadsheet-driven mess we had going. Real-time availability, automated confirmations, an admin calendar that actually works. Took two weeks, and I built it as a co-founder of the business, not as an outside hire.
+          I built a booking system to replace the manual spreadsheet mess we were dealing with. Guests can check availability and book instantly, and confirmations happen automatically. It took two weeks, and I built it as a co-founder of the business, not an outside hire.
         </p>
 
         <div class="cs-meta" data-load-reveal data-delay="4">
@@ -452,8 +460,8 @@
                 <div class="gg-listing-meta">Time: 12:00 PM Check-in on · 12:00 PM Checkout</div>
                 <div class="gg-listing-slots">Slots: Event limited to only 10 folks.</div>
                 <div class="gg-listing-exp-label">✦ About this Experience</div>
-                <div class="gg-listing-desc">A night at Mango Trails is the kind of escape that resets you without effort. Just 55 minutes from Bangalore, this camping experience lets you step out of routine and into a slower, earthy rhythm. As the sun drops, the farm shifts into a different world — quiet, cool, and wrapped in the sounds of the forest.</div>
-                <div class="gg-listing-desc" style="margin-top:8px;">You pitch your tent under the mango trees, unwind with a warm cup of tea, settle around the bonfire with music and stories, and enjoy a simple, delicious farm-cooked dinner. When the fire settles into embers and the sky turns deeper, you fall asleep to crickets, cool starlight — no traffic, no screens.</div>
+                <div class="gg-listing-desc">A night at Mango Trails is the kind of escape that resets you without effort. Just 55 minutes from Bangalore, this camping experience lets you step out of routine and into a slower, earthy rhythm. As the sun drops, the farm shifts into a different world - quiet, cool, and wrapped in the sounds of the forest.</div>
+                <div class="gg-listing-desc" style="margin-top:8px;">You pitch your tent under the mango trees, unwind with a warm cup of tea, settle around the bonfire with music and stories, and enjoy a simple, delicious farm-cooked dinner. When the fire settles into embers and the sky turns deeper, you fall asleep to crickets, cool starlight - no traffic, no screens.</div>
               </div>
               <div class="gg-book-sidebar">
                 <div class="gg-book-card">
@@ -488,10 +496,10 @@
           <p class="cs-section__label">The problem</p>
           <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
           <p class="cs-section__text">
-            Green Getaways runs eco-friendly stays around Bangalore. Camping, farm stays, day outings. The product was solid, but the booking process behind it wasn't. Every enquiry came in through WhatsApp or a contact form, got checked against a shared spreadsheet, confirmed by hand, then chased for payment. When two of us checked the same spreadsheet at once, we'd end up with a double-booking. It happened more than I'd like to admit.
+            Green Getaways runs eco-friendly camping and farm stays near Bangalore. The stays were great, but booking one wasn't. Every request came in through WhatsApp or a contact form, got checked against a shared spreadsheet by hand, then followed up for payment. If two of us checked the spreadsheet at the same time, we'd double-book the same dates - and it happened more often than I'd like to admit.
           </p>
           <p class="cs-section__text">
-            On top of the errors, it was eating 3-4 hours a day that should've gone into actually looking after guests.
+            On top of the mistakes, it ate 3-4 hours a day that should have gone into looking after guests.
           </p>
         </div>
 
@@ -514,12 +522,12 @@
         <!-- Approach -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">Approach</p>
-          <h2 class="cs-section__title">React for the booking experience, WordPress underneath</h2>
+          <h2 class="cs-section__title">A fast booking page, built on what we already had</h2>
           <p class="cs-section__text">
-            The plan was simple enough: keep WordPress as the backend and admin layer, since that's where we already worked, and build a custom React frontend for the actual booking flow, where speed and real-time availability mattered most. Off-the-shelf booking plugins all assumed hotel-style fixed rooms, which didn't fit. We needed per-property capacity, flexible rates, and blocked dates for maintenance.
+            The plan was simple: keep using WordPress for admin, since that's what we already knew, and build a fast, modern booking page on top of it. Every booking plugin we tried was built for hotels with fixed rooms, which didn't match how we work - each property has its own capacity, pricing, and dates we need to block for maintenance.
           </p>
           <p class="cs-section__text">
-            The core pieces: a property structure in WordPress with per-property availability, a React booking interface that checks availability live as guests pick dates, and Razorpay handling payment inline. Confirmations, reminders, and receipts fire automatically when a booking's status changes. Built end-to-end with Claude Code over two weeks.
+            The system has three parts: each property's availability lives in WordPress, a booking page checks that availability instantly as guests pick dates, and Razorpay handles payment right there. Confirmations, reminders, and receipts all go out automatically. I built the whole thing with Claude Code in two weeks.
           </p>
         </div>
 
@@ -532,29 +540,29 @@
             <div class="cs-step">
               <span class="cs-step__num">01</span>
               <div>
-                <h3 class="cs-step__title">Booking flow UX</h3>
-                <p class="cs-step__desc">Designed the guest journey from browse to availability check to booking to payment to confirmation, with real-time availability shown as dates are selected, not after the form is submitted. That one change killed the "went through the whole flow only to find it's unavailable" drop-off we kept seeing before.</p>
+                <h3 class="cs-step__title">The booking journey</h3>
+                <p class="cs-step__desc">Mapped out the whole guest journey - browsing, checking dates, booking, paying, confirming - and made sure availability shows up the moment a guest picks dates, not after they've filled out a form. That one change stopped guests from finishing the whole process only to find their dates were already taken.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">02</span>
               <div>
-                <h3 class="cs-step__title">React booking interface</h3>
-                <p class="cs-step__desc">Built the booking frontend in React, talking to a WordPress backend that manages per-property availability and booking state: pending, confirmed, cancelled. Availability lives server-side now, not in a spreadsheet that can fall out of sync.</p>
+                <h3 class="cs-step__title">The booking page</h3>
+                <p class="cs-step__desc">Built the booking page itself, connected to WordPress behind the scenes, which tracks each property's availability and every booking's status - pending, confirmed, or cancelled. Availability now lives in one place instead of a spreadsheet that could fall out of date.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">03</span>
               <div>
-                <h3 class="cs-step__title">WordPress admin dashboard</h3>
-                <p class="cs-step__desc">A monthly calendar across all properties, colour-coded by status, with one-click date blocking for maintenance. No spreadsheets, no manual cross-checking.</p>
+                <h3 class="cs-step__title">The admin calendar</h3>
+                <p class="cs-step__desc">A monthly calendar for all properties, colour-coded by status, where blocking a date for maintenance takes one click. No spreadsheets, no manual double-checking.</p>
               </div>
             </div>
             <div class="cs-step">
               <span class="cs-step__num">04</span>
               <div>
                 <h3 class="cs-step__title">Automated emails</h3>
-                <p class="cs-step__desc">Instant confirmation, payment receipt, a 7-day pre-arrival reminder, and a post-stay follow-up, all triggered automatically and written to feel personal rather than templated.</p>
+                <p class="cs-step__desc">Guests get an instant confirmation, a payment receipt, a reminder a week before their stay, and a follow-up afterward - all sent automatically, written to sound like a person wrote them, not a template.</p>
               </div>
             </div>
           </div>
@@ -734,7 +742,7 @@
         <!-- Admin: GG Bookings list -->
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">Admin dashboard · Screen 02</p>
-          <h2 class="cs-section__title">Bookings panel, revenue, pipeline, and guest details in one place</h2>
+          <h2 class="cs-section__title">All bookings, payments, and guest details in one place</h2>
           <p class="cs-section__text">
             Revenue, confirmed vs. pending counts, guest breakdown by type, and a full searchable booking list. (Guest PII redacted in the screenshot.)
           </p>
@@ -779,7 +787,7 @@
                   <tr>
                     <td><div class="gg-td-date">19 Jun 2026</div><div class="gg-td-time">12:47</div></td>
                     <td>Overnight Camping at Mango Trails</td>
-                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>20 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
                     <td>1</td><td>Rs.3,998</td>
                     <td><span class="gg-blurred gg-pay-id">pay_T3UkYw2KmYVVi0</span></td>
@@ -790,18 +798,18 @@
                   <tr>
                     <td><div class="gg-td-date">19 Jun 2026</div><div class="gg-td-time">04:30</div></td>
                     <td>Day Outing at Mango Trails</td>
-                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>21 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
-                    <td>—</td><td>—</td>
+                    <td>-</td><td>-</td>
                     <td><span class="gg-td-date">manual</span></td>
                     <td><span class="gg-status-confirmed">Confirmed</span></td>
                     <td><span class="gg-blurred">chugh.rashmi@gmail.com</span></td>
-                    <td>—</td>
+                    <td>-</td>
                   </tr>
                   <tr>
                     <td><div class="gg-td-date">18 Jun 2026</div><div class="gg-td-time">06:05</div></td>
                     <td>Day Outing at Mango Trails</td>
-                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>20 Jun 2026</div><div class="gg-td-date">→ 20 Jun 2026</div></td>
                     <td>1</td><td>Rs.5,996.00</td>
                     <td><span class="gg-blurred gg-pay-id">pay_T2jNvCINftsZP7</span></td>
@@ -812,7 +820,7 @@
                   <tr>
                     <td><div class="gg-td-date">16 Jun 2026</div><div class="gg-td-time">17:33</div></td>
                     <td>Day Outing at Mango Trails</td>
-                    <td><span class="gg-badge-adults">2</span></td><td>—</td><td><span class="gg-badge-toddler">1</span></td><td>—</td>
+                    <td><span class="gg-badge-adults">2</span></td><td>-</td><td><span class="gg-badge-toddler">1</span></td><td>-</td>
                     <td><div>21 Jun 2026</div><div class="gg-td-date">→ 21 Jun 2026</div></td>
                     <td>1</td><td>Rs.2,998</td>
                     <td><span class="gg-blurred gg-pay-id">pay_T20189E1S1T8ch</span></td>
@@ -823,7 +831,7 @@
                   <tr>
                     <td><div class="gg-td-date">14 Jun 2026</div><div class="gg-td-time">15:51</div></td>
                     <td>Day Outing at Mango Trails</td>
-                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>16 Jun 2026</div><div class="gg-td-date">→ 16 Jun 2026</div></td>
                     <td>1</td><td>Rs.5,996</td>
                     <td><span class="gg-blurred gg-pay-id">pay_T1ZD0hZT8TWc7u</span></td>
@@ -834,18 +842,18 @@
                   <tr>
                     <td><div class="gg-td-date">13 Jun 2026</div><div class="gg-td-time">02:27</div></td>
                     <td>Overnight Camping at Mango Trails</td>
-                    <td><span class="gg-badge-adults">4</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">4</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>13 Jun 2026</div><div class="gg-td-date">→ 14 Jun 2026</div></td>
-                    <td>1</td><td>—</td>
+                    <td>1</td><td>-</td>
                     <td><span class="gg-td-date">manual</span></td>
                     <td><span class="gg-status-confirmed">Confirmed</span></td>
-                    <td>—</td>
+                    <td>-</td>
                     <td><span class="gg-blurred">7719066713</span></td>
                   </tr>
                   <tr>
                     <td><div class="gg-td-date">12 Jun 2026</div><div class="gg-td-time">17:35</div></td>
                     <td>Overnight Camping at Mango Trails</td>
-                    <td><span class="gg-badge-adults">1</span></td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="gg-badge-adults">1</span></td><td>-</td><td>-</td><td>-</td>
                     <td><div>14 Jun 2026</div><div class="gg-td-date">→ 15 Jun 2026</div></td>
                     <td>1</td><td>Rs.1,999</td>
                     <td><span class="gg-blurred gg-pay-id">pay_T0nvA3UThbKhFl</span></td>
@@ -866,12 +874,12 @@
 
           <div class="cs-callout" style="margin-bottom: 24px;">
             <p class="cs-callout__text">
-              Showing availability live, as guests pick dates, was the single biggest improvement over the old contact-form flow. It cut false-start drop-off and made the booking feel trustworthy right from the start.
+              Showing availability live, the moment guests pick dates, was the single biggest improvement we made. It stopped people from dropping off partway through, and made the whole booking feel trustworthy from the start.
             </p>
           </div>
 
           <p class="cs-section__text">
-            Building custom rather than configuring an off-the-shelf plugin took longer upfront, but every existing option assumed hotel-style room logic that just didn't match our actual capacity and rate structure. Going custom meant the data model could match reality instead of fighting it.
+            Building from scratch instead of using a ready-made plugin took longer upfront, but every plugin we found assumed hotel-style rooms, which didn't match how our properties actually work. Building it ourselves meant the system could match how we really operate, instead of us working around its limits.
           </p>
           <p class="cs-section__text">
             I built the admin side assuming whoever ran it day-to-day wouldn't be technical. Every action takes two clicks or fewer from the calendar view.
@@ -883,10 +891,10 @@
           <p class="cs-section__label">Outcome</p>
           <h2 class="cs-section__title">What changed after launch</h2>
           <p class="cs-section__text">
-            Double-bookings went to zero immediately. The 3-4 hours of daily admin work, the spreadsheet checks, the manual WhatsApp confirmations, the manually written emails, dropped to near-zero. That freed us up to focus on the guest experience instead of the back-office.
+            Double-bookings dropped to zero immediately. The 3-4 hours we used to spend every day on spreadsheet checks, WhatsApp confirmations, and writing emails by hand is now down to almost nothing. That time goes into looking after guests instead of admin work.
           </p>
           <p class="cs-section__text">
-            Guests who previously waited up to 24 hours for confirmation now get it instantly, and that noticeably improved conversion with guests who'd previously found the wait frustrating enough to book elsewhere.
+            Guests who used to wait up to 24 hours for confirmation now get it instantly. That alone won back guests who would have booked elsewhere rather than wait.
           </p>
         </div>
 
@@ -895,10 +903,10 @@
           <p class="cs-section__label">Reflection</p>
           <h2 class="cs-section__title">What I'd do differently</h2>
           <p class="cs-section__text">
-            The Razorpay integration brought more complexity than I expected, particularly around partial payments, cancellations, and refund flows. Next time I'd map those edge cases out before building, instead of handling them as they came up.
+            Connecting Razorpay for payments turned out more complicated than I expected, especially around partial payments, cancellations, and refunds. Next time I'd plan for those cases upfront instead of solving them as they came up.
           </p>
           <p class="cs-section__text">
-            I'd also prioritize a guest account feature sooner. Returning guests currently have to re-enter their details every time, and a lightweight account system would unlock both a better repeat-booking experience and real occupancy data for us.
+            I'd also build guest accounts sooner. Right now, returning guests have to re-enter their details every time they book. A simple account system would make rebooking easier for them, and give us better data on repeat guests.
           </p>
         </div>
 
