@@ -311,7 +311,6 @@ body.no-cursor * { cursor: none !important; }
   color: #FFFFFF;
   justify-content: flex-end;
   min-height: 370px;
-  /* Replace background with: background: url('photo.jpg') center/cover; */
 }
 .fan-card--def   { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
 

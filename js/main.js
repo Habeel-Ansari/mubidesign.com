@@ -564,7 +564,7 @@ function initFilter() {
       const cat = btn.dataset.filter;
 
       cards.forEach(card => {
-        const matches = cat === 'all' || card.dataset.category === cat;
+        const matches = cat === 'all' || card.dataset.category.split(' ').includes(cat);
         card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
 
         if (matches) {
