@@ -1,0 +1,47 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-18T17:14:10.943Z",
+        "reason": "Inter appears only in inline card-thumbnail mockups simulating real product UIs, not in the portfolio UI itself"
+      },
+      {
+        "rule": "overused-font",
+        "value": "instrument serif",
+        "createdAt": "2026-08-18T17:14:11.016Z",
+        "reason": "Instrument Serif is the portfolio brand font, deliberately chosen"
+      },
+      {
+        "rule": "marketing-buzzword",
+        "value": "seamless",
+        "createdAt": "2026-08-18T17:14:11.085Z",
+        "reason": "Appears only in a verbatim third-party testimonial quote"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "voyage-optimization.html"
+        ],
+        "createdAt": "2026-08-18T17:14:11.154Z",
+        "reason": "Empty src is a JS-populated map image hidden with display:none until script loads the tile"
+      },
+      {
+        "rule": "layout-transition",
+        "value": "-webkit-text-stroke-width",
+        "createdAt": "2026-08-18T17:15:28.977Z",
+        "reason": "-webkit-text-stroke-width animates text stroke paint only, not element dimensions — not a layout thrash risk"
+      },
+      {
+        "rule": "marketing-buzzword",
+        "value": "seamless experience",
+        "createdAt": "2026-08-18T17:15:29.050Z",
+        "reason": "Appears only in a verbatim third-party testimonial quote, not the designer's own copy"
+      }
+    ]
+  }
+}
