@@ -25,6 +25,26 @@ function initFonts() {
 }
 
 // ──────────────────────────────────────────────
+// 1b. LOADER — name reveal on first paint
+// ──────────────────────────────────────────────
+function initLoader() {
+  const loader = qs('.loader');
+  if (!loader) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    loader.remove();
+    return;
+  }
+
+  requestAnimationFrame(() => loader.classList.add('is-visible'));
+
+  setTimeout(() => {
+    loader.classList.add('is-hidden');
+    loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+  }, 1500);
+}
+
+// ──────────────────────────────────────────────
 // 2. LOAD REVEALS — staggered entrance on page load
 // ──────────────────────────────────────────────
 function initLoadReveals() {
@@ -386,26 +406,24 @@ function initTestimonials() {
 // 10. EMAIL COPY + SPARKS
 // ──────────────────────────────────────────────
 function initCopyEmail() {
-  const btn = qs('.copy-btn');
-  if (!btn) return;
+  qsa('.copy-btn').forEach(btn => {
+    const textEl = btn.previousElementSibling;
+    const text   = textEl ? textEl.textContent.trim() : '';
+    if (!text) return;
 
-  const emailEl = qs('.contact__email');
-  const email   = emailEl ? emailEl.textContent.trim() : '';
+    btn.addEventListener('click', (e) => {
+      const doCopy = () => {
+        btn.classList.add('is-copied');
+        fireSparks(e.clientX, e.clientY);
+        setTimeout(() => btn.classList.remove('is-copied'), 2200);
+      };
 
-  btn.addEventListener('click', (e) => {
-    if (!email) return;
-
-    const doCopy = () => {
-      btn.classList.add('is-copied');
-      fireSparks(e.clientX, e.clientY);
-      setTimeout(() => btn.classList.remove('is-copied'), 2200);
-    };
-
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(email).then(doCopy).catch(() => legacyCopy(email, doCopy));
-    } else {
-      legacyCopy(email, doCopy);
-    }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(doCopy).catch(() => legacyCopy(text, doCopy));
+      } else {
+        legacyCopy(text, doCopy);
+      }
+    });
   });
 }
 
@@ -709,63 +727,292 @@ function initServicesInteractive() {
 }
 
 // ──────────────────────────────────────────────
-// 18. TEXT SCRAMBLE — hero headline on hover
+// 18. CURSOR WEIGHT — headline characters get heavier & larger near the pointer
 // ──────────────────────────────────────────────
-function initTextScramble() {
-  const el = qs('.hero__headline');
-  if (!el) return;
+// Capitalises the first letter of each word, leaving the rest of the word's
+// own casing untouched (so a stylised word like "ViBe" keeps its inner caps).
+function toTitleCase(str) {
+  return str.replace(/\S+/g, word => word.charAt(0).toUpperCase() + word.slice(1));
+}
+
+// Splits text into one <span class="char"> per character, grouped into
+// per-word <span class="word"> wrappers, so the cursor-weight effect can
+// target each glyph individually. Two things break if a word's letters
+// aren't grouped like this:
+//  - Each .char is display:inline-block, which makes every letter-to-letter
+//    boundary a valid line-break point to the browser - without a nowrap
+//    word wrapper, long words wrap mid-word (e.g. "System" / "s").
+//  - A space rendered as its own inline-block span gets trimmed to zero
+//    width by the browser, silently deleting the gap between words - so
+//    spaces between word spans are kept as real text nodes instead.
+function wrapCharsIn(el) {
+  const text = el.textContent;
+  el.textContent = '';
+  const words = text.split(' ');
+  words.forEach((word, i) => {
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
+    word.split('').forEach(ch => {
+      const charSpan = document.createElement('span');
+      charSpan.className = 'char';
+      charSpan.textContent = ch;
+      wordSpan.appendChild(charSpan);
+    });
+    el.appendChild(wordSpan);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+  });
+}
+
+function initHeroCursorWeight() {
+  const headline = qs('.hero__headline');
+  if (!headline) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Characters to cycle through while scrambling
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?·—';
-
-  // Save the original HTML (preserves the <em> tag styling)
-  const savedHTML = el.innerHTML;
-
-  // Flat plain text for scramble frames
-  const plainText = el.textContent;
-
-  let raf;
-  let isRunning = false;
-
-  function runScramble() {
-    if (isRunning) return;
-    isRunning = true;
-
-    const totalFrames = 48;
-    let frame = 0;
-
-    function tick() {
-      // Each character settles left-to-right as frames progress
-      const scrambled = plainText.split('').map((ch, i) => {
-        if (/\s/.test(ch)) return ch;                          // preserve spaces exactly
-        const settleAt = (i / plainText.length) * totalFrames * 0.75;
-        if (frame > settleAt) return ch;                       // this char has locked in
-        return chars[Math.floor(Math.random() * chars.length)]; // still cycling
-      }).join('');
-
-      el.textContent = scrambled;
-
-      frame++;
-      if (frame <= totalFrames) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        el.innerHTML = savedHTML; // restore full markup with <em> styling
-        isRunning = false;
-      }
-    }
-
-    tick();
+  const topEl = qs('.hero__headline-top', headline);
+  if (topEl) wrapCharsIn(topEl);
+  const rotateEl = qs('#heroRotate', headline);
+  if (rotateEl) {
+    rotateEl.textContent = toTitleCase(rotateEl.textContent);
+    wrapCharsIn(rotateEl);
   }
 
-  el.addEventListener('mouseenter', () => {
-    cancelAnimationFrame(raf);
-    isRunning = false;
-    runScramble();
+  const RADIUS = 90; // px - how far from the cursor the effect reaches
+
+  function applyProximity(clientX, clientY) {
+    qsa('.char', headline).forEach(span => {
+      const r = span.getBoundingClientRect();
+      const dist = Math.hypot(clientX - (r.left + r.width / 2), clientY - (r.top + r.height / 2));
+      const t = Math.max(0, 1 - dist / RADIUS); // 1 = right under the cursor, 0 = out of reach
+      span.style.fontWeight = Math.round(400 + t * 300); // 400 -> 700
+      span.style.transform = t ? `scale(${1 + t * 0.16})` : '';
+      span.style.webkitTextStrokeWidth = t ? `${(t * 0.6).toFixed(2)}px` : '';
+    });
+  }
+
+  function reset() {
+    qsa('.char', headline).forEach(span => {
+      span.style.fontWeight = '';
+      span.style.transform = '';
+      span.style.webkitTextStrokeWidth = '';
+    });
+  }
+
+  headline.addEventListener('mousemove', e => applyProximity(e.clientX, e.clientY));
+  headline.addEventListener('mouseleave', reset);
+}
+
+// ──────────────────────────────────────────────
+// 19. HERO ROTATE — interchangeable headline word, on a timer
+// ──────────────────────────────────────────────
+function initHeroRotate() {
+  const initialEl = qs('#heroRotate');
+  if (!initialEl) return;
+
+  const words = (initialEl.dataset.words || '').split('|').map(w => w.trim()).filter(Boolean);
+  if (words.length < 2) return;
+
+  const getEl = () => document.getElementById('heroRotate');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let index = 0;
+
+  function setWord(el, word) {
+    el.textContent = toTitleCase(word);
+    if (!reduceMotion) wrapCharsIn(el); // re-establish .char spans for the cursor-weight effect
+  }
+
+  function swap() {
+    const el = getEl();
+    if (!el) return;
+    index = (index + 1) % words.length;
+
+    if (reduceMotion) {
+      setWord(el, words[index]);
+      return;
+    }
+
+    el.classList.add('is-swapping');
+    setTimeout(() => {
+      const liveEl = getEl();
+      if (liveEl) {
+        setWord(liveEl, words[index]);
+        liveEl.classList.remove('is-swapping');
+      }
+    }, 350);
+  }
+
+  setInterval(swap, 2600);
+}
+
+// ──────────────────────────────────────────────
+// 20. COUNT-UP NUMBERS — animate stat values as they enter view
+// ──────────────────────────────────────────────
+function initCountUp() {
+  const els = qsa('.cs-metric__value');
+  if (!els.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Parses a stat string into an animation plan, or null if it isn't a countable number.
+  // Covers every format used across the case studies:
+  //   "40%", "~70%", "100%"   → leading number + static prefix/suffix
+  //   "4 tools"               → leading number + static word suffix
+  //   "1→3", "0-to-1"         → arrow/word range, counts from the first value to the second
+  //   "3-5 min", "3-4 hrs"    → hyphen range with a unit, counts the upper bound only
+  // Anything else ("Zero", "Full", …) returns null and is left static.
+  function parseTarget(text) {
+    let m = text.match(/^(\d+)(→|-to-)(\d+)(.*)$/);
+    if (m) return { prefix: m[1] + m[2], from: parseInt(m[1], 10), to: parseInt(m[3], 10), suffix: m[4] };
+
+    m = text.match(/^(\d+)-(\d+)(\s.*)$/);
+    if (m) return { prefix: m[1] + '-', from: parseInt(m[1], 10), to: parseInt(m[2], 10), suffix: m[3] };
+
+    m = text.match(/^(~?)(\d+)(\D*)$/);
+    if (m) return { prefix: m[1], from: 0, to: parseInt(m[2], 10), suffix: m[3] };
+
+    return null;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+
+      const el = entry.target;
+      const plan = parseTarget(el.textContent.trim());
+      if (!plan) return;
+
+      const duration = 900;
+      const start = performance.now();
+
+      function tick(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = `${plan.prefix}${Math.round(lerp(plan.from, plan.to, eased))}${plan.suffix}`;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.4 });
+
+  els.forEach(el => observer.observe(el));
+}
+
+// ──────────────────────────────────────────────
+// 21. SCROLL PARALLAX — subtle depth on product screens as they pass through view
+// ──────────────────────────────────────────────
+function initScrollParallax() {
+  const els = qsa('[data-parallax]');
+  if (!els.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let ticking = false;
+
+  function update() {
+    const vh = window.innerHeight;
+    els.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const center = r.top + r.height / 2;
+      // -1 (entering below) → 0 (centred in viewport) → 1 (leaving above)
+      const progress = Math.max(-1, Math.min(1, (center - vh / 2) / (vh / 2)));
+      const depth = parseFloat(el.dataset.parallax) || 14;
+      el.style.transform = `translateY(${(progress * -depth).toFixed(2)}px) rotateX(${(progress * 1.4).toFixed(2)}deg)`;
+    });
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
+// ──────────────────────────────────────────────
+// 22. MOCKUP REVEALS — chart draw-in / map route pop-in, once scrolled into view
+// ──────────────────────────────────────────────
+function initMockupReveals() {
+  const targets = qsa('[data-mockup-reveal]');
+  if (!targets.length) return;
+
+  // The fuel-price chart line needs its dash pattern set from the real path
+  // length before anything is observed, so the reveal has a "from" state to animate.
+  targets.forEach(el => {
+    if (el.dataset.mockupReveal !== 'chart') return;
+    const line = qs('.gs-chart-line', el);
+    if (!line) return;
+    const len = line.getTotalLength();
+    line.style.strokeDasharray = len;
+    line.style.strokeDashoffset = len;
   });
 
-  // Also run once on page load after fonts settle, for a nice entrance
-  setTimeout(() => runScramble(), 1200);
+  function reveal(el) {
+    el.classList.add('is-mockup-revealed');
+    const line = qs('.gs-chart-line', el);
+    if (line) line.style.strokeDashoffset = 0;
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    targets.forEach(reveal);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      reveal(entry.target);
+    });
+  }, { threshold: 0.4 });
+
+  targets.forEach(el => observer.observe(el));
+}
+
+function initProtoFrames() {
+  const wraps = qsa('.gs-proto-frame');
+  if (!wraps.length) return;
+
+  function update() {
+    wraps.forEach(wrap => {
+      const iframe = qs('iframe', wrap);
+      if (!iframe) return;
+      const scale = wrap.clientWidth / 1440;
+      iframe.style.transform = `scale(${scale})`;
+    });
+  }
+
+  update();
+  window.addEventListener('resize', update);
+}
+
+function initMkScroll() {
+  const cards = qsa('.mk-card');
+  if (!cards.length) return;
+
+  function update() {
+    cards.forEach(card => {
+      const iframe = qs('iframe', card);
+      if (!iframe) return;
+      const scale = card.clientWidth / 1440;
+      iframe.style.transform = `scale(${scale})`;
+    });
+  }
+
+  update();
+  window.addEventListener('resize', update);
+}
+
+function initPortMapFrame() {
+  const frame = qs('#gsPortMapFrame iframe');
+  if (!frame) return;
+
+  frame.addEventListener('load', () => {
+    try {
+      frame.contentWindow.eval('openDetail(PIN_PORTS.find(p => p.name === "Gibraltar"))');
+    } catch (e) {}
+  });
 }
 
 // ──────────────────────────────────────────────
@@ -773,6 +1020,7 @@ function initTextScramble() {
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initFonts();
+  initLoader();
   initLoadReveals();
   initScrollReveal();
   initHeader();
@@ -789,8 +1037,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initFilter();
   initCursor();
-  initTextScramble();
+  initHeroCursorWeight();
+  initHeroRotate();
   initCardClick();
+  initCountUp();
+  initScrollParallax();
+  initMockupReveals();
+  initProtoFrames();
+  initPortMapFrame();
+  initMkScroll();
 });
 
 function initCardClick() {

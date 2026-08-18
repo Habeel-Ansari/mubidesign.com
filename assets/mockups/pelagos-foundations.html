@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Pelagos Foundations</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:1600px; height:1100px; overflow:hidden; }
+  body{ font-family:'Poppins',system-ui,sans-serif; background:#F7FAFC; color:#0E1A33; }
+
+  .page{ width:100%; height:100%; padding:56px 64px; }
+
+  .head-row{ display:grid; grid-template-columns: 1fr 1fr 1.4fr; gap:24px; padding-bottom:18px; border-bottom:1px solid #E4E9F2; margin-bottom:28px; }
+  .head-row span{ font-size:15px; color:#5A6B85; }
+
+  .stage{ display:grid; grid-template-columns: 120px 1fr 1.4fr; gap:24px; align-items:start; margin-bottom:44px; }
+  .stage__num{ font-size:26px; font-weight:700; color:#0E1A33; }
+  .stage__title{ font-size:34px; font-weight:800; letter-spacing:-0.01em; }
+  .stage__desc{ font-size:18px; color:#3a4761; line-height:1.5; }
+
+  .grid{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:22px; margin-bottom:26px; }
+
+  .type-card{ background:#fff; border:1px solid #E4E9F2; border-radius:16px; padding:26px; display:flex; flex-direction:column; justify-content:space-between; }
+  .type-card__label{ font-size:20px; font-weight:600; padding-bottom:14px; border-bottom:1px solid #E4E9F2; margin-bottom:14px; }
+  .type-card__sample{ font-size:110px; font-weight:700; letter-spacing:-0.02em; }
+
+  .swatch{ border-radius:16px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; min-height:150px; }
+  .swatch__name{ font-size:15px; font-weight:600; }
+  .swatch__hex{ font-size:13px; font-family:monospace; align-self:flex-end; }
+
+  .ramp-card{ background:#fff; border:1px solid #E4E9F2; border-radius:16px; padding:20px 22px; grid-column: span 3; margin-bottom:26px; }
+  .ramp-card__label{ font-size:14px; font-weight:600; margin-bottom:12px; }
+  .ramp{ display:flex; gap:0; border-radius:10px; overflow:hidden; }
+  .ramp div{ flex:1; height:56px; }
+
+  .lib{ background:#fff; border:1px solid #E4E9F2; border-radius:16px; padding:24px; display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:18px; }
+  .lib__cell{ border:1.5px dashed #C7D2E8; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+
+  .btn{ border-radius:8px; padding:10px 16px; font-size:14px; font-weight:600; text-align:center; }
+  .btn--primary{ background:#1852FE; color:#fff; }
+  .btn--navy{ background:#001E4C; color:#fff; }
+  .btn--ghost{ background:#EDF1F9; color:#8a97ac; }
+
+  .list-row{ display:flex; align-items:center; gap:10px; background:#F7FAFC; border-radius:8px; padding:9px 12px; font-size:13.5px; }
+  .list-row__dot{ width:20px; height:20px; border-radius:999px; background:#1852FE; }
+
+  .stepper{ display:flex; gap:6px; }
+  .stepper span{ width:26px; height:26px; border-radius:6px; background:#EDF1F9; font-size:11px; display:flex; align-items:center; justify-content:center; color:#5A6B85; }
+  .stepper span.active{ background:#1852FE; color:#fff; }
+
+  .chip-row{ display:flex; gap:8px; }
+  .chip{ width:22px; height:22px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="head-row">
+    <span>Stage number</span><span>Stage</span><span>Description</span>
+  </div>
+
+  <div class="stage">
+    <div class="stage__num">[ 03 ]</div>
+    <div class="stage__title">Foundations</div>
+    <div class="stage__desc">Colour and type carry real values down to the hex and the pixel - five foundations, one visual language.</div>
+  </div>
+
+  <div class="grid">
+    <div class="type-card">
+      <div class="type-card__label">Gilroy</div>
+      <div class="type-card__sample">Aa</div>
+    </div>
+    <div class="swatch" style="background:#1852FE; color:#fff;">
+      <span class="swatch__name">Marine</span><span class="swatch__hex">#1852FE</span>
+    </div>
+    <div class="swatch" style="background:#001E4C; color:#fff;">
+      <span class="swatch__name">Navy</span><span class="swatch__hex">#001E4C</span>
+    </div>
+  </div>
+
+  <div class="ramp-card">
+    <div class="ramp-card__label">Blue &middot; 900 &rarr; 10</div>
+    <div class="ramp">
+      <div style="background:#0A1A63;"></div>
+      <div style="background:#0F2A94;"></div>
+      <div style="background:#1852FE;"></div>
+      <div style="background:#3D6BFF;"></div>
+      <div style="background:#6087FF;"></div>
+      <div style="background:#8CA6FF;"></div>
+      <div style="background:#B4C4FF;"></div>
+      <div style="background:#D4DEFF;"></div>
+      <div style="background:#E9EEFF;"></div>
+      <div style="background:#F3F6FF;"></div>
+      <div style="background:#F9FAFF;"></div>
+    </div>
+  </div>
+
+  <div class="lib">
+    <div class="lib__cell">
+      <div class="btn btn--primary">Button</div>
+      <div class="btn btn--navy">Button</div>
+      <div class="btn btn--ghost">Button</div>
+    </div>
+    <div class="lib__cell">
+      <div class="list-row"><span class="list-row__dot"></span>Title</div>
+      <div class="list-row"><span class="list-row__dot"></span>Title</div>
+    </div>
+    <div class="lib__cell">
+      <div class="stepper">
+        <span>1</span><span>2</span><span>3</span><span class="active">4</span><span>5</span><span>6</span>
+      </div>
+      <div class="chip-row">
+        <span class="chip" style="background:#1E9E5A;"></span>
+        <span class="chip" style="background:#D9A404;"></span>
+        <span class="chip" style="background:#C81E1E;"></span>
+        <span class="chip" style="background:#1852FE;"></span>
+      </div>
+    </div>
+    <div class="lib__cell">
+      <div class="btn btn--navy">Button</div>
+      <div class="btn btn--primary">Button</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Qolaba - AI Workspace Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:100%; height:100%; overflow:hidden; }
+  body{ font-family:'Inter',system-ui,sans-serif; background:#0c0a08; color:#fff; }
+
+  .page{ position:relative; width:100%; height:100%; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+
+  .watermark{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:0; overflow:hidden; }
+  .watermark span{ font-size:220px; font-weight:800; color:transparent; -webkit-text-stroke:1px rgba(255,140,60,.16); letter-spacing:4px; white-space:nowrap; }
+
+  .frame{ position:relative; z-index:10; width:94%; height:88%; background:#141110; border:1px solid #2a241f; border-radius:20px; overflow:hidden; display:flex; box-shadow:0 30px 80px rgba(0,0,0,.6); }
+
+  .sidebar{ width:230px; flex-shrink:0; border-right:1px solid #241f1b; padding:20px 16px; display:flex; flex-direction:column; }
+  .brand{ display:flex; align-items:center; gap:8px; margin-bottom:26px; padding-left:4px; }
+  .brand__mark{ width:22px; height:22px; }
+  .brand__word{ font-weight:700; font-size:16px; color:#fff; }
+
+  .nav-item{ display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; font-size:13px; color:#a8a29a; margin-bottom:2px; }
+  .nav-item.active{ background:#EE7A2E; color:#fff; font-weight:600; }
+  .nav-section{ font-size:10px; letter-spacing:.08em; color:#6b655f; margin:18px 0 6px 12px; font-weight:700; }
+  .nav-section.upcoming{ color:#8a7a4a; }
+  .nav-item.dim{ color:#5c5650; }
+
+  .sidebar__foot{ margin-top:auto; }
+  .sidebar__social{ display:flex; gap:14px; padding:10px 12px; color:#6b655f; font-size:13px; }
+
+  .main{ flex:1; padding:22px 26px; overflow:hidden; }
+  .topbar{ display:flex; align-items:center; justify-content:flex-end; gap:14px; margin-bottom:22px; }
+  .credits-pill{ border:1px solid #3a3128; color:#EE7A2E; font-size:12px; font-weight:600; padding:6px 14px; border-radius:999px; }
+  .icon-circle{ width:32px; height:32px; border-radius:999px; background:#1f1b18; display:flex; align-items:center; justify-content:center; font-size:13px; color:#a8a29a; }
+  .avatar-chip{ width:32px; height:32px; border-radius:999px; background:#2e5bd7; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+
+  .tabs-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .tabs{ display:flex; gap:6px; }
+  .tab{ font-size:13px; padding:8px 16px; border-radius:8px; color:#a8a29a; }
+  .tab.active{ background:#EE7A2E; color:#fff; font-weight:600; }
+  .create-org{ border:1px solid #EE7A2E; color:#EE7A2E; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; }
+
+  .cards-row{ display:grid; grid-template-columns: 1.4fr 1fr 1.3fr; gap:16px; margin-bottom:18px; }
+  .stat-card{ border-radius:14px; padding:18px; }
+  .stat-card.rewards{ background:rgba(30,60,50,.5); border:1px solid #2f5c4c; }
+  .stat-card.plan{ background:rgba(60,30,20,.4); border:1px solid #4a2c1a; }
+  .stat-card h4{ font-size:15px; font-weight:700; margin-bottom:2px; }
+  .stat-card small{ color:#8a8478; font-size:11.5px; }
+  .stat-nums{ display:flex; gap:26px; margin-top:14px; }
+  .stat-nums b{ font-size:22px; display:block; }
+  .stat-nums span{ font-size:10.5px; color:#8a8478; }
+  .btn-upgrade{ background:#EE7A2E; color:#fff; font-size:12px; font-weight:600; padding:7px 16px; border-radius:8px; margin-top:12px; border:none; }
+
+  .util-card{ background:#181410; border:1px solid #241f1b; border-radius:14px; padding:16px; }
+  .util-card h4{ font-size:13.5px; margin-bottom:10px; }
+  .util-row{ display:flex; justify-content:space-between; font-size:11px; padding:7px 0; border-bottom:1px solid #201b17; color:#a8a29a; }
+  .chip{ font-size:10px; padding:2px 8px; border-radius:999px; }
+  .chip.blue{ background:rgba(70,120,220,.25); color:#8fb3f5; }
+  .chip.purple{ background:rgba(150,90,220,.25); color:#c6a3f0; }
+
+  .table-card{ background:#181410; border:1px solid #241f1b; border-radius:14px; padding:16px; }
+  .table-card h4{ font-size:14px; margin-bottom:10px; }
+  .t-row{ display:grid; grid-template-columns: 1.4fr .8fr 1fr 1fr 1fr; font-size:10.5px; padding:8px 0; border-bottom:1px solid #201b17; color:#a8a29a; align-items:center; }
+  .t-row.head{ color:#6b655f; text-transform:uppercase; letter-spacing:.05em; font-size:9.5px; }
+  .status{ font-size:9.5px; padding:2px 8px; border-radius:999px; display:inline-block; justify-self:start; width:max-content; }
+  .status.paid{ background:rgba(238,122,46,.2); color:#EE7A2E; }
+  .status.free{ background:rgba(60,160,110,.2); color:#5fd39b; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="watermark"><span>CHATBOT IMAGE KNOWLEDGE</span></div>
+
+  <div class="frame">
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 24 24" fill="#EE7A2E"><path d="M12 2 L22 12 L12 22 L2 12 Z"/></svg>
+        <span class="brand__word">qolaba</span>
+      </div>
+      <div class="nav-item active">▦ Dashboard</div>
+      <div class="nav-item">▤ Qommunity wall</div>
+      <div class="nav-section">AI TOOLS</div>
+      <div class="nav-item">◎ Chatbot</div>
+      <div class="nav-item">▣ Image Generation</div>
+      <div class="nav-item">✎ Image Editing</div>
+      <div class="nav-item">◈ Speech Generator</div>
+      <div class="nav-section upcoming">UPCOMING FEATURES</div>
+      <div class="nav-item dim">▶ Video Creation</div>
+      <div class="nav-item dim">♪ Music Creation</div>
+      <div class="nav-item dim">◉ Stock Footage</div>
+      <div class="sidebar__foot">
+        <div class="nav-item">⌂ Help Center</div>
+        <div class="nav-item">◍ Community</div>
+        <div class="nav-item">✉ Ai News letter</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <span class="credits-pill">▤ 50 Left</span>
+        <span class="icon-circle">⌕</span>
+        <span class="icon-circle">☀</span>
+        <span class="avatar-chip">AM</span>
+      </div>
+
+      <div class="tabs-row">
+        <div class="tabs">
+          <span class="tab active">Overview</span>
+          <span class="tab">Profile</span>
+          <span class="tab">History</span>
+        </div>
+        <span class="create-org">+ Create Organisation</span>
+      </div>
+
+      <div class="cards-row">
+        <div class="stat-card rewards">
+          <h4>✦ Daily Rewards</h4>
+          <small>Daily Credits</small>
+          <div class="stat-nums">
+            <div><b>4</b><span>Pending Task</span></div>
+            <div><b>2</b><span>Completed Task</span></div>
+            <div><b>20</b><span>Credits Earned</span></div>
+          </div>
+        </div>
+        <div class="stat-card plan">
+          <h4>Free Plan</h4>
+          <small>50 credits left</small>
+          <button class="btn-upgrade">Upgrade</button>
+        </div>
+        <div class="util-card">
+          <h4>Credit Utilization</h4>
+          <div class="util-row"><span>11 Jan, 10:24 PM</span><span class="chip blue">Text to Image</span><span>-50</span></div>
+          <div class="util-row"><span>11 Jan, 10:24 PM</span><span class="chip purple">Image to Image</span><span>-50</span></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h4>Purchases</h4>
+        <div class="t-row head"><span>Date &amp; Time</span><span>Type</span><span>Quantity</span><span>Total</span><span>Renews On</span></div>
+        <div class="t-row"><span>11 Jan 2024, 10:24 PM</span><span class="status paid">Paid</span><span>50</span><span>$29.99</span><span>11 Jan 2024</span></div>
+        <div class="t-row"><span>11 Jan 2024, 10:24 PM</span><span class="status free">Free</span><span>50</span><span>--</span><span>11 Jan 2024</span></div>
+        <div class="t-row"><span>11 Jan 2024, 10:24 PM</span><span class="status free">Free</span><span>50</span><span>--</span><span>11 Jan 2024</span></div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

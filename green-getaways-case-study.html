@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Green Getaways - Case Study by Mubeen Ansari</title>
-  <meta name="description" content="How I built a booking system for Green Getaways as a co-founder - live availability, instant confirmations, and an admin calendar, built in two weeks with Claude Code.">
+  <meta name="description" content="I built the product I needed to run my own business - Green Getaways' booking system, with live availability, instant confirmations, and an admin calendar, built in two weeks.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,49 +130,6 @@
     .gg-legend-item { display: flex; align-items: center; gap: 5px; font-size: 9px; color: #6B7280; }
     .gg-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-    /* ── Real listing page mockup ── */
-    .gg-site-hdr {
-      background:#fff; border-bottom:1px solid #E5EDE5; padding:0 20px; height:46px;
-      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
-    }
-    .gg-site-logo { display:flex; align-items:center; gap:8px; }
-    .gg-site-logo-icon { width:28px; height:28px; background:#2D6A35; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; }
-    .gg-site-logo-text { font-size:12px; font-weight:800; color:#1A3D1F; }
-    .gg-site-logo-text span { color:#9CA3AF; font-weight:400; }
-    .gg-site-nav { display:flex; align-items:center; gap:0; }
-    .gg-site-navlink { font-size:10px; font-weight:500; color:#374151; padding:0 10px; display:flex; align-items:center; gap:2px; }
-    .gg-site-navlink.bold { font-weight:600; }
-    .gg-site-cart { width:28px; height:28px; background:#1A3D1F; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; }
-    .gg-site-cart svg { width:14px; height:14px; stroke:#fff; fill:none; stroke-width:2; }
-    .gg-site-cart-badge { position:absolute; top:-3px; right:-3px; background:#22C55E; color:#fff; font-size:7px; font-weight:700; width:12px; height:12px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
-    .gg-photos-strip { display:flex; gap:0; height:200px; overflow:hidden; flex-shrink:0; }
-    .gg-photo-panel { flex:1; position:relative; overflow:hidden; }
-    .gg-photo-arrow { position:absolute; top:50%; transform:translateY(-50%); width:28px; height:28px; background:rgba(255,255,255,.85); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:#374151; z-index:2; }
-    .gg-photo-arrow-l { left:8px; }
-    .gg-photo-arrow-r { right:8px; }
-    /* People silhouettes for photo panels */
-    .gg-photo-water { background:linear-gradient(170deg, #8B3A0F 0%, #C25A1A 40%, #A0522D 70%, #6B4226 100%); }
-    .gg-photo-farm { background:linear-gradient(160deg, #2D4A1A 0%, #3D6B25 40%, #5A8C35 70%, #7AAA48 100%); }
-    .gg-photo-camp { background:linear-gradient(150deg, #3A8C35 0%, #5AAA48 30%, #7BC060 60%, #90C570 100%); }
-    .gg-listing-body { display:flex; gap:24px; padding:20px 20px; background:#FAF7F0; flex:1; }
-    .gg-listing-content { flex:1; min-width:0; }
-    .gg-listing-title { font-size:16px; font-weight:800; color:#1A3D1F; line-height:1.3; margin-bottom:8px; }
-    .gg-listing-meta { font-size:10px; color:#4B5563; margin-bottom:4px; }
-    .gg-listing-slots { font-size:10px; color:#4B5563; margin-bottom:12px; }
-    .gg-listing-exp-label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#1A3D1F; margin-bottom:8px; }
-    .gg-listing-desc { font-size:10px; color:#4B5563; line-height:1.65; }
-    .gg-book-sidebar { width:200px; flex-shrink:0; }
-    .gg-book-card { background:#fff; border:1px solid #E5EDE5; border-radius:12px; padding:16px; box-shadow:0 4px 20px rgba(26,61,31,.08); }
-    .gg-book-price { font-size:16px; font-weight:800; color:#1A3D1F; margin-bottom:12px; }
-    .gg-book-price span { font-size:10px; font-weight:400; color:#9CA3AF; }
-    .gg-book-add-btn { background:#fff; border:1.5px solid #D1D5DB; border-radius:7px; padding:8px 12px; font-size:10px; font-weight:600; color:#374151; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-    .gg-book-fields { display:flex; gap:0; border:1.5px solid #D1D5DB; border-radius:7px; overflow:hidden; margin-bottom:12px; }
-    .gg-book-field { flex:1; padding:7px 10px; border-right:1px solid #D1D5DB; }
-    .gg-book-field:last-child { border-right:none; }
-    .gg-book-field-label { font-size:7px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#374151; margin-bottom:2px; }
-    .gg-book-field-val { font-size:10px; color:#9CA3AF; }
-    .gg-book-cta { background:#1A3D1F; color:#fff; border-radius:7px; padding:10px; text-align:center; font-size:11px; font-weight:700; }
-
     /* ── WP Admin Booking Availability ── */
     .gg-wp-mockup { width:100%; border-radius:12px; overflow:hidden; font-family:'Inter',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); display:flex; flex-direction:column; }
     .gg-wp-topbar { background:#1D2327; height:32px; display:flex; align-items:center; padding:0 12px; gap:16px; flex-shrink:0; }
@@ -277,6 +234,10 @@
     .gg-flow-step.automated { background: #F0F7F0; border-color: #4A9650; }
     .gg-auto-tag { display: inline-block; background: #DCFCE7; color: #166534; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 6px; margin-top: 4px; letter-spacing: 0.04em; }
 
+    /* The real listing-page screenshot is taller than the site-wide 16:7 cover box, so let it size to its own content instead of being cropped */
+    .cs-cover { aspect-ratio: auto; }
+    .cs-cover img { height: auto; object-fit: contain; }
+
     /* ── Mobile: product mockups render as a uniformly shrunk screenshot ── */
     @media (max-width: 768px) {
       .gg-mockup, .gg-admin-mockup, .gg-wp-mockup, .gg-bookings-wrap { zoom: 0.5; }
@@ -299,7 +260,6 @@
         <ul class="nav__links" role="list">
           <li><a href="work.html" class="nav__link is-active">Work</a></li>
           <li><a href="about.html" class="nav__link">About</a></li>
-          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
         </ul>
         <div class="nav__actions">
           <div class="social-links">
@@ -322,7 +282,6 @@
     <nav class="mobile-menu__links">
       <a href="work.html" class="mobile-menu__link">Work</a>
       <a href="about.html" class="mobile-menu__link">About</a>
-      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
     </nav>
   </div>
 
@@ -331,10 +290,10 @@
     <!-- HERO -->
     <section class="cs-hero">
       <div class="container">
-        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · WordPress · React · Booking Systems</p>
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · Founder-operated · Booking Systems</p>
         <h1 class="cs-hero__title" data-load-reveal data-delay="2">Green Getaways</h1>
         <p class="cs-hero__desc" data-load-reveal data-delay="3">
-          I built a booking system to replace the manual spreadsheet mess we were dealing with. Guests can check availability and book instantly, and confirmations happen automatically. It took two weeks, and I built it as a co-founder of the business, not an outside hire.
+          I built the product I needed to run my own business.
         </p>
 
         <div class="cs-meta" data-load-reveal data-delay="4">
@@ -356,9 +315,24 @@
           </div>
         </div>
 
-        <!-- Cover: Real Green Getaways listing page -->
-        <div class="cs-cover" data-load-reveal data-delay="5">
-          <img src="assets/images/work/green-getaways-cover.webp" alt="Green Getaways booking page for Overnight Camping at Mango Trails, showing the photo gallery, pricing, and booking sidebar">
+        <!-- Cover: real Green Getaways listing page screenshot -->
+        <div class="cs-cover" style="background:#0C2410;padding:40px;display:flex;align-items:center;justify-content:center;" data-load-reveal data-delay="5">
+          <div style="width:100%;max-width:900px;border-radius:12px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,.5);" data-parallax="10">
+            <div style="background:#F1F3F5;height:40px;display:flex;align-items:center;padding:0 14px;gap:14px;border-bottom:1px solid #E2E5E9;">
+              <div style="display:flex;gap:6px;flex-shrink:0;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#28C840;"></div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center;">
+                <div style="background:#fff;border:1px solid #E2E5E9;border-radius:6px;padding:5px 14px;font-size:11px;color:#64748B;font-family:'Inter',system-ui,sans-serif;display:inline-flex;align-items:center;gap:6px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  greengetaways.in
+                </div>
+              </div>
+            </div>
+            <img src="assets/images/work/green-getaways-cover.webp" alt="Green Getaways listing page: photo gallery, experience details, and the live booking widget" style="width:100%;display:block;"/>
+          </div>
         </div>
 
       </div>
@@ -372,6 +346,9 @@
         <div class="cs-section" data-reveal>
           <p class="cs-section__label">The problem</p>
           <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
+          <p class="cs-section__text">
+            Green Getaways - the eco-travel company I co-founded - was losing hours a day to WhatsApp threads and a spreadsheet that couldn't keep up, so I designed and built the fix myself: live availability, instant payments, and automated confirmations, shipped in two weeks.
+          </p>
           <p class="cs-section__text">
             Green Getaways runs eco-friendly camping and farm stays near Bangalore. The stays were great, but booking one wasn't. Every request came in through WhatsApp or a contact form, got checked against a shared spreadsheet by hand, then followed up for payment. If two of us checked the spreadsheet at the same time, we'd double-book the same dates - and it happened more often than I'd like to admit.
           </p>
@@ -501,7 +478,7 @@
           </p>
 
           <div style="margin-top:24px;">
-            <div class="gg-wp-mockup">
+            <div class="gg-wp-mockup" data-parallax="14">
               <!-- WP top admin bar -->
               <div class="gg-wp-topbar">
                 <div class="gg-wp-topbar-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> GoDaddy</div>
@@ -625,7 +602,7 @@
           </p>
 
           <div style="margin-top:24px;overflow-x:auto;">
-            <div class="gg-bookings-wrap">
+            <div class="gg-bookings-wrap" data-parallax="14">
               <div class="gg-bookings-topbar">
                 <div class="gg-bookings-logo-icon">🌿</div>
                 <div class="gg-bookings-title">GG Bookings</div>
@@ -815,6 +792,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260701"></script>
+  <script src="js/main.js?v=20260703"></script>
 </body>
 </html>

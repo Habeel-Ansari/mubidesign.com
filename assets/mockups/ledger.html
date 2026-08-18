@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger - Payment Operations Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:100%; height:100%; overflow:hidden; }
+  body{ font-family:'Inter',system-ui,sans-serif; color:#1a1a1a; }
+
+  .page{
+    position:relative; width:100%; height:100%; padding:28px; overflow:hidden;
+    background:
+      radial-gradient(circle at 8% 5%, rgba(150,190,255,.55), transparent 40%),
+      radial-gradient(circle at 55% 0%, rgba(255,210,235,.5), transparent 45%),
+      radial-gradient(circle at 95% 30%, rgba(255,205,150,.55), transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(255,190,190,.4), transparent 45%),
+      #F3F3F1;
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; align-items:start;
+  }
+
+  .card{ background:#fff; border-radius:16px; box-shadow:0 20px 46px rgba(30,20,10,.08); padding:22px; }
+  .card h3{ font-size:17px; font-weight:700; }
+  .card small{ color:#8a8a8a; font-size:12px; }
+
+  /* col1: profile */
+  .profile__head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .avatar{ width:42px; height:42px; border-radius:999px; background:linear-gradient(135deg,#c9c2ff,#9ea6ff); }
+  .profile__name{ font-size:15px; font-weight:700; }
+  .tag-blue{ display:inline-block; margin-top:2px; background:#EAF1FF; color:#3B6FE0; font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; }
+  .note{ display:flex; gap:8px; align-items:center; background:#F6F6F5; border-radius:10px; padding:10px 12px; font-size:12px; color:#666; margin-bottom:14px; }
+  .icon-row{ display:flex; gap:10px; margin-bottom:18px; }
+  .icon-btn{ width:34px; height:34px; border-radius:9px; border:1px solid #eee; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .icon-btn.danger{ border-color:#F7D6D6; color:#D64545; }
+
+  .field-block{ border:1px solid #eee; border-radius:12px; padding:16px; margin-bottom:14px; }
+  .field-block h4{ font-size:14px; font-weight:700; margin-bottom:10px; }
+  .field-row{ display:flex; justify-content:space-between; font-size:12.5px; padding:6px 0; color:#333; }
+  .field-row span:first-child{ color:#8f8f8f; }
+  .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pill{ background:#F1F0FF; color:#5B4FD1; font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:999px; }
+  .visa-row{ display:flex; align-items:center; justify-content:space-between; border:1px solid #eee; border-radius:10px; padding:10px 12px; margin-top:8px; font-size:12px; }
+  .visa-chip{ background:#0B2A6B; color:#fff; font-size:9px; font-weight:700; padding:2px 6px; border-radius:4px; margin-right:8px; }
+
+  /* col2: 2FA + signature */
+  .verify{ text-align:center; }
+  .verify h3{ margin-bottom:18px; }
+  .verify p{ font-size:12.5px; color:#555; margin-bottom:16px; text-align:left; }
+  .qr{ width:130px; height:130px; margin:0 auto 16px; background:
+      repeating-linear-gradient(0deg,#111 0 4px,transparent 4px 8px),
+      repeating-linear-gradient(90deg,#111 0 4px,transparent 4px 8px);
+      background-blend-mode:multiply; border:6px solid #fff; box-shadow:0 0 0 1px #eee; }
+  .otp-row{ display:flex; gap:6px; justify-content:center; margin-bottom:16px; }
+  .otp-row span{ width:26px; height:32px; border:1px solid #ddd; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#bbb; }
+  .btn-row{ display:flex; gap:10px; }
+  .btn{ flex:1; padding:10px; border-radius:9px; font-size:12.5px; font-weight:600; border:1px solid #ddd; background:#fff; }
+  .btn.primary{ background:#B7ADEE; color:#fff; border:none; }
+
+  .sig-table{ width:100%; font-size:11.5px; border-collapse:collapse; margin:10px 0 12px; }
+  .sig-table th{ text-align:left; color:#8f8f8f; font-weight:600; padding-bottom:6px; }
+  .sig-table td{ padding:5px 0; color:#333; }
+  .revoke{ border:1px solid #F1B9B9; color:#D64545; font-size:12px; font-weight:600; padding:6px 16px; border-radius:8px; background:#fff; }
+
+  /* col3: returning reason + repayment */
+  .textarea{ border:1px solid #e5e5e5; border-radius:10px; padding:14px; font-size:12px; color:#333; line-height:1.6; margin:12px 0 14px; min-height:90px; }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:10px; }
+  .btn-outline{ border:1px solid #ddd; background:#fff; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; }
+  .btn-danger{ background:#C23A3A; color:#fff; border:none; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; }
+
+  .repay-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .repay-total{ display:flex; justify-content:space-between; font-size:13px; font-weight:700; padding:10px 0; border-top:1px solid #eee; border-bottom:1px solid #eee; margin-bottom:8px; }
+  .invoice-row{ display:flex; justify-content:space-between; font-size:12px; padding:8px 0; border-bottom:1px solid #f4f4f4; }
+  .invoice-row small{ display:block; color:#999; font-size:10.5px; }
+
+  .row2{ grid-column: 1 / -1; display:grid; grid-template-columns: 1.3fr 1fr; gap:20px; margin-top:20px; }
+  .cal{ display:flex; gap:16px; }
+  .cal__month{ flex:1; }
+  .cal__nav{ display:flex; align-items:center; justify-content:space-between; font-size:12.5px; font-weight:600; margin-bottom:10px; }
+  .cal__grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; font-size:10px; text-align:center; color:#999; }
+  .cal__grid span{ padding:4px 0; }
+  .cal__grid span.day{ color:#333; border-radius:6px; }
+  .cal__grid span.active{ background:#6C5DD3; color:#fff; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="card">
+    <div class="profile__head">
+      <span class="avatar"></span>
+      <div>
+        <div class="profile__name">John Jakob</div>
+        <span class="tag-blue">Invite sent</span>
+      </div>
+    </div>
+    <div class="note">ⓘ User is yet to be onboarded on the platform.</div>
+    <div class="icon-row">
+      <span class="icon-btn">✎</span><span class="icon-btn">➤</span><span class="icon-btn danger">🗑</span>
+    </div>
+    <div class="field-block">
+      <h4>Details</h4>
+      <div class="field-row"><span>Email</span><span>JohnJacob@globex.com</span></div>
+      <div class="field-row"><span>Phone</span><span>+91 9345822283</span></div>
+      <div class="field-row"><span>Department</span><span>Sales</span></div>
+    </div>
+    <div class="field-block">
+      <h4>Roles</h4>
+      <div class="pill-row"><span class="pill">Admin</span><span class="pill">Signatory</span><span class="pill">Analyst</span></div>
+    </div>
+    <div class="visa-row"><span><span class="visa-chip">VISA</span>•••• 9065</span><span style="color:#999;">Valid till 02/30</span></div>
+  </div>
+
+  <div class="card">
+    <div class="verify">
+      <h3>Setup 2-step verification</h3>
+      <p>1. Scan the QR code on your authenticator app<br>2. Enter the 6-digit code it generates below</p>
+      <div class="qr"></div>
+      <div class="otp-row"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span></div>
+      <div class="btn-row"><button class="btn">Previous</button><button class="btn primary">Enable 2FA</button></div>
+    </div>
+    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:16px;">
+      <h4 style="color:#6C5DD3; font-size:14px; font-weight:700;">Digital Signature</h4>
+      <table class="sig-table">
+        <tr><th>File Name</th><th>Active from</th><th>Expires on</th></tr>
+        <tr><td>3mSignature.pem</td><td>23 Feb 24</td><td>23 Feb 24</td></tr>
+      </table>
+      <button class="revoke">Revoke</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:12px;">Returning Reason</h3>
+    <div class="textarea">The payment batch is missing two invoice references and one beneficiary account number doesn't match our records.</div>
+    <div class="modal-actions"><button class="btn-outline">Cancel</button><button class="btn-danger">↺ Return</button></div>
+
+    <div style="margin-top:18px; border-top:1px solid #eee; padding-top:16px;">
+      <div class="repay-head">
+        <span><span class="visa-chip">VISA</span>•• 9065</span>
+        <small>Repay on: <b>20 Nov</b></small>
+      </div>
+      <div class="repay-total"><span>Total Payable</span><span>₹ 8.29 Cr</span></div>
+      <div class="invoice-row"><span>Toughzap<br><small>INV-Airbus-00316</small></span><span>₹3.01 Cr<br><small>13 Nov</small></span></div>
+      <div class="invoice-row"><span>Opentech<br><small>INV-Airbus-00316</small></span><span>₹3.01 Cr<br><small>13 Nov</small></span></div>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <div class="cal">
+        <div class="cal__month">
+          <div class="cal__nav"><span>‹</span><span>Jan 2023</span><span>›</span></div>
+          <div class="cal__grid">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            <span></span><span></span><span></span><span class="day">4</span><span class="day">5</span><span class="day">6</span><span class="day">7</span>
+            <span class="day">8</span><span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span><span class="day">14</span>
+            <span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day active">18</span><span class="day">19</span><span class="day">20</span><span class="day">21</span>
+          </div>
+        </div>
+        <div class="cal__month">
+          <div class="cal__nav"><span>‹</span><span>Feb 2023</span><span>›</span></div>
+          <div class="cal__grid">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            <span></span><span></span><span></span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span>
+            <span class="day">5</span><span class="day">6</span><span class="day active">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span><span class="day">11</span>
+            <span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px; font-size:15px;">Upload Payment File</h3>
+      <div style="border:1px solid #eee; border-radius:10px; padding:12px; font-size:12.5px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span>Filename.xls</span><span style="color:#c0392b;">🗑</span>
+      </div>
+      <small style="color:#2e9c5a;">✓ File uploaded successfully</small>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

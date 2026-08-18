@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atelier - Brand and Product Design for Early Stage Founders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; width:100%; overflow-x:hidden; }
+  body{ font-family:'Inter',system-ui,sans-serif; background:#000; }
+  .font-serif{ font-family:'Instrument Serif','serif'; }
+
+  .section{ position:relative; width:100%; height:100vh; overflow:hidden; }
+  .bg{
+    position:absolute; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255,255,255,.08), transparent 60%),
+      linear-gradient(160deg,#050505 0%, #101014 45%, #1a1710 100%);
+  }
+  .bg::after{
+    content:''; position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+    opacity:.5;
+  }
+  .bg-video{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; }
+  .bg-scrim{ position:absolute; inset:0; z-index:2; background:linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.55) 100%); }
+
+  .content{ position:relative; z-index:10; display:flex; flex-direction:column; height:100%; }
+
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:20px 64px; }
+  .nav__left{ display:flex; align-items:center; gap:40px; }
+  .nav__logo{ color:#fff; font-weight:600; font-size:18px; letter-spacing:-0.01em; font-family:'Inter',sans-serif; }
+  .nav__links{ display:flex; gap:28px; }
+  .nav__links a{ color:rgba(255,255,255,.8); font-size:14px; font-weight:300; text-decoration:none; }
+  .nav__right{ display:flex; align-items:center; gap:16px; }
+  .nav__reach{ color:rgba(255,255,255,.85); font-size:14px; }
+  .nav__cta{ background:#fff; color:#000; border-radius:999px; padding:8px 20px; font-size:14px; border:none; }
+
+  .hero{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:64px; text-align:center; }
+  .hero h1{ font-family:'Instrument Serif',serif; color:#fff; font-size:88px; line-height:1.08; max-width:900px; margin:0; }
+  .hero h1 em{ font-style:italic; }
+  .hero p{ margin-top:20px; color:rgba(255,255,255,.7); font-size:16px; font-weight:300; max-width:440px; line-height:1.6; }
+  .hero__btns{ margin-top:26px; display:flex; gap:16px; }
+  .btn-primary{ display:inline-flex; align-items:center; gap:8px; background:#fff; color:#000; border-radius:999px; padding:12px 28px; font-size:14px; font-weight:500; border:none; }
+  .btn-secondary{ display:inline-flex; align-items:center; gap:8px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:12px 28px; font-size:14px; }
+</style>
+</head>
+<body>
+<section class="section">
+  <div class="bg"></div>
+  <video class="bg-video" autoplay muted loop playsinline
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_064556_051587f1-74a1-4336-8c05-4dde3594ed05.mp4"></video>
+  <div class="bg-scrim"></div>
+  <div class="content">
+    <nav class="nav">
+      <div class="nav__left">
+        <span class="nav__logo">Atelier</span>
+        <div class="nav__links">
+          <a href="#">Projects</a><a href="#">Expertise</a><a href="#">Studio</a><a href="#">Insights</a>
+        </div>
+      </div>
+      <div class="nav__right">
+        <span class="nav__reach">Reach Out</span>
+        <button class="nav__cta">Let's Talk</button>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>BRAND <em>and</em> PRODUCT<br>DESIGN <em>for</em> EARLY<br>STAGE FOUNDERS</h1>
+      <p>We turn first ideas into products people<br>trust enough to pay for.</p>
+      <div class="hero__btns">
+        <button class="btn-primary">View Work &rarr;</button>
+        <button class="btn-secondary">&#9654; Watch Reel</button>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumora - Quiet the Noise, Reclaim Your Focus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{ font-family:'Instrument Serif',serif; background:#000; }
+
+  .hero{ position:relative; width:100%; height:100vh; overflow:hidden; background:#000; }
+
+  .bg{ position:absolute; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse 90% 70% at 30% 20%, rgba(255,190,120,.45), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 80% 80%, rgba(80,110,140,.4), transparent 65%),
+      linear-gradient(160deg,#1a1207 0%, #241a12 45%, #101418 100%);
+  }
+  .bg-video{ position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; }
+  .overlay{ position:absolute; inset:0; z-index:1; pointer-events:none;
+    background: radial-gradient(ellipse 120% 90% at 50% 50%, transparent 40%, rgba(0,0,0,.35) 100%); }
+
+  .content{ position:relative; z-index:2; display:flex; flex-direction:column; height:100%; }
+
+  .liquid-glass{ background:rgba(255,255,255,.08); backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,.16); box-shadow:inset 0 1px 1px rgba(255,255,255,.12); }
+
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:24px 40px; font-family:'Instrument Serif',serif; }
+  .nav__logo{ color:#fff; font-style:italic; font-size:24px; }
+  .nav__pill{ display:flex; align-items:center; gap:22px; border-radius:999px; padding:10px 10px 10px 22px; font-family:system-ui,sans-serif; }
+  .nav__pill a{ color:rgba(255,255,255,.9); font-size:14px; text-decoration:none; }
+  .nav__cta{ background:#fff; color:#111; border-radius:999px; padding:9px 20px; font-size:14px; font-weight:500; font-family:system-ui,sans-serif; }
+
+  .hero-content{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 24px; }
+  .badge{ display:inline-block; border-radius:999px; padding:9px 20px; font-family:system-ui,sans-serif; font-size:13px; color:#fff; margin-bottom:26px; }
+  h1{ color:#fff; font-size:74px; line-height:1.1; max-width:900px; font-weight:400; }
+  .subtext{ margin-top:22px; max-width:560px; color:rgba(255,255,255,.82); font-family:system-ui,sans-serif; font-size:16px; line-height:1.6; }
+
+  .email-pill{ margin-top:30px; display:flex; align-items:center; border-radius:999px; padding:6px; max-width:360px; width:100%; font-family:system-ui,sans-serif; }
+  .email-pill input{ flex:1; background:transparent; border:0; outline:0; color:#fff; padding:0 16px; font-size:14px; }
+  .email-pill input::placeholder{ color:rgba(255,255,255,.6); }
+  .email-pill button{ background:#fff; color:#111; border:0; border-radius:999px; padding:11px 20px; font-size:14px; font-weight:500; white-space:nowrap; }
+
+  .switcher{ margin-top:30px; display:flex; gap:26px; font-family:system-ui,sans-serif; }
+  .switcher span{ font-size:13px; color:rgba(255,255,255,.5); padding-bottom:6px; border-bottom:2px solid transparent; }
+  .switcher span.active{ color:#fff; border-bottom-color:#fff; }
+
+  .stats{ display:flex; justify-content:center; gap:18px; padding:26px 0 34px; font-family:system-ui,sans-serif; font-size:13px; color:rgba(255,255,255,.7); }
+  .stats span.sep{ opacity:.4; }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="bg"></div>
+  <video class="bg-video" autoplay muted loop playsinline
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_202655_a7f5aca0-2f80-4bc9-bcb5-96ac95662003.mp4"></video>
+  <div class="overlay"></div>
+  <div class="content">
+    <nav class="nav">
+      <span class="nav__logo">Lumora</span>
+      <div class="nav__pill liquid-glass">
+        <a href="#">How It Works</a><a href="#">Features</a><a href="#">Pricing</a><a href="#">Community</a>
+        <span class="nav__cta">Get Started</span>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <span class="badge liquid-glass">Trusted by 14,000+ focused minds</span>
+      <h1>Quiet the Noise,<br>Reclaim Your Focus</h1>
+      <p class="subtext">Step away from the pings and the scroll. Lumora helps you build a daily practice that actually sticks.</p>
+      <div class="email-pill liquid-glass">
+        <input type="text" placeholder="Your Best Email" readonly>
+        <button>Get Early Access</button>
+      </div>
+      <div class="switcher">
+        <span class="active">Golden Hour</span><span>Still Water</span><span>Deep Woods</span><span>Quiet Dawn</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <span>80+ Guided Sessions</span><span class="sep">|</span>
+      <span>14,000+ Members</span><span class="sep">|</span>
+      <span>4.9 Average Rating</span><span class="sep">|</span>
+      <span>Built for Deep Work</span>
+    </div>
+  </div>
+</section>
+</body>
+</html>
