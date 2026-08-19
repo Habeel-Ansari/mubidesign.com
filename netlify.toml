@@ -4,7 +4,20 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Pretty URLs — serve /work as work.html, etc.
+# Strip .html from all URLs
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*.html"
+  to = "/:splat"
+  status = 301
+  force = true
+
+# Serve clean URLs (Netlify auto-tries page.html for /page natively)
 [[redirects]]
   from = "/work"
   to = "/work.html"
