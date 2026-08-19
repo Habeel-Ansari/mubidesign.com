@@ -3,3 +3,21 @@
   AddType video/mp4 .mp4
   AddType video/quicktime .mov
 </IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  Options -MultiViews
+
+  # /index.html → /
+  RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
+  RewriteRule ^index\.html$ / [R=301,L]
+
+  # /page.html → /page  (strip extension from incoming requests)
+  RewriteCond %{THE_REQUEST} \.html[\s?]
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
+  # Serve /page by internally mapping to /page.html
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
