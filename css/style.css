@@ -944,6 +944,7 @@ body.no-cursor * { cursor: none !important; }
 .hero__meta {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--s6);
   padding-top: var(--s6);
   border-top: 1px solid var(--border);
