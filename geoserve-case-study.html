@@ -3,209 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GeoStem, Case Study by Mubeen Ansari</title>
+  <title>GeoStem - Case Study by Mubeen Ansari</title>
   <meta name="description" content="How I designed GeoStem, a maritime fuel trading intelligence platform that gives traders real-time pricing, port data, and deal-flow visibility in one place.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260701">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
   <style>
-    /* ── Shared mockup base ── */
-    .gs-mockup {
-      width:100%; border-radius:12px; overflow:hidden;
-      font-family:var(--font-sans); font-size:13px;
-      box-shadow:0 24px 64px rgba(0,0,0,.18);
-      border:1px solid rgba(0,0,0,.07);
+    /* ── Real prototype embeds (Dashboard / Fuel Price / Port Map) ── */
+    .gs-proto-frame {
+      position:relative; width:100%; max-width:900px; margin-inline:auto;
+      aspect-ratio:1440/900; border-radius:12px; overflow:hidden;
+      box-shadow:0 24px 64px rgba(0,0,0,.18); border:1px solid rgba(0,0,0,.07);
+      background:#fff;
     }
-    /* Nav rail */
-    .gs-nav {
-      width:52px; background:#fff; border-right:1px solid #E4E9F2;
-      display:flex; flex-direction:column; align-items:center;
-      padding:12px 0; gap:4px; flex-shrink:0;
+    .gs-proto-frame iframe {
+      position:absolute; top:0; left:0; width:1440px; height:900px;
+      border:0; pointer-events:none; transform-origin:top left; background:#fff;
     }
-    .gs-burger { width:30px; height:30px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-    .gs-nico { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#9AA6BC; }
-    .gs-nico.active { background:#E8F0FF; color:#1852FE; }
-    .gs-nico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-    .gs-sep { width:24px; height:1px; background:#C9D2E2; margin:4px 0; }
-    .gs-avatar { width:28px; height:28px; border-radius:50%; background:#0F1F3D; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; margin-top:auto; }
-
-    /* ── Dashboard ── */
-    .gs-dash { display:flex; height:480px; background:#F0F2F7; }
-    .gs-dash-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-
-    /* Dark header banner */
-    .gs-banner {
-      background:linear-gradient(to right,#001540 0%,#0A2464 60%,#1852FE 100%);
-      padding:14px 20px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between;
-      position:relative; overflow:hidden;
-    }
-    .gs-banner-wave { position:absolute; right:0; top:0; bottom:0; width:40%; opacity:.12; }
-    .gs-banner-left { position:relative; z-index:1; }
-    .gs-banner-title { font-size:15px; font-weight:600; color:#fff; margin-bottom:10px; }
-    .gs-banner-stats { display:flex; gap:0; }
-    .gs-bstat { padding:0 20px 0 0; }
-    .gs-bstat+.gs-bstat { padding-left:20px; border-left:1px solid rgba(255,255,255,.2); }
-    .gs-bstat-label { font-size:9px; font-weight:500; color:#93C5FD; text-transform:uppercase; letter-spacing:.03em; margin-bottom:2px; }
-    .gs-bstat-val { font-size:18px; font-weight:700; color:#fff; letter-spacing:-.4px; }
-    .gs-bstat-sub { font-size:9px; color:#94A3B8; margin-top:1px; }
-    .gs-banner-btns { display:flex; gap:8px; position:relative; z-index:1; }
-    .gs-banner-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:6px; padding:6px 10px; font-size:11px; font-weight:600; color:#fff; display:flex; align-items:center; gap:5px; }
-    .gs-banner-btn svg { width:12px; height:12px; stroke:#fff; fill:none; stroke-width:1.8; stroke-linecap:round; }
-
-    /* 3-column layout */
-    .gs-cols { display:flex; gap:10px; flex:1; padding:10px; overflow:hidden; min-height:0; }
-    .gs-col-l { width:200px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; }
-    .gs-col-m { flex:1; min-width:0; }
-    .gs-col-r { width:220px; flex-shrink:0; }
-    .gs-card { background:#fff; border:1px solid #E4E9F2; border-radius:10px; overflow:hidden; height:100%; }
-
-    /* Price widget */
-    .gs-price-widget { padding:10px 12px; }
-    .gs-crude-tabs { display:flex; gap:3px; margin-bottom:8px; }
-    .gs-ctab { font-size:9px; font-weight:600; padding:3px 8px; border-radius:4px; color:#8995AB; background:#F1F5F9; }
-    .gs-ctab.active { background:#1852FE; color:#fff; }
-    .gs-crude-price { font-size:22px; font-weight:800; color:#0E1A33; letter-spacing:-.5px; }
-    .gs-crude-row { display:flex; align-items:center; gap:6px; margin-top:3px; }
-    .gs-crude-cur { font-size:11px; color:#8995AB; }
-    .gs-crude-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:10px; background:#dcfce7; color:#16a34a; }
-    .gs-crude-live { font-size:9px; color:#8995AB; margin-top:2px; }
-    .gs-chartline { height:40px; width:100%; margin-top:8px; }
-
-    /* Follow-ups */
-    .gs-fu-hdr { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #E4E9F2; }
-    .gs-fu-title { font-size:11px; font-weight:600; color:#0E1A33; }
-    .gs-fu-item { padding:7px 12px; border-bottom:1px solid #F4F6FA; display:flex; align-items:center; gap:8px; }
-    .gs-fu-badge { width:22px; height:18px; border-radius:4px; background:#FEF9C3; color:#854D0E; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
-    .gs-fu-badge.amber { background:#FEF3C7; color:#92400E; }
-    .gs-fu-label { font-size:11px; font-weight:600; color:#0E1A33; flex:1; }
-    .gs-fu-arr { width:12px; height:12px; color:#C9D2E2; }
-
-    /* Port pricing (center) */
-    .gs-port-inner { padding:10px 12px; height:100%; display:flex; flex-direction:column; }
-    .gs-port-search { display:flex; align-items:center; gap:6px; background:#F4F6FA; border:1px solid #E4E9F2; border-radius:6px; padding:5px 10px; margin-bottom:8px; }
-    .gs-port-search svg { width:11px; height:11px; stroke:#8995AB; fill:none; stroke-width:2; }
-    .gs-port-search-txt { font-size:11px; color:#8995AB; }
-    .gs-port-row { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #F0F2F7; }
-    .gs-port-flag { width:26px; height:26px; border-radius:6px; background:linear-gradient(135deg,#1852FE,#5BA6FF); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:9px; flex-shrink:0; }
-    .gs-port-name { font-size:11px; font-weight:600; color:#0E1A33; }
-    .gs-port-sub { font-size:9px; color:#8995AB; }
-    .gs-port-prices-badge { margin-left:auto; background:#EAF1FE; color:#1852FE; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; }
-    .gs-port-add { color:#C9D2E2; font-size:15px; margin-left:4px; }
-
-    /* News/updates (right) */
-    .gs-news-tabs { display:flex; gap:0; padding:8px 12px; border-bottom:1px solid #E4E9F2; }
-    .gs-ntab { font-size:11px; font-weight:600; color:#8995AB; padding:3px 0; margin-right:12px; }
-    .gs-ntab.active { color:#1852FE; border-bottom:2px solid #1852FE; }
-    .gs-msg-item { padding:8px 12px; border-bottom:1px solid #F4F6FA; }
-    .gs-msg-top { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
-    .gs-msg-av { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
-    .gs-msg-name { font-size:11px; font-weight:600; color:#0E1A33; }
-    .gs-msg-time { font-size:9px; color:#8995AB; margin-left:auto; }
-    .gs-msg-txt { font-size:9px; color:#374151; line-height:1.45; padding-left:28px; }
-
-    /* ── Fuel Price Screen ── */
-    .gs-fuel { display:flex; height:460px; background:#F0F2F7; }
-    .gs-fuel-main { flex:1; display:flex; flex-direction:column; padding:14px; gap:10px; overflow:hidden; }
-    .gs-fuel-topbar { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
-    .gs-fuel-title { font-size:15px; font-weight:700; color:#0E1A33; }
-    .gs-fuel-sub { font-size:9px; color:#8995AB; }
-    .gs-live-badge { display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid #E4E9F2; border-radius:20px; padding:3px 9px; font-size:9px; font-weight:600; color:#16a34a; }
-    .gs-live-dot { width:6px; height:6px; border-radius:50%; background:#16a34a; }
-    .gs-fuel-tabs { display:flex; background:#fff; border:1px solid #E4E9F2; border-radius:7px; padding:3px; gap:2px; }
-    .gs-fuel-tab { padding:3px 10px; border-radius:4px; font-size:11px; font-weight:600; color:#8995AB; }
-    .gs-fuel-tab.active { background:#1852FE; color:#fff; }
-    .gs-price-hero-row { display:flex; align-items:baseline; gap:8px; flex-shrink:0; }
-    .gs-price-big { font-size:30px; font-weight:800; color:#0E1A33; letter-spacing:-1px; }
-    .gs-price-unit { font-size:13px; font-weight:600; color:#8995AB; }
-    .gs-price-up { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#16a34a; padding:3px 8px; border-radius:20px; font-size:11px; font-weight:700; }
-    .gs-stat-cards { display:flex; gap:7px; flex-shrink:0; }
-    .gs-scard { flex:1; background:#fff; border:1px solid #E4E9F2; border-radius:10px; padding:8px 10px; }
-    .gs-scard-label { font-size:9px; font-weight:600; color:#8995AB; text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; display:flex; align-items:center; justify-content:space-between; }
-    .gs-scard-icon { width:18px; height:18px; border-radius:4px; display:flex; align-items:center; justify-content:center; }
-    .gs-scard-icon svg { width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:2.2; }
-    .ic-g { background:#dcfce7; color:#16a34a; }
-    .ic-r { background:#fee2e2; color:#dc2626; }
-    .ic-b { background:#EAF1FE; color:#1852FE; }
-    .gs-scard-val { font-size:15px; font-weight:800; color:#0E1A33; letter-spacing:-.3px; }
-    .gs-scard-val.up { color:#16a34a; }
-    .gs-scard-val.dn { color:#dc2626; }
-    .gs-scard-footer { display:flex; align-items:center; justify-content:space-between; margin-top:3px; }
-    .gs-scard-sub { font-size:9px; color:#8995AB; }
-    .gs-scard-delta { font-size:9px; font-weight:700; padding:1px 5px; border-radius:6px; }
-    .gs-scard-delta.up { background:#dcfce7; color:#16a34a; }
-    .gs-scard-delta.dn { background:#fee2e2; color:#dc2626; }
-    .gs-range { margin-top:3px; height:3px; background:#f1f5f9; border-radius:99px; position:relative; }
-    .gs-range-fill { height:100%; border-radius:99px; position:absolute; left:0; top:0; }
-    .gs-rf-up { background:linear-gradient(to right,#bbf7d0,#16a34a); }
-    .gs-rf-dn { background:linear-gradient(to right,#fecaca,#dc2626); }
-    .gs-rf-b  { background:linear-gradient(to right,#bfdbfe,#1852FE); }
-    .gs-chart-card { flex:1; background:#fff; border:1px solid #E4E9F2; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; min-height:0; }
-    .gs-chart-toolbar { display:flex; align-items:center; gap:3px; padding:7px 12px; border-bottom:1px solid #E4E9F2; flex-shrink:0; }
-    .gs-period-btn { padding:3px 8px; border-radius:4px; font-size:9px; font-weight:600; color:#8995AB; }
-    .gs-period-btn.active { background:#1852FE; color:#fff; }
-    .gs-tsep { width:1px; height:14px; background:#E4E9F2; margin:0 3px; }
-    .gs-chart-body { flex:1; position:relative; overflow:hidden; min-height:0; padding:8px 12px; }
-
-    /* ── Port Map ── */
-    .gs-map { display:flex; height:480px; }
-    .gs-map-area { flex:1; background:#0D1B2A; position:relative; overflow:hidden; }
-    .gs-map-topbar { position:absolute; top:10px; left:10px; display:flex; gap:6px; z-index:5; }
-    .gs-search-box { width:200px; height:28px; background:#fff; border-radius:5px; display:flex; align-items:center; gap:6px; padding:0 9px; box-shadow:0 3px 10px rgba(0,0,0,.25); }
-    .gs-search-box svg { width:11px; height:11px; stroke:#8995AB; fill:none; stroke-width:2; }
-    .gs-search-text { font-size:11px; color:#8995AB; }
-    /* Route line visual */
-    .gs-route-line { position:absolute; top:50%; left:20%; width:55%; height:1px; background:linear-gradient(to right,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0)); transform:translateY(-50%) rotate(-5deg); }
-    .gs-route-a { position:absolute; top:50%; left:18%; width:14px; height:14px; border-radius:50%; background:#4ADE80; border:2px solid #fff; transform:translate(-50%,-50%); z-index:3; }
-    .gs-route-b { position:absolute; top:46%; left:72%; width:14px; height:14px; border-radius:50%; background:#EF4444; border:2px solid #fff; transform:translate(-50%,-50%); z-index:3; }
-    .gs-route-label-a { position:absolute; top:50%; left:18%; transform:translate(-50%,-220%); background:#4ADE80; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
-    .gs-route-label-b { position:absolute; top:46%; left:72%; transform:translate(-50%,-220%); background:#EF4444; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:3px; z-index:4; }
-    /* Port callout on map */
-    .gs-map-callout { position:absolute; top:42%; left:58%; transform:translate(-50%,-50%); background:#fff; border:1px solid #E4E9F2; border-radius:8px; padding:7px 10px; font-family:var(--font-sans); z-index:5; box-shadow:0 4px 16px rgba(0,0,0,.2); white-space:nowrap; }
-    .gs-map-callout-name { font-size:11px; font-weight:700; color:#0E1A33; }
-    .gs-map-callout-sub { font-size:9px; color:#8995AB; }
-
-    .gs-map-left { width:240px; flex-shrink:0; background:#fff; border-right:1px solid #E4E9F2; overflow-y:auto; display:flex; flex-direction:column; }
-    .gs-map-left-hdr { padding:10px 12px; border-bottom:1px solid #E4E9F2; }
-    .gs-port-tag { display:inline-block; background:#EAF1FE; color:#1852FE; font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; margin-bottom:4px; }
-    .gs-port-title { font-size:13px; font-weight:700; color:#0E1A33; }
-    .gs-port-coord { font-size:9px; color:#8995AB; }
-    .gs-grades-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin:8px 12px; }
-    .gs-grade-box { background:#F4F7FB; border-radius:6px; padding:6px 8px; }
-    .gs-grade-lbl { font-size:9px; font-weight:700; text-transform:uppercase; color:#8995AB; margin-bottom:3px; }
-    .gs-grade-price { font-size:13px; font-weight:800; color:#0E1A33; }
-    .gs-grade-unit { font-size:9px; color:#8995AB; }
-    .gs-map-section { padding:8px 12px; border-top:1px solid #E4E9F2; }
-    .gs-map-section-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#8995AB; margin-bottom:6px; display:flex; align-items:center; gap:5px; }
-    .gs-weather-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
-    .gs-weather-box { background:#F4F7FB; border-radius:5px; padding:5px 6px; text-align:center; }
-    .gs-weather-icon { font-size:13px; margin-bottom:2px; }
-    .gs-weather-lbl { font-size:9px; color:#8995AB; }
-    .gs-weather-val { font-size:11px; font-weight:700; color:#0E1A33; }
-    .gs-seller-row { display:flex; align-items:center; gap:7px; padding:5px 0; border-bottom:1px solid #F4F6FA; }
-    .gs-seller-av { width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
-    .gs-seller-name { font-size:9px; font-weight:600; color:#0E1A33; flex:1; }
-    .gs-seller-sub { font-size:9px; color:#8995AB; }
-    .gs-seller-price { font-size:11px; font-weight:700; color:#0E1A33; }
-    .gs-map-right { width:200px; flex-shrink:0; background:#fff; border-left:1px solid #E4E9F2; overflow-y:auto; }
-    .gs-overlays-hdr { padding:10px 12px; border-bottom:1px solid #E4E9F2; display:flex; align-items:center; justify-content:space-between; }
-    .gs-overlays-title { font-size:13px; font-weight:700; color:#0E1A33; }
-    .gs-overlays-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:10px 12px; }
-    .gs-overlay-btn { background:#EAF1FE; border-radius:7px; padding:8px 5px; display:flex; flex-direction:column; align-items:center; gap:4px; }
-    .gs-overlay-btn svg { width:16px; height:16px; stroke:#1852FE; fill:none; stroke-width:1.8; stroke-linecap:round; }
-    .gs-overlay-btn-lbl { font-size:9px; font-weight:600; color:#1852FE; text-align:center; }
-    .gs-base-section { padding:0 12px 10px; }
-    .gs-base-title { font-size:9px; font-weight:700; color:#8995AB; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
-    .gs-base-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
-    .gs-base-btn { background:#F4F7FB; border-radius:6px; padding:7px 4px; display:flex; flex-direction:column; align-items:center; gap:3px; }
-    .gs-base-btn svg { width:14px; height:14px; stroke:#5A6B85; fill:none; stroke-width:1.8; stroke-linecap:round; }
-    .gs-base-btn-lbl { font-size:9px; font-weight:600; color:#5A6B85; text-align:center; }
-    .gs-calc-btn { margin:0 12px 12px; background:#1852FE; border-radius:8px; padding:9px; text-align:center; font-size:11px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; gap:6px; }
-    .gs-calc-btn svg { width:12px; height:12px; stroke:#fff; fill:none; stroke-width:2; }
 
     /* ── Research visuals ── */
     .gs-interview-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px; }
@@ -224,14 +42,10 @@
     .gs-theme-title { font-size:14px; font-weight:700; color:#0E1A33; margin-bottom:5px; }
     .gs-theme-desc { font-size:13px; color:#8995AB; line-height:1.5; }
 
-    /* ── Key highlights ── */
-    .gs-highlights { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
-    .gs-hl { background:#F8FAFF; border:1px solid #E4E9F2; border-radius:12px; padding:20px; }
-    .gs-hl-icon { width:36px; height:36px; border-radius:9px; background:#EAF1FE; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
-    .gs-hl-icon svg { width:18px; height:18px; stroke:#1852FE; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-    .gs-hl-stat { font-size:22px; font-weight:800; color:#0E1A33; letter-spacing:-.5px; margin-bottom:4px; }
-    .gs-hl-label { font-size:14px; font-weight:600; color:#374151; margin-bottom:4px; }
-    .gs-hl-desc { font-size:13px; color:#8995AB; line-height:1.5; }
+    .gs-constraints-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+    @media (max-width:700px) {
+      .gs-constraints-row { grid-template-columns:1fr; }
+    }
 
     /* Claude Code badge */
     .gs-claude-badge {
@@ -242,26 +56,30 @@
     }
     .gs-claude-badge::before { content:'✦'; font-size:13px; color:#A78BFA; }
 
-    /* ── Real Leaflet map inside the port-map mockup ── */
-    #gs-leaflet-map { background:#0D1B2A; }
-    #gs-leaflet-map .leaflet-control-attribution {
-      background: rgba(0,0,0,0.45); color: rgba(255,255,255,0.45);
-      font-size: 8px; padding: 1px 5px; border-radius: 3px 0 0 0;
-    }
-    #gs-leaflet-map .leaflet-control-attribution a { color: rgba(255,255,255,0.6); }
-    #gs-leaflet-map .leaflet-tile-pane { filter: saturate(1.3) brightness(0.95) hue-rotate(190deg); }
-
-    /* ── Mobile: product mockups render as a uniformly shrunk screenshot ── */
+    /* ── Mobile ── */
     @media (max-width: 768px) {
-      .gs-mockup { zoom:0.5; }
-      .gs-col-m { flex:0 0 260px; }
-      .gs-fuel-main { min-width:600px; }
-      .gs-map-area { min-width:300px; }
       .cs-cover { aspect-ratio:auto; }
 
       .gs-interview-grid { grid-template-columns:1fr; }
       .gs-themes-row { grid-template-columns:1fr; }
-      .gs-highlights { grid-template-columns:1fr; }
+    }
+
+    .gs-list { list-style:none; display:flex; flex-direction:column; gap:var(--s2); max-width:65ch; margin:var(--s3) 0 var(--s4); padding:0; }
+    .gs-list li { display:flex; align-items:center; gap:10px; font-size:var(--fs-base); color:var(--text); line-height:1.5; font-weight:600; letter-spacing:-0.01em; }
+    .gs-list-icon { width:24px; height:24px; border-radius:7px; background:#EAF1FE; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .gs-list-icon svg { width:13px; height:13px; stroke:#1852FE; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+
+    .gs-split { display:grid; grid-template-columns:180px 1fr; gap:var(--s10); align-items:start; margin-bottom:clamp(4rem, 10vw, 8rem); }
+    .gs-split .cs-section__label { margin-bottom:0; }
+    .gs-split .cs-section__title { max-width:none; }
+    @media (max-width:700px) {
+      .gs-split { grid-template-columns:1fr; gap:var(--s3); }
+    }
+
+    .gs-screen-split { display:grid; grid-template-columns:320px 1fr; gap:var(--s8); align-items:center; }
+    .gs-screen-split .cs-step__desc { margin-bottom:0; }
+    @media (max-width:900px) {
+      .gs-screen-split { grid-template-columns:1fr; gap:var(--s4); }
     }
   </style>
 </head>
@@ -271,6 +89,8 @@
   <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
 
   <!-- HEADER -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
   <header class="header" role="banner">
     <div class="header__inner">
       <a href="index.html" class="header__logo">Mubeen Ansari</a>
@@ -278,7 +98,6 @@
         <ul class="nav__links" role="list">
           <li><a href="work.html" class="nav__link is-active">Work</a></li>
           <li><a href="about.html" class="nav__link">About</a></li>
-          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
         </ul>
         <div class="nav__actions">
           <div class="social-links">
@@ -304,7 +123,6 @@
     <nav class="mobile-menu__links">
       <a href="work.html" class="mobile-menu__link">Work</a>
       <a href="about.html" class="mobile-menu__link">About</a>
-      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
     </nav>
   </div>
 
@@ -316,145 +134,32 @@
         <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · Maritime SaaS · 0-to-1 · Product Design</p>
         <h1 class="cs-hero__title" data-load-reveal data-delay="2">GeoStem</h1>
         <p class="cs-hero__desc" data-load-reveal data-delay="3">
-          Replaced 4 fragmented trading tools with one live intelligence platform - commodity pricing, port bunkering rates, deal pipeline, and an interactive port map. Built the design system from day one; shipped to production in 5 months, with UI design-to-dev handoff in just 5 days.
+          How I designed a maritime dashboard for traders in just 5 days.
         </p>
-
-        <div style="margin-bottom:var(--s8);" data-load-reveal data-delay="3">
-          <a href="https://geostemnew.netlify.app/" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
-            View Final UI
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
 
         <div class="cs-meta" data-load-reveal data-delay="4">
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Role</p>
-            <p class="cs-meta-item__value">Product Design Consultant (Freelance)</p>
+            <p class="cs-meta-item__value">Product Designer</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Company</p>
-            <p class="cs-meta-item__value">Geoserve - Maritime Intelligence</p>
+            <p class="cs-meta-item__value">Geoserve</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Timeline</p>
-            <p class="cs-meta-item__value">Jan 2025 - Present · 0-to-1 + ongoing</p>
+            <p class="cs-meta-item__value">10 days</p>
           </div>
           <div class="cs-meta-item">
             <p class="cs-meta-item__label">Scope</p>
-            <p class="cs-meta-item__value">Dashboard · Port Map · Fuel Price · Design System · Voyage Reporting</p>
+            <p class="cs-meta-item__value">Dashboard · Port Map · Fuel Price · Design System</p>
           </div>
         </div>
 
         <!-- COVER: Dashboard mockup matching real screenshot -->
-        <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 01 - Dashboard Overview</p>
-        <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
         <div class="cs-cover" style="background:#E8EDF5;padding:32px 40px 0;" data-load-reveal data-delay="5">
-          <div class="gs-mockup gs-dash">
-            <!-- Nav rail -->
-            <div class="gs-nav">
-              <div class="gs-burger"><svg width="16" height="16" viewBox="0 0 24 24" stroke="#5A6B85" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
-              <div class="gs-nico active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div class="gs-sep"></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 010 2.8 2 2 0 01-2.8 0l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1A1.7 1.7 0 009 19.4"/></svg></div>
-              <div class="gs-avatar">A</div>
-            </div>
-            <div class="gs-dash-main">
-              <!-- Dark header -->
-              <div class="gs-banner">
-                <svg class="gs-banner-wave" viewBox="0 0 400 100" fill="none" preserveAspectRatio="none"><path d="M0 60 Q100 20 200 50 Q300 80 400 40 L400 100 L0 100Z" fill="rgba(255,255,255,0.04)"/><path d="M0 70 Q120 30 240 60 Q350 85 400 50 L400 100 L0 100Z" fill="rgba(255,255,255,0.03)"/></svg>
-                <div class="gs-banner-left">
-                  <div class="gs-banner-title">Dashboard overview</div>
-                  <div class="gs-banner-stats">
-                    <div class="gs-bstat">
-                      <div class="gs-bstat-label">Deals Booked</div>
-                      <div class="gs-bstat-val">04</div>
-                      <div class="gs-bstat-sub">Last 30 days</div>
-                    </div>
-                    <div class="gs-bstat">
-                      <div class="gs-bstat-label">Quantity Booked</div>
-                      <div class="gs-bstat-val">10</div>
-                      <div class="gs-bstat-sub">Last 30 days</div>
-                    </div>
-                    <div class="gs-bstat">
-                      <div class="gs-bstat-label">Average Income per MT</div>
-                      <div class="gs-bstat-val">$15,000</div>
-                      <div class="gs-bstat-sub">Last 30 days</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="gs-banner-btns">
-                  <div class="gs-banner-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Create an Inquiry</div>
-                  <div class="gs-banner-btn"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>View Port Map</div>
-                </div>
-              </div>
-              <!-- 3-column body -->
-              <div class="gs-cols">
-                <!-- Left: price + follow-ups -->
-                <div class="gs-col-l">
-                  <div class="gs-card" style="height:auto;flex-shrink:0;">
-                    <div class="gs-price-widget">
-                      <div class="gs-crude-tabs"><div class="gs-ctab active">Brent</div><div class="gs-ctab">Crude</div><div class="gs-ctab">Natural Gas</div></div>
-                      <div class="gs-crude-price">64.65</div>
-                      <div class="gs-crude-row"><span class="gs-crude-cur">USD</span><span class="gs-crude-badge">+0.12%</span></div>
-                      <div class="gs-crude-live">As of 12:23:36 AM EST.</div>
-                      <div class="gs-chartline">
-                        <svg width="100%" height="100%" viewBox="0 0 180 40" preserveAspectRatio="none">
-                          <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1852FE" stop-opacity=".18"/><stop offset="100%" stop-color="#1852FE" stop-opacity="0"/></linearGradient></defs>
-                          <path d="M0,32 C20,28 30,22 45,20 C60,18 70,25 85,18 C100,11 115,15 130,12 C145,9 160,16 180,10 L180,40 L0,40Z" fill="url(#cg)"/>
-                          <path d="M0,32 C20,28 30,22 45,20 C60,18 70,25 85,18 C100,11 115,15 130,12 C145,9 160,16 180,10" fill="none" stroke="#1852FE" stroke-width="1.5"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="gs-card" style="flex:1;">
-                    <div class="gs-fu-hdr">
-                      <div class="gs-fu-title">Follow Ups</div>
-                      <svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Unassigned Jobs</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Invoice Approval</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Pending Credit Approval</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge amber" style="font-size:9px;">99+</div><div class="gs-fu-label">Partly Booked</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Delivery Pending</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                    <div class="gs-fu-item"><div class="gs-fu-badge">15</div><div class="gs-fu-label">Uninvoiced</div><svg class="gs-fu-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                  </div>
-                </div>
-                <!-- Center: Port Fuel Pricing -->
-                <div class="gs-col-m">
-                  <div class="gs-card">
-                    <div class="gs-card-hdr" style="padding:10px 12px;">
-                      <div><div style="font-size:13px;font-weight:600;color:#0E1A33;">Port Fuel Pricing</div><div style="font-size:9px;color:#8995AB;">Most traded ports & updates on price.</div></div>
-                      <div style="font-size:9px;font-weight:600;color:#1852FE;cursor:pointer;">+ Add price indication</div>
-                    </div>
-                    <div class="gs-port-inner">
-                      <div class="gs-port-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><div class="gs-port-search-txt">Search for ports</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">VR</div><div><div class="gs-port-name">Vladivostok Russia</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">SO</div><div><div class="gs-port-name">Salalah Oman</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">DC</div><div><div class="gs-port-name">Dubrovnik Croatia</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">TG</div><div><div class="gs-port-name">Thessaloniki Greece</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">AT</div><div><div class="gs-port-name">Akdeniz Turkey</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">SG</div><div><div class="gs-port-name">Singapore</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                      <div class="gs-port-row"><div class="gs-port-flag">NZ</div><div><div class="gs-port-name">Auckland New Zealand</div></div><div class="gs-port-prices-badge">4 Prices</div><div class="gs-port-add">+</div></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Right: Updates & News -->
-                <div class="gs-col-r">
-                  <div class="gs-card">
-                    <div style="padding:10px 12px;border-bottom:1px solid #E4E9F2;"><div style="font-size:13px;font-weight:600;color:#0E1A33;">Updates &amp; News</div><div style="font-size:9px;color:#8995AB;">Daily updates on fuel, port, and trader information.</div></div>
-                    <div class="gs-news-tabs"><div class="gs-ntab active">Trader Updates</div><div class="gs-ntab">News</div></div>
-                    <div style="display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid #E4E9F2;"><div style="background:#EAF1FE;color:#1852FE;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;">All</div><div style="font-size:9px;font-weight:600;color:#8995AB;padding:2px 8px;">By Me</div></div>
-                    <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#EAF1FE;color:#1852FE;">AF</div><div class="gs-msg-name">Aaron Freights</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Bunker prices at Salalah have dropped 3% this week. Recommend adjusting the inquiry threshold accordingly for this port.</div></div>
-                    <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#FEF3C7;color:#92400E;">G</div><div class="gs-msg-name">George</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Noted. I will update the pricing sheet for Salalah and loop in the compliance team before EOD.</div></div>
-                    <div class="gs-msg-item"><div class="gs-msg-top"><div class="gs-msg-av" style="background:#DCFCE7;color:#166534;">Y</div><div class="gs-msg-name">You</div><div class="gs-msg-time">11 Jan 2025</div></div><div class="gs-msg-txt">Singapore VLSFO has held steady at this price for the past week.</div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="gs-proto-frame" data-parallax="10">
+            <iframe src="assets/prototypes/index.html" title="GeoStem Dashboard Overview - working prototype"></iframe>
           </div>
         </div>
       </div>
@@ -462,53 +167,127 @@
 
     <!-- BODY -->
     <article class="cs-body">
-      <div class="container container--narrow">
+      <div class="container">
 
-        <!-- Challenge -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Business challenge</p>
-          <h2 class="cs-section__title">A trading team running on Bloomberg, WhatsApp, and manual spreadsheets</h2>
-          <p class="cs-section__text">
-            Maritime fuel trading is time-critical and margin-thin - a stale price isn't a UX flaw, it's a trading loss. When I joined Geoserve, the trading team ran their entire operation across Bloomberg, WhatsApp, and manual spreadsheets, with no single source of truth. Prices were stale by the time anyone referenced them, deal pipeline visibility didn't exist, and follow-ups got buried in email threads.
-          </p>
-          <p class="cs-section__text">
-            The opportunity: build one platform around how traders actually work - live commodity pricing, global port bunkering rates, active deal status, and a real-time port map, in one fast interface.
-          </p>
+        <!-- Context -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Context</p>
+          <div>
+            <h2 class="cs-section__title">A small trading desk, losing deals to the clock</h2>
+            <p class="cs-section__text">
+              Geoserve's traders were losing fuel inquiries to the clock - jumping between Splash, news websites, WhatsApp, and spreadsheets just to answer a single pricing question. I turned that fragmented workflow into a production-ready 0→1 platform in 5 days.
+            </p>
+            <p class="cs-section__text">One interface for:</p>
+            <ul class="gs-list">
+              <li><span class="gs-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Live fuel pricing</li>
+              <li><span class="gs-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Port &amp; bunkering data</li>
+              <li><span class="gs-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Deal flow</li>
+              <li><span class="gs-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Real-time port mapping</li>
+            </ul>
+            <p class="cs-section__text">
+              The goal wasn't just a better dashboard. It was to design around how traders actually work - faster decisions, fewer tools, and no lost inquiries. And the best part? 5 days to design. 5 days to build.
+            </p>
+          </div>
         </div>
 
-        <!-- Constraints -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Constraints &amp; roadblocks</p>
-          <h2 class="cs-section__title">Building for a domain with zero tolerance for slow or wrong</h2>
-          <ul class="cs-section__text" style="padding-left:20px;margin:0;">
-            <li style="margin-bottom:8px;"><strong>Time-critical domain:</strong> a slow or stale interface directly costs a trader money - not a usability complaint, a revenue one.</li>
-            <li style="margin-bottom:8px;"><strong>Three conflicting KPI sets:</strong> Senior Trader, Trader, and Sales needed fundamentally different performance signals from the same dashboard - no single view could serve all three without compromise.</li>
-            <li><strong>No system to extend:</strong> there was no existing product to inherit. Every token, component, and pattern had to be defined from scratch, in parallel with shipping the first module.</li>
-          </ul>
+        <!-- Challenge -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">The challenge</p>
+          <div>
+            <h2 class="cs-section__title">Getting to the real problem, not the relayed version of it</h2>
+            <p class="cs-section__text">
+              The brief came through the business team with gaps and assumptions that didn't reflect how traders actually worked. Instead of iterating on secondhand requirements, I went directly to the traders to understand the real problems.
+            </p>
+            <p class="cs-section__text">
+              That surfaced three key constraints:
+            </p>
+            <div class="gs-constraints-row">
+              <div class="gs-theme-card">
+                <div class="gs-theme-num">01</div>
+                <div class="gs-theme-title">Time-critical</div>
+                <div class="gs-theme-desc">Slow or stale data could directly cost a trader money.</div>
+              </div>
+              <div class="gs-theme-card">
+                <div class="gs-theme-num">02</div>
+                <div class="gs-theme-title">Conflicting KPIs</div>
+                <div class="gs-theme-desc">Senior Traders, Traders, and Sales needed different signals from the same dashboard.</div>
+              </div>
+              <div class="gs-theme-card">
+                <div class="gs-theme-num">03</div>
+                <div class="gs-theme-title">No existing system</div>
+                <div class="gs-theme-desc">Every component, token, and pattern had to be built from scratch while shipping the first module.</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Metrics -->
-        <div class="cs-metrics" data-reveal>
-          <div class="cs-metric">
+        <div class="cs-metrics">
+          <div class="cs-metric" data-reveal data-delay="1">
             <div class="cs-metric__value">0-to-1</div>
             <div class="cs-metric__label">Full platform designed and shipped from scratch</div>
           </div>
-          <div class="cs-metric">
-            <div class="cs-metric__value">5 days</div>
-            <div class="cs-metric__label">From final designs to fully interactive build shared with dev</div>
+          <div class="cs-metric" data-reveal data-delay="2">
+            <div class="cs-metric__value">3-5 min</div>
+            <div class="cs-metric__label">Per-inquiry response time, down from 15-20 minutes</div>
           </div>
-          <div class="cs-metric">
+          <div class="cs-metric" data-reveal data-delay="3">
             <div class="cs-metric__value">4 tools</div>
             <div class="cs-metric__label">External tools consolidated into one platform</div>
           </div>
         </div>
 
-        <!-- Research - visual section -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Discovery &amp; research</p>
-          <h2 class="cs-section__title">Three user interviews, four design-defining insights</h2>
+        <!-- My Role -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">My role</p>
+          <div>
+            <h2 class="cs-section__title">Owning the problem past the design file</h2>
+            <p class="cs-section__text">
+              I led the research, worked directly with traders, shaped the product scope with the CTO, and defined the two core modules.
+            </p>
+            <p class="cs-section__text">
+              When the existing platform couldn't support key features, I took ownership beyond design - <strong>proving feasibility, aligning teams, and driving the work through implementation.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Leadership -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Leadership</p>
+          <div>
+            <h2 class="cs-section__title">Turning a "that'll take too long" into a shipped feature</h2>
+            <p class="cs-section__text">
+              Two features came directly from trader research: <strong>distance calculation between ports</strong> and <strong>fuel pricing by port</strong>. Both required new APIs and logic, and the tech team wasn't resourced to build them. They were also hesitant about using AI for development.
+            </p>
+            <p class="cs-section__text">
+              So I built working prototypes myself using <strong>dummy data, free APIs, and Claude Code</strong> to prove feasibility. I took them to the CTO, who backed the approach and assigned a developer to build them.
+            </p>
+            <p class="cs-section__text">
+              I also took ownership beyond design - supporting implementation and QA. <strong>Both features shipped in five days, with fewer bugs than a typical build.</strong>
+            </p>
+
+            <!-- Claude Code / leadership callout -->
+            <div class="cs-callout" style="margin-top:8px;padding:28px;border-radius:20px;background:linear-gradient(135deg,#0F0B2A,#1E0A5C);border:1px solid rgba(167,139,250,0.3);">
+              <div style="display:flex;align-items:flex-start;gap:14px;">
+                <div style="width:36px;height:36px;border-radius:9px;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#C4B5FD;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;">What this changed about how I work</div>
+                  <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;margin:0;">Prototyping the feature myself wasn't about proving I could code. It was the fastest way to turn a stalled decision into a shipped one - and it's changed how I bring new ideas to engineering ever since: show a working version before asking for buy-in on the idea alone.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Thinking -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Product thinking</p>
+          <div>
+          <h2 class="cs-section__title">Three traders, four decisions</h2>
           <p class="cs-section__text">
-            Before touching Figma, I ran structured interviews with the core users - a Senior Trader, a Trader, and a Sales lead. Each had a different workflow and different gaps in the existing system.
+            With direct access secured, I ran structured interviews with the core users - a Senior Trader, a Trader, and a Sales lead. Each had a different workflow and different gaps in the existing system.
           </p>
 
           <div class="gs-interview-grid">
@@ -573,129 +352,29 @@
               <div class="gs-theme-desc">Follow-ups needed more than a task label - claims status, credit line, and inquiry history needed to be visible in-context.</div>
             </div>
           </div>
-        </div>
 
-        <!-- Strategy -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Strategy</p>
-          <h2 class="cs-section__title">Two modules, one design system</h2>
-          <p class="cs-section__text">
-            Working with the CEO, I scoped the platform into two modules: the <strong>GeoStem trading dashboard</strong> (live pricing, port intelligence, deal pipeline) and a <strong>Voyage Optimisation Report system</strong> (weather routing, waypoint planning, delivered as a structured multi-page report). I built the design system in parallel with the first module - every component built for the dashboard became a reusable asset for voyage reporting.
-          </p>
-        </div>
-
-        <!-- Process -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Design process</p>
-          <h2 class="cs-section__title">From information hierarchy to shipped interface</h2>
-
-          <div class="cs-steps">
-            <div class="cs-step">
-              <span class="cs-step__num">01</span>
-              <div>
-                <h3 class="cs-step__title">Three-panel layout system</h3>
-                <p class="cs-step__desc">Ranked every data point by trader frequency and urgency. Live commodity price and active follow-ups topped the list. This became the layout architecture: left panel for market data and deal actions, centre for port pricing, right for trader updates and news. Each section independently scrollable - traders monitor all three contexts without switching views.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">02</span>
-              <div>
-                <h3 class="cs-step__title">Live fuel price chart</h3>
-                <p class="cs-step__desc">A dedicated full-screen view with TradingView integration for commodity price history across Brent, Crude, and Natural Gas. Six stat cards (Open, High, Low, Prev Close, 52W High, 52W Low) with colour-coded deltas that read instantly without scanning labels.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">03</span>
-              <div>
-                <h3 class="cs-step__title">Interactive global port map</h3>
-                <p class="cs-step__desc">Leaflet-based port map with a custom dark navy tile treatment. Clicking a port surfaces fuel grades (VLSFO, HSFO, LSMGO), weather conditions, top sellers, and nearby ports. Overlays panel for maritime context - ECA zones, piracy areas, storm routing, and base layer modes.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">04</span>
-              <div>
-                <h3 class="cs-step__title">Built in Claude Code - shared with dev in 5 days</h3>
-                <p class="cs-step__desc">The entire UI was built in Claude Code as a fully interactive prototype - all screens, interaction states, data edge cases (empty states, loading, error, partial data), and responsive behaviour. Shared with the dev team in 5 days. Developers connected a backend to a production-ready interface instead of building UI from scratch - no UI rebuild, no guesswork on edge cases at launch.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Claude Code callout -->
-          <div class="cs-callout" style="margin-top:28px;padding:28px;border-radius:20px;background:linear-gradient(135deg,#0F0B2A,#1E0A5C);border:1px solid rgba(167,139,250,0.3);">
-            <div style="display:flex;align-items:flex-start;gap:14px;">
-              <div style="width:36px;height:36px;border-radius:9px;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              </div>
-              <div>
-                <div style="font-size:11px;font-weight:700;color:#C4B5FD;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;">Built with Claude Code</div>
-                <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;margin:0;">Every screen was interactive before a single engineer touched the codebase - real data formats, real error states, real empty states. That's what made the 5-day handoff possible: there was nothing left to design once dev picked it up.</p>
-              </div>
-            </div>
+          <p class="cs-section__text" style="margin-top:28px;">Working with traders, I defined two core modules:</p>
+          <p class="cs-section__text" style="margin-top:12px;"><strong>GeoStem Dashboard</strong> - live pricing, port intelligence, and deal pipeline.</p>
+          <p class="cs-section__text" style="margin-top:8px;"><strong>Distance Calculator</strong> - weather routing, waypoint planning, and structured reports.</p>
+          <p class="cs-section__text" style="margin-top:16px;">Both were built on a <strong>shared design system</strong>, developed alongside the first module.</p>
           </div>
         </div>
 
-      </div><!-- /.container--narrow -->
+      </div><!-- /.container -->
 
       <!-- Screen 2: Live Fuel Price -->
       <div style="background:#EEF2F8;padding:48px 0 56px;" data-reveal>
         <div class="container">
-          <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 02 - Live Fuel Price</p>
-          <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
-          <div class="gs-mockup gs-fuel">
-            <div class="gs-nav">
-              <div class="gs-burger"><svg width="16" height="16" viewBox="0 0 24 24" stroke="#5A6B85" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg></div>
-              <div class="gs-nico active"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div class="gs-sep"></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 010 2.8"/></svg></div>
-              <div class="gs-avatar">A</div>
-            </div>
-            <div class="gs-fuel-main">
-              <div class="gs-fuel-topbar">
-                <div>
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8995AB" stroke-width="2" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    <div class="gs-fuel-title">Live Fuel Price</div>
-                  </div>
-                  <div class="gs-fuel-sub">As of 03:31:04 AM EST.</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;">
-                  <div class="gs-live-badge"><div class="gs-live-dot"></div>Live</div>
-                  <div class="gs-fuel-tabs"><div class="gs-fuel-tab active">Brent</div><div class="gs-fuel-tab">Crude</div><div class="gs-fuel-tab">Natural Gas</div></div>
-                </div>
-              </div>
-              <div class="gs-price-hero-row">
-                <div class="gs-price-big">64.65</div>
-                <div class="gs-price-unit">USD</div>
-                <div class="gs-price-up"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+0.123%</div>
-                <div style="font-size:11px;font-weight:600;color:#8995AB;">+0.08 today</div>
-              </div>
-              <div class="gs-stat-cards">
-                <div class="gs-scard"><div class="gs-scard-label">Open<div class="gs-scard-icon ic-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div></div><div class="gs-scard-val">64.12</div><div class="gs-scard-footer"><div class="gs-scard-sub">Today's open</div><div class="gs-scard-delta up">+0.53</div></div></div>
-                <div class="gs-scard"><div class="gs-scard-label">Day High<div class="gs-scard-icon ic-g"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div></div><div class="gs-scard-val up">65.20</div><div class="gs-range"><div class="gs-range-fill gs-rf-up" style="width:72%"></div></div><div class="gs-scard-footer"><div class="gs-scard-sub">Intraday high</div><div class="gs-scard-delta up">+1.65%</div></div></div>
-                <div class="gs-scard"><div class="gs-scard-label">Day Low<div class="gs-scard-icon ic-r"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="gs-scard-val dn">63.45</div><div class="gs-range"><div class="gs-range-fill gs-rf-dn" style="width:72%"></div></div><div class="gs-scard-footer"><div class="gs-scard-sub">Intraday low</div><div class="gs-scard-delta dn">-1.71%</div></div></div>
-                <div class="gs-scard"><div class="gs-scard-label">Prev Close<div class="gs-scard-icon ic-b"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></div></div><div class="gs-scard-val">64.57</div><div class="gs-scard-footer"><div class="gs-scard-sub">Yesterday</div><div class="gs-scard-delta up">+0.08</div></div></div>
-                <div class="gs-scard"><div class="gs-scard-label">52W High<div class="gs-scard-icon ic-g"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div></div><div class="gs-scard-val up">89.10</div><div class="gs-range"><div class="gs-range-fill gs-rf-up" style="width:40%"></div></div><div class="gs-scard-footer"><div class="gs-scard-sub">Annual high</div><div class="gs-scard-delta dn">-27.5%</div></div></div>
-                <div class="gs-scard"><div class="gs-scard-label">52W Low<div class="gs-scard-icon ic-r"><svg viewBox="0 0 24 24"><polyline points="1 6 7 6 10.5 15.5 15 3 18 12 22 12"/><polyline points="7 6 1 6 1 12"/></svg></div></div><div class="gs-scard-val dn">58.30</div><div class="gs-range"><div class="gs-range-fill gs-rf-b" style="width:55%"></div></div><div class="gs-scard-footer"><div class="gs-scard-sub">Annual low</div><div class="gs-scard-delta up">+10.9%</div></div></div>
-              </div>
-              <div class="gs-chart-card">
-                <div class="gs-chart-toolbar">
-                  <div class="gs-period-btn active">1D</div><div class="gs-period-btn">5D</div><div class="gs-period-btn">1M</div><div class="gs-period-btn">3M</div><div class="gs-period-btn">6M</div><div class="gs-period-btn">YTD</div><div class="gs-period-btn">1Y</div>
-                  <div class="gs-tsep"></div>
-                  <div style="font-size:9px;color:#8995AB;margin-left:4px;">Interval: 2 Hrs</div>
-                </div>
-                <div class="gs-chart-body">
-                  <svg width="100%" height="100%" viewBox="0 0 700 100" preserveAspectRatio="none">
-                    <defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1852FE" stop-opacity=".2"/><stop offset="100%" stop-color="#1852FE" stop-opacity="0"/></linearGradient></defs>
-                    <path d="M0,40 L30,38 L50,60 L80,75 L100,55 L130,70 L160,80 L190,65 L220,70 L250,55 L280,65 L310,50 L340,55 L370,45 L400,50 L430,42 L460,55 L490,48 L520,58 L550,45 L580,50 L610,38 L640,42 L670,30 L700,35 L700,100 L0,100Z" fill="url(#fg)"/>
-                    <path d="M0,40 L30,38 L50,60 L80,75 L100,55 L130,70 L160,80 L190,65 L220,70 L250,55 L280,65 L310,50 L340,55 L370,45 L400,50 L430,42 L460,55 L490,48 L520,58 L550,45 L580,50 L610,38 L640,42 L670,30 L700,35" fill="none" stroke="#1852FE" stroke-width="1.5"/>
-                    <line x1="700" y1="35" x2="700" y2="100" stroke="#1852FE" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/>
-                    <rect x="685" y="31" width="28" height="12" rx="2" fill="#1852FE" opacity=".9"/>
-                    <text x="699" y="40" fill="#fff" font-size="7" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">73.06</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
+          <h2 class="cs-section__title" style="margin-bottom:var(--s10);">What actually shipped</h2>
+          <div class="gs-screen-split">
+          <div>
+          <h3 class="cs-step__title">Live fuel price chart</h3>
+          <p class="cs-step__desc">A full-screen TradingView-powered commodity view for Brent, Crude, and Natural Gas, with six key price stats and instant colour-coded deltas.</p>
+          <p class="cs-step__desc">The view was built directly in Claude using the design system we created, turning the designed patterns into a functional interface.</p>
+          </div>
+          <div class="gs-proto-frame" data-parallax="14">
+            <iframe src="assets/prototypes/fuel-price.html" title="GeoStem Live Fuel Price - working prototype"></iframe>
+          </div>
           </div>
         </div>
       </div>
@@ -703,174 +382,51 @@
       <!-- Screen 3: Port Map -->
       <div style="background:#F4F7FC;padding:48px 0 56px;" data-reveal>
         <div class="container">
-          <p style="font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;">Screen 03 - Port Map</p>
-          <p style="font-size:var(--fs-xs);font-style:italic;color:var(--text-tertiary);margin-bottom:20px;">Reference screenshot recreated with AI tools - actual product details are under NDA. Happy to walk through the live product on a call.</p>
-          <div class="gs-mockup" style="display:flex;">
-            <!-- Nav rail -->
-            <div class="gs-nav">
-              <div class="gs-burger"><svg width="16" height="16" viewBox="0 0 24 24" stroke="#5A6B85" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg></div>
-              <div class="gs-nico active"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div class="gs-sep"></div>
-              <div class="gs-nico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8"/></svg></div>
-              <div class="gs-avatar">A</div>
-            </div>
-            <!-- Left port panel -->
-            <div class="gs-map-left">
-              <div class="gs-map-left-hdr">
-                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8995AB" stroke-width="2" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                  <div class="gs-port-tag">🇬🇮 GIBRALTAR</div>
-                </div>
-                <div class="gs-port-title">Gibraltar</div>
-                <div class="gs-port-coord">51.2194° N, 4.4025° E · UTC+1</div>
-              </div>
-              <div class="gs-grades-grid">
-                <div class="gs-grade-box"><div class="gs-grade-lbl">VLSFO</div><div class="gs-grade-price">$585</div><div class="gs-grade-unit">/mt</div></div>
-                <div class="gs-grade-box"><div class="gs-grade-lbl">HSFO</div><div class="gs-grade-price">$424</div><div class="gs-grade-unit">/mt</div></div>
-                <div class="gs-grade-box"><div class="gs-grade-lbl">LSMGO</div><div class="gs-grade-price">$790</div><div class="gs-grade-unit">/mt</div></div>
-              </div>
-              <div style="font-size:9px;color:#8995AB;padding:0 12px;margin-bottom:6px;">Prices updated 25 Jun 2026, 13:00 UTC</div>
-              <div class="gs-map-section">
-                <div class="gs-map-section-title">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 110-14h8.5"/><path d="M17 5l5 5-5 5"/></svg>
-                  Weather Conditions
-                </div>
-                <div class="gs-weather-grid">
-                  <div class="gs-weather-box"><div class="gs-weather-icon">💨</div><div class="gs-weather-lbl">WIND</div><div class="gs-weather-val">20 kn E</div></div>
-                  <div class="gs-weather-box"><div class="gs-weather-icon">🌊</div><div class="gs-weather-lbl">WAVE</div><div class="gs-weather-val">1.8 m</div></div>
-                  <div class="gs-weather-box"><div class="gs-weather-icon">🌡️</div><div class="gs-weather-lbl">TEMP</div><div class="gs-weather-val">19 °C</div></div>
-                </div>
-              </div>
-              <div class="gs-map-section">
-                <div class="gs-map-section-title">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                  Top 3 Sellers
-                </div>
-                <div class="gs-seller-row"><div class="gs-seller-av" style="background:#EAF1FE;color:#1852FE;">VV</div><div><div class="gs-seller-name">Vessel Visionary LLP</div><div class="gs-seller-sub">vessel@geoserves.com</div></div><div class="gs-seller-price">$616</div></div>
-                <div class="gs-seller-row"><div class="gs-seller-av" style="background:#DCFCE7;color:#166534;">SS</div><div><div class="gs-seller-name">Seafarer Scout LLP</div><div class="gs-seller-sub">seafarer@geoserves.com</div></div><div class="gs-seller-price">$620</div></div>
-                <div class="gs-seller-row"><div class="gs-seller-av" style="background:#FEF3C7;color:#92400E;">SE</div><div><div class="gs-seller-name">Sailor's Sentry LLP</div><div class="gs-seller-sub">sentry@geoserves.com</div></div><div class="gs-seller-price">$624</div></div>
-              </div>
-              <div class="gs-map-section">
-                <div class="gs-map-section-title">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>
-                  Nearby Ports
-                </div>
-                <div class="gs-seller-row" style="justify-content:space-between;"><div class="gs-seller-name">Rotterdam</div><div class="gs-seller-sub">24 Mar 2026</div></div>
-                <div class="gs-seller-row" style="justify-content:space-between;"><div class="gs-seller-name">Algeciras</div><div class="gs-seller-sub">18 Mar 2026</div></div>
-              </div>
-              <div class="gs-calc-btn"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3M3 21h3m15 0h-3M3 16v3m18-3v3"/></svg>Calculate Distance</div>
-            </div>
-            <!-- Map area -->
-            <div class="gs-map-area" style="flex:1;">
-              <div id="gs-leaflet-map" style="position:absolute;inset:0;"></div>
-              <!-- Route -->
-              <div class="gs-route-line"></div>
-              <div class="gs-route-a"></div>
-              <div class="gs-route-b"></div>
-              <div class="gs-route-label-a">A</div>
-              <div class="gs-route-label-b">B</div>
-              <!-- Port callout -->
-              <div class="gs-map-callout">
-                <div style="display:flex;align-items:center;gap:6px;">
-                  <div style="width:22px;height:22px;background:#EAF1FE;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1852FE" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-                  <div><div class="gs-map-callout-name">Gibraltar</div><div class="gs-map-callout-sub">Gibraltar</div></div>
-                </div>
-              </div>
-              <!-- Top bar -->
-              <div class="gs-map-topbar">
-                <div class="gs-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><div class="gs-search-text">Search ports...</div></div>
-              </div>
-            </div>
-            <!-- Right overlays panel -->
-            <div class="gs-map-right">
-              <div class="gs-overlays-hdr"><div class="gs-overlays-title">Overlays</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8995AB" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
-              <div class="gs-overlays-grid">
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg><div class="gs-overlay-btn-lbl">ECA</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg><div class="gs-overlay-btn-lbl">Piracy</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="gs-overlay-btn-lbl">Pressure</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><path d="M19 16.9A5 5 0 0018 7h-1.26A8 8 0 101 9M13 17l-5 5M13 17l5 5"/></svg><div class="gs-overlay-btn-lbl">Storm</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg><div class="gs-overlay-btn-lbl">Nautical</div></div>
-                <div class="gs-overlay-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="gs-overlay-btn-lbl">No-Go Zones</div></div>
-                <div class="gs-overlay-btn" style="grid-column:span 3;flex-direction:row;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24"><path d="M8 3v3m0 0l-3 3m3-3l3 3M16 21v-3m0 0l3-3m-3 3l-3-3"/></svg><div class="gs-overlay-btn-lbl">Ice lines</div></div>
-              </div>
-              <div class="gs-base-section">
-                <div class="gs-base-title">Base layer</div>
-                <div class="gs-base-grid">
-                  <div class="gs-base-btn" style="background:#EAF1FE;"><svg viewBox="0 0 24 24" stroke="#1852FE"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><div class="gs-base-btn-lbl" style="color:#1852FE;">Default</div></div>
-                  <div class="gs-base-btn"><svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="gs-base-btn-lbl">Swell</div></div>
-                  <div class="gs-base-btn"><svg viewBox="0 0 24 24"><path d="M3 6c0 0 4-2 8-2s8 2 8 2M3 12c0 0 4-2 8-2s8 2 8 2M3 18c0 0 4-2 8-2s8 2 8 2"/></svg><div class="gs-base-btn-lbl">Wave</div></div>
-                </div>
-              </div>
-            </div>
+          <div class="gs-screen-split">
+          <div>
+          <h3 class="cs-step__title">Interactive global port map</h3>
+          <p class="cs-step__desc">A Leaflet-based port map with a custom dark navy tile treatment. Clicking a port surfaces fuel grades (VLSFO, HSFO, LSMGO), weather conditions, top sellers, and nearby ports - including the distance calculator and per-port fuel pricing, the two features that took a CTO's intervention to get built. An overlays panel adds maritime context - ECA zones, piracy areas, storm routing, and base layer modes.</p>
+          </div>
+          <div class="gs-proto-frame" data-parallax="14" id="gsPortMapFrame">
+            <iframe src="assets/prototypes/port-map.html" title="GeoStem Port Map - working prototype"></iframe>
+          </div>
           </div>
         </div>
       </div>
 
-      <!-- Outcomes + Key Highlights -->
-      <div class="container container--narrow">
+      <!-- Systems, Outcome, Reflection -->
+      <div class="container" style="padding-top:clamp(3rem, 8vw, 6rem);">
 
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Outcomes</p>
-          <h2 class="cs-section__title">What shipped and what it changed</h2>
-          <p class="cs-section__text">
-            GeoStem replaced 4 fragmented tools with one fast interface. Deal pipeline visibility - previously non-existent - is now a single view traders check without switching tabs. And the design system built for the first module is already paying for itself: reused across voyage reporting, validation screens, and onboarding flows without a single redesign.
-          </p>
+        <!-- Systems -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Systems</p>
+          <div>
+            <h2 class="cs-section__title">Created a design system as skill which can be used for upcoming features</h2>
+            <p class="cs-section__text">
+              Every token, component, and pattern built for the GeoStem dashboard was designed to outlive it. The same system now powers the Voyage Optimisation Report, plus validation screens and onboarding flows added later - without a single redesign.
+            </p>
+          </div>
         </div>
 
-        <!-- Learnings -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Learnings &amp; growth</p>
-          <h2 class="cs-section__title">What this project taught me</h2>
-          <ul class="cs-section__text" style="padding-left:20px;margin:0;">
-            <li style="margin-bottom:8px;">Interviewing three roles with genuinely different KPIs before opening Figma is what kept the three-panel layout from becoming a generic dashboard template.</li>
-            <li style="margin-bottom:8px;">In a time-critical domain like trading, a workflow gap - like traders being locked out of entering price indications - is a business risk, not a UX nitpick. Treat it with the same urgency as a bug.</li>
-            <li>Shipping a fully interactive prototype, not static mockups, is what actually collapses design-to-dev handoff time. The 5-day build was possible because every edge case was already resolved before engineering saw it.</li>
-          </ul>
+        <!-- Outcome -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Outcome</p>
+          <div>
+            <h2 class="cs-section__title">What changed for the traders</h2>
+            <p class="cs-section__text">
+              GeoStem replaced 4 fragmented tools - traders stopped opening them entirely. The number that matters most: responding to a fuel inquiry, which used to take 15-20 minutes of checking prices across tools, now takes 3-5 minutes. Deal pipeline visibility, which didn't exist before, is now a single view traders check without switching tabs.
+            </p>
+          </div>
         </div>
 
-        <!-- KEY HIGHLIGHTS -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Key highlights</p>
-          <h2 class="cs-section__title">What made this project different</h2>
-
-          <div class="gs-highlights">
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div class="gs-hl-stat">0-to-1</div>
-              <div class="gs-hl-label">Full platform designed from scratch</div>
-              <div class="gs-hl-desc">No existing product to inherit. Every screen, interaction, and component was designed from first principles based on user research.</div>
-            </div>
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-              <div class="gs-hl-stat">5 days</div>
-              <div class="gs-hl-label">Design to interactive build</div>
-              <div class="gs-hl-desc">The full UI was built in Claude Code with all interactions and edge cases. Dev team connected the backend - no UI rebuild needed.</div>
-            </div>
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-              <div class="gs-hl-stat">Design system</div>
-              <div class="gs-hl-label">Built in parallel, used across modules</div>
-              <div class="gs-hl-desc">Tokens, components, and patterns built alongside the first module - reused across voyage reporting without a single redesign.</div>
-            </div>
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-              <div class="gs-hl-stat">3 users</div>
-              <div class="gs-hl-label">Domain expert research drove layout</div>
-              <div class="gs-hl-desc">Every panel position, data grouping, and label was grounded in how traders actually read market information - not designer assumptions.</div>
-            </div>
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div class="gs-hl-stat">4 tools</div>
-              <div class="gs-hl-label">External tools consolidated</div>
-              <div class="gs-hl-desc">Trade Winds, Sea Searcher, Splash, and email chains - all replaced by one unified platform purpose-built for maritime trading.</div>
-            </div>
-            <div class="gs-hl">
-              <div class="gs-hl-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-              <div class="gs-hl-stat">Zero rebuilds</div>
-              <div class="gs-hl-label">Faster go-live, no UI guesswork</div>
-              <div class="gs-hl-desc">Shipping an interactive prototype with all edge cases pre-handled meant developers spent zero time on UI guesswork - just backend wiring.</div>
-            </div>
+        <!-- Reflection -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Reflection</p>
+          <div>
+            <h2 class="cs-section__title">What I'd do differently</h2>
+            <p class="cs-section__text">
+              I ran the trader interviews directly, but in hindsight, I should have brought the Product Manager into those conversations. It would have reduced the back-and-forth, avoided re-explaining findings, and created alignment earlier.
+            </p>
           </div>
         </div>
 
@@ -897,47 +453,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer__inner">
-        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
-        <nav class="footer__links">
-          <a href="work.html" class="footer__link">Work</a>
-          <a href="about.html" class="footer__link">About</a>
-          <a href="index.html#contact" class="footer__link">Contact</a>
-        </nav>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <script src="js/main.js?v=20260701"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script>
-    (function () {
-      var el = document.getElementById('gs-leaflet-map');
-      if (!el || typeof L === 'undefined') return;
-      var map = L.map(el, {
-        center: [36.1408, -5.3536], // Gibraltar
-        zoom: 11,
-        zoomControl: false,
-        dragging: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        keyboard: false,
-        touchZoom: false,
-        attributionControl: true
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 20
-      }).addTo(map);
-    })();
-  </script>
+  <script src="js/main.js?v=20260901a"></script>
 </body>
 </html>

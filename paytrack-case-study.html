@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayTrack - Redesigning a UPI Expense Tracker | Case Study by Mubeen Ansari</title>
+  <meta name="description" content="A style exploration for PayTrack, a UPI-first expense tracker - 40+ screens designed and a set of pattern guidelines for the system to scale.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html"  class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html"  class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- CASE STUDY HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · FinTech · Mobile App · Style exploration</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">PayTrack</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          Designing the visual identity and UI for a SMS parsing based expense tracker- from first login to daily insights.
+        </p>
+
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Product &amp; UI Design</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">Style exploration · 40+ screens · guidelines</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Platform</p>
+            <p class="cs-meta-item__value">iOS · Android</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Tools</p>
+            <p class="cs-meta-item__value">Figma</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDY BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- Overview -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Overview</p>
+          <h2 class="cs-section__title">Expense tracking without the spreadsheet</h2>
+          <p class="cs-section__text">
+            Most people who try to track their spending by hand give up within weeks. PayTrack solves this by reading your payment SMS and UPI transactions automatically, so there's nothing to type in. The screens just need to make all that information worth checking every day.
+          </p>
+          <p class="cs-section__text">
+            The design had to do two different jobs well: feel calm and simple the first time someone opens the app, and feel quick and clear every time after that, when someone's just checking where their money went.
+          </p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">40+</div>
+            <div class="cs-metric__label">Screens designed across sign-up, home, transactions, categories and profile</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">1</div>
+            <div class="cs-metric__label">Signature accent color used for every button and highlight</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">6</div>
+            <div class="cs-metric__label">Written guidelines so the design stays consistent as new screens get added</div>
+          </div>
+        </div>
+
+        <!-- Direction -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Direction</p>
+          <h2 class="cs-section__title">One accent, held with restraint</h2>
+          <p class="cs-section__text">
+            Most finance apps use blue and white. This one uses just two background colors instead - a deep near-black for anything important, like your statement, and a warm cream for everything you're meant to scan quickly. One bright lime green is used for every button and highlight, so your eye always knows where to look.
+          </p>
+
+          <div class="cs-palette-groups">
+            <div class="cs-palette-group">
+              <h3 class="cs-palette-heading">Primary colors</h3>
+              <div class="cs-palette">
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#11170D;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Ink</div><div class="cs-swatch__hex">#11170D</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#F6EDE4;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Cream</div><div class="cs-swatch__hex">#F6EDE4</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#9FE870;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Lime</div><div class="cs-swatch__hex">#9FE870</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1C4621;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Forest</div><div class="cs-swatch__hex">#1C4621</div></div></div>
+              </div>
+            </div>
+
+            <div class="cs-palette-group">
+              <h3 class="cs-palette-heading">Secondary colors</h3>
+              <div class="cs-palette">
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#5541BA;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Groceries</div><div class="cs-swatch__hex">#5541BA</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FF6316;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Food</div><div class="cs-swatch__hex">#FF6316</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FFCBEF;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Shopping</div><div class="cs-swatch__hex">#FFCBEF</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#C8D426;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Others</div><div class="cs-swatch__hex">#C8D426</div></div></div>
+              </div>
+            </div>
+
+            <div class="cs-palette-group">
+              <h3 class="cs-palette-heading">Semantic colors</h3>
+              <div class="cs-palette">
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#DC2625;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Error</div><div class="cs-swatch__hex">#DC2625</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1B9E4B;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Success</div><div class="cs-swatch__hex">#1B9E4B</div></div></div>
+                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FB7D24;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Warning</div><div class="cs-swatch__hex">#FB7D24</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Iconography -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Iconography</p>
+          <h2 class="cs-section__title">A custom icon set, built for the app</h2>
+          <p class="cs-section__text">
+            Every icon is drawn to sit inside the same lime circle, so categories and actions look consistent everywhere in the app, from your first sign-up to everyday use.
+          </p>
+
+          <div class="cs-icons">
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-01.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-02.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-03.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-04.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-05.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-06.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-07.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-08.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-09.svg" alt="" width="48" height="48" loading="lazy"></div>
+            <div class="cs-icon"><img src="assets/icons/paytrack/icon-10.svg" alt="" width="48" height="48" loading="lazy"></div>
+          </div>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Notifications showcase -->
+      <section class="cs-notifs">
+        <div class="container container--narrow">
+          <div class="cs-notifs__grid">
+            <div>
+              <p class="cs-notifs__label">In the moment</p>
+              <h2 class="cs-notifs__title">Alerts that arrive<br>the moment <em>money moves.</em></h2>
+              <p class="cs-notifs__desc">Every transaction sends an instant alert, already sorted into a category. No need to open the app to know what just happened.</p>
+            </div>
+            <div class="cs-notifs__phone">
+              <div class="cs-notifs__clock">
+                <div class="cs-notifs__time">9:41</div>
+                <div class="cs-notifs__date">Monday, 12 May</div>
+              </div>
+              <div class="cs-notifs__stack">
+                <div class="cs-notif-card" data-reveal data-delay="1">
+                  <span class="cs-notif-card__icon" style="background:#5541BA;">🛒</span>
+                  <div class="cs-notif-card__body">
+                    <div class="cs-notif-card__top"><span class="cs-notif-card__title">PayTrack</span><span class="cs-notif-card__time">now</span></div>
+                    <p class="cs-notif-card__text">₹450 at Zepto, categorised as Groceries.</p>
+                  </div>
+                </div>
+                <div class="cs-notif-card" data-reveal data-delay="2">
+                  <span class="cs-notif-card__icon" style="background:#FF6316;">⚠️</span>
+                  <div class="cs-notif-card__body">
+                    <div class="cs-notif-card__top"><span class="cs-notif-card__title">PayTrack</span><span class="cs-notif-card__time">2m</span></div>
+                    <p class="cs-notif-card__text">You've used 78% of this month's Food budget.</p>
+                  </div>
+                </div>
+                <div class="cs-notif-card" data-reveal data-delay="3">
+                  <span class="cs-notif-card__icon" style="background:#9FE870;">📊</span>
+                  <div class="cs-notif-card__body">
+                    <div class="cs-notif-card__top"><span class="cs-notif-card__title">PayTrack</span><span class="cs-notif-card__time">1h</span></div>
+                    <p class="cs-notif-card__text">Weekly summary ready - ₹1,200 less than last week.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container container--narrow">
+
+        <!-- Walkthrough -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">Walkthrough</p>
+          <h2 class="cs-section__title">Twelve screens, three jobs</h2>
+          <p class="cs-section__text">
+            A closer look at three parts of the app: logging in, checking your spending, and finding a past transaction.
+          </p>
+
+          <!-- Flow 01 -->
+          <div class="cs-screens-flow" style="margin-top: var(--s10);">
+            <div class="cs-flow-tag"><span class="cs-flow-tag__dot" style="background:#5541BA;"></span>01 · Auth &amp; onboarding <span class="cs-flow-tag__count">- 6 screens</span></div>
+            <h3>Getting in without friction</h3>
+            <p class="cs-section__text">Log in with your phone number, verify with a code that shows a countdown, see a one-line pitch for the app, see what's worth paying for, and grant permissions that explain why they're needed before asking.</p>
+            <div class="cs-canvas">
+              <span class="cs-canvas__flow">Flow 01 · Onboarding</span>
+              <div class="cs-canvas__screens">
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">Mobile-first entry, no password to remember.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/login.webp" alt="Login screen: mobile number entry with Send OTP button" loading="lazy"></div><div class="cs-screen__name">01 - Login</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">The code box is ready to type in right away, with a visible countdown.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-sent.webp" alt="OTP verification screen with 24 second resend cooldown" loading="lazy"></div><div class="cs-screen__name">02 - Verify (sent)</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">Resend unlocks the moment the cooldown ends.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-ready.webp" alt="OTP verification screen with Resend OTP link active" loading="lazy"></div><div class="cs-screen__name">03 - Verify (ready)</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">The pitch in one line: spends, decoded.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/welcome.webp" alt="Welcome screen: Your spends, decoded" loading="lazy"></div><div class="cs-screen__name">04 - Welcome</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">A 50%-off offer that focuses on what you'll get, not a list of features.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/premium.webp" alt="Premium upsell screen: 50 percent off premium" loading="lazy"></div><div class="cs-screen__name">05 - Premium</div></div>
+                </div>
+                <div class="cs-canvas__screen cs-canvas__screen--hero">
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/permissions.webp" alt="App permissions screen with toggles for SMS, notifications and more" loading="lazy"></div><div class="cs-screen__name">06 - Permissions</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flow 02 -->
+          <div class="cs-screens-flow">
+            <div class="cs-flow-tag"><span class="cs-flow-tag__dot" style="background:#C8D426;"></span>02 · Home &amp; insight <span class="cs-flow-tag__count">- 1 screen</span></div>
+            <h3>The one screen that has to earn a daily open</h3>
+            <p class="cs-section__text">How much you've spent this month, what you're on track to spend, and where it's going - all visible the moment you open the app, no scrolling needed.</p>
+            <div class="cs-canvas">
+              <span class="cs-canvas__flow">Flow 02 · Home</span>
+              <div class="cs-canvas__spotlight">
+                <div class="cs-canvas__side-note cs-canvas__side-note--left">
+                  <p>This month's spend and the projected spend sit together in one glanceable stat card.</p>
+                  <span class="cs-canvas__connector--h"></span>
+                </div>
+                <div class="cs-screen" style="width:200px;"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/home.webp" alt="Home dashboard with spend this month, projected spend, income/spend/balance and category breakdown" loading="lazy"></div><div class="cs-screen__name">07 - Home</div></div>
+                <div class="cs-canvas__side-note cs-canvas__side-note--right">
+                  <span class="cs-canvas__connector--h"></span>
+                  <p>The category breakdown below reuses the same four colours used everywhere else in the app.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flow 03 -->
+          <div class="cs-screens-flow">
+            <div class="cs-flow-tag"><span class="cs-flow-tag__dot" style="background:#FF6316;"></span>03 · Transactions &amp; filtering <span class="cs-flow-tag__count">- 5 screens</span></div>
+            <h3>A ledger you can actually search</h3>
+            <p class="cs-section__text">Every transaction grouped by day. Filtering by month, date range or category always opens the same kind of pop-up sheet, so it never feels unfamiliar.</p>
+            <div class="cs-canvas">
+              <span class="cs-canvas__flow">Flow 03 · Transactions</span>
+              <div class="cs-canvas__screens">
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">A list of every transaction, grouped by day, newest first.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/listing.webp" alt="Transactions listing grouped by day" loading="lazy"></div><div class="cs-screen__name">08 - Listing</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">Jump to any month without leaving the list.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-month.webp" alt="Choose month bottom sheet" loading="lazy"></div><div class="cs-screen__name">09 - Choose month</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">Today, last week, last year - all picked the same simple way.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-view.webp" alt="Choose view bottom sheet with Today, Last week, Last month options" loading="lazy"></div><div class="cs-screen__name">10 - Choose view</div></div>
+                </div>
+                <div class="cs-canvas__screen">
+                  <p class="cs-canvas__caption">Twelve categories, each with its own icon and colour.</p>
+                  <span class="cs-canvas__connector"></span>
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter.webp" alt="Filter bottom sheet with twelve spend categories" loading="lazy"></div><div class="cs-screen__name">11 - Filter</div></div>
+                </div>
+                <div class="cs-canvas__screen cs-canvas__screen--hero">
+                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter-applied.webp" alt="Transactions list with an active filter chip showing 2 Applied" loading="lazy"></div><div class="cs-screen__name">12 - Filter applied</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="cs-scope-note">This shows 12 of the 40+ screens designed. The categories, transaction details, add-expense and profile screens all follow the same style rules shown here.</p>
+        </div>
+
+        <!-- Guidelines -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">The system</p>
+          <h2 class="cs-section__title">Guidelines, not just guesses</h2>
+          <p class="cs-section__text">
+            Twelve screens don't make a design system on their own, so every repeating pattern was written down - the same way a brand guide documents things like logo spacing.
+          </p>
+
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">Buttons</h3>
+                <p class="cs-step__desc">Every button looks the same: a rounded pill shape, dark background, lime text. When a button can't be tapped, it turns plain grey instead of a dimmed lime.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">Statement cards</h3>
+                <p class="cs-step__desc">Anything showing a number - like a total or balance - sits on a dark card at the top of the screen. Everything you scan and tap sits on the cream background below it.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Category colour</h3>
+                <p class="cs-step__desc">Each category gets one color, used everywhere it shows up - in dots, icons and chart slices.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">04</span>
+              <div>
+                <h3 class="cs-step__title">Bottom sheets</h3>
+                <p class="cs-step__desc">Every selection menu - month, view, filter - opens the same way: a cream panel that slides up from the bottom, with rounded corners and the same dark-and-lime Apply button.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">05</span>
+              <div>
+                <h3 class="cs-step__title">Navigation</h3>
+                <p class="cs-step__desc">Three tabs stay visible at all times, and the one you're on turns lime. You're never more than one tap away from Home.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">06</span>
+              <div>
+                <h3 class="cs-step__title">Type</h3>
+                <p class="cs-step__desc">Bold, compact headings. Softer grey for less important text. Numbers stay neatly aligned wherever two amounts need to line up, like in a list of prices.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Challenges -->
+      <section class="cs-challenges">
+        <div class="container container--narrow">
+          <p class="cs-challenges__label">Reflection</p>
+          <h2 class="cs-challenges__title">Challenges</h2>
+          <div class="cs-challenges__grid">
+            <div class="cs-challenge-card cs-challenge-card--1">
+              <h3 class="cs-challenge-card__title">Making two colors feel like enough</h3>
+              <p class="cs-challenge-card__desc">With no room to hide behind extra color, every screen had to earn attention through layout instead.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--2">
+              <h3 class="cs-challenge-card__title">Turning 12 screens into a system</h3>
+              <p class="cs-challenge-card__desc">Every button and card rule had to be written down early, then hold up across 40+ screens.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--3">
+              <h3 class="cs-challenge-card__title">A mascot that knows when to leave</h3>
+              <p class="cs-challenge-card__desc">It had to feel human during onboarding, then get out of the way once real numbers appeared.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--4">
+              <h3 class="cs-challenge-card__title">Icons that stay clear at 48px</h3>
+              <p class="cs-challenge-card__desc">Ten icons, one shared style, each still needed to read instantly inside a small circle.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section class="cs-takeaways">
+        <div class="container container--narrow">
+          <h2 class="cs-takeaways__title">Key takeaways</h2>
+          <ol class="cs-takeaways__list">
+            <li><span class="cs-takeaways__num">01</span><p>Less color reads clearer. A restrained palette makes a numbers-heavy screen easier to scan.</p></li>
+            <li><span class="cs-takeaways__num">02</span><p>Document patterns early. Twelve screens' worth of rules scaled cleanly to 40+.</p></li>
+            <li><span class="cs-takeaways__num">03</span><p>A little character goes a long way - one mascot was enough to make the app feel human.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="geoserve-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">Maritime SaaS · B2B</p>
+              <h2 class="cs-next__title">GeoStem</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <script src="js/main.js?v=20260901a"></script>
+</body>
+</html>

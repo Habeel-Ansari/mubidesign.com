@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260701">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
   <link rel="stylesheet" href="css/career-journey.css">
   <link rel="stylesheet" href="css/mind-map.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
@@ -69,6 +69,8 @@
   <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
 
   <!-- HEADER -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
   <header class="header" role="banner">
     <div class="header__inner">
       <a href="index.html" class="header__logo">Mubeen Ansari</a>
@@ -76,7 +78,6 @@
         <ul class="nav__links" role="list">
           <li><a href="index.html#work"    class="nav__link">Work</a></li>
           <li><a href="about.html"         class="nav__link is-active">About</a></li>
-          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
         </ul>
         <div class="nav__actions">
           <div class="social-links">
@@ -100,7 +101,6 @@
     <nav class="mobile-menu__links">
       <a href="index.html#work"    class="mobile-menu__link">Work</a>
       <a href="about.html"         class="mobile-menu__link">About</a>
-      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
     </nav>
     <div class="mobile-menu__foot">
       <div class="social-links">
@@ -118,53 +118,43 @@
       <div class="container">
         <div class="about-hero__inner">
 
-          <!-- Left: Bio -->
-          <div>
-            <p class="about-hero__label" data-load-reveal data-delay="1">About me</p>
-            <h1 class="about-hero__headline" data-load-reveal data-delay="2">
-              Product designer,<br>systems thinker,<br>design leader
-            </h1>
+          <p class="about-hero__label" data-load-reveal data-delay="1">About</p>
 
-            <p class="about-hero__bio" data-load-reveal data-delay="3">
-              I'm a <strong>Senior Product Designer</strong> with <strong>9 years</strong> of experience across B2B SaaS, fintech, maritime intelligence, and early-stage startups. I don't just design interfaces - I help teams figure out what to build and how to ship it without losing coherence at scale.
-            </p>
-            <p class="about-hero__bio" data-load-reveal data-delay="3" style="margin-top: -1rem;">
-              Over the last few years I've rebuilt how design teams work around <strong>AI</strong> - faster research synthesis, documentation, and design-to-dev handoff, with fewer bugs and higher quality. I'm currently <strong>Product Design Consultant at Geoserve</strong>, leading end-to-end design from platform strategy to delivery.
-            </p>
-            <p class="about-hero__bio" data-load-reveal data-delay="3" style="margin-top: -1rem;">
-              My focus is rarely the screen - it's the <strong>system</strong> underneath it. Teams tend to move faster after I leave than before I arrived.
-            </p>
+          <h1 class="about-hero__headline" data-load-reveal data-delay="2">
+            I'm Mubeen. I like figuring out <em class="about-hero__accent">what to build</em>, not just designing the screens.
+          </h1>
 
-            <!-- Stats -->
-            <div class="about-stats" data-load-reveal data-delay="4">
-              <div class="about-stat">
-                <div class="about-stat__value">9</div>
-                <div class="about-stat__label">Years of experience</div>
-              </div>
-              <div class="about-stat">
-                <div class="about-stat__value">50+</div>
-                <div class="about-stat__label">Products shipped end to end</div>
-              </div>
-              <div class="about-stat">
-                <div class="about-stat__value">7</div>
-                <div class="about-stat__label">Design teams built from scratch</div>
-              </div>
+          <div class="about-hero__body" data-load-reveal data-delay="3">
+            <p>
+              I'm a <strong>Senior Product Designer</strong> with <strong>9 years</strong> of experience across B2B SaaS, fintech, maritime intelligence, and early-stage startups. I've always been drawn to the messy part of the work: understanding <mark class="hl hl--olive">the problem</mark>, making sense of the <mark class="hl hl--teal">product logic</mark>, and figuring out how everything fits together.
+            </p>
+            <p>
+              Over the last few years, I've been rethinking how design teams work with <mark class="hl hl--purple">AI</mark>. From research synthesis and documentation to design-to-dev handoff, I like finding ways to make teams move faster without losing quality. Less repetitive work, fewer bugs, and better decisions.
+            </p>
+          </div>
+
+          <div class="about-hero__gallery" data-load-reveal data-delay="4">
+            <div class="about-hero__gallery-item">
+              <img src="assets/images/about/about-team.png" alt="Mubeen with the team on a rooftop get-together" loading="lazy">
             </div>
-
-            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;" data-load-reveal data-delay="5">
-              <a href="index.html#contact" class="btn btn--primary">Get in touch</a>
-              <a href="#" class="btn btn--ghost">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download CV
-              </a>
+            <div class="about-hero__gallery-item">
+              <img src="assets/images/about/about-award.png" alt="Mubeen's Revolution 2022 Certificate of Appreciation" loading="lazy">
+            </div>
+            <div class="about-hero__gallery-item">
+              <img src="assets/images/about/about-hike.png" alt="Mubeen hiking with friends" loading="lazy">
             </div>
           </div>
 
-          <!-- Right: Photo -->
-          <div class="about-photos" data-load-reveal data-delay="4">
-            <div class="about-photo-main" id="about-photo-fx">
-              <img src="assets/images/mubeen-photo.png" alt="Mubeen Ansari" id="about-photo-img" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
-            </div>
+          <div class="about-hero__body" data-load-reveal data-delay="5">
+            <p>
+              Right now, I'm a <mark class="hl hl--rose">Product Design Consultant at Geoserve</mark>, working across platform strategy, product design, and delivery. I work closely with product and engineering teams to take things from ambiguous problems to shipped products.
+            </p>
+            <p>
+              My focus is rarely just the screen. It's <mark class="hl hl--dark">the system underneath it</mark>. The way teams make decisions, the patterns they reuse, and the processes that help a product stay coherent as it grows.
+            </p>
+            <p>
+              I like leaving things better than I found them. Ideally, when I'm done, the team moves faster than before.
+            </p>
           </div>
 
         </div>
@@ -267,8 +257,8 @@
                     <line x1="44" y1="40" x2="48" y2="40" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
                     <line x1="44" y1="100" x2="50" y2="100" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
                     <line x1="44" y1="156" x2="48" y2="156" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
-                    <text x="52" y="44" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.25)" font-weight="500">Aa</text>
-                    <text x="52" y="104" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.25)" font-weight="500">Bb</text>
+                    <text x="52" y="44" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.25)" font-weight="500">Aa</text>
+                    <text x="52" y="104" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.25)" font-weight="500">Bb</text>
                   </svg>
                   <div class="cj-note" style="bottom:20px;right:20px;transform:rotate(2deg);">first ever client ↗</div>
                 </div>
@@ -369,19 +359,19 @@
                   <svg width="260" height="240" viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <!-- Token hierarchy -->
                     <!-- Color tokens row -->
-                    <text x="30" y="38" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">COLOR TOKENS</text>
+                    <text x="30" y="38" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">COLOR TOKENS</text>
                     <circle cx="36"  cy="58" r="12" fill="#171717"/>
                     <circle cx="64"  cy="58" r="12" fill="#525252"/>
                     <circle cx="92"  cy="58" r="12" fill="#A3A3A3"/>
                     <circle cx="120" cy="58" r="12" fill="#F5F5F5" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
                     <circle cx="148" cy="58" r="12" fill="#FAFAF8" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
                     <!-- Type scale -->
-                    <text x="30" y="98" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">TYPE SCALE</text>
+                    <text x="30" y="98" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">TYPE SCALE</text>
                     <text x="30" y="116" font-family="Instrument Serif,serif" font-size="20" fill="rgba(0,0,0,0.7)" font-style="italic">Heading</text>
-                    <text x="30" y="132" font-family="Inter,sans-serif" font-size="13" fill="rgba(0,0,0,0.5)">Body text</text>
-                    <text x="30" y="144" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.06em">LABEL · 11PX</text>
+                    <text x="30" y="132" font-family="Google Sans Flex,sans-serif" font-size="13" fill="rgba(0,0,0,0.5)">Body text</text>
+                    <text x="30" y="144" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.06em">LABEL · 11PX</text>
                     <!-- Spacing grid -->
-                    <text x="30" y="168" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">SPACING</text>
+                    <text x="30" y="168" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">SPACING</text>
                     <rect x="30"  y="176" width="4"  height="4"  rx="1" fill="rgba(0,0,0,0.25)"/>
                     <rect x="40"  y="176" width="8"  height="8"  rx="1" fill="rgba(0,0,0,0.2)" y="172"/>
                     <rect x="56"  y="168" width="16" height="16" rx="2" fill="rgba(0,0,0,0.15)"/>
@@ -389,7 +379,7 @@
                     <rect x="114" y="160" width="32" height="32" rx="4" fill="rgba(0,0,0,0.06)"/>
                     <rect x="158" y="156" width="40" height="40" rx="6" fill="rgba(0,0,0,0.04)"/>
                     <!-- Radius tokens -->
-                    <text x="30" y="214" font-family="Inter,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">RADIUS</text>
+                    <text x="30" y="214" font-family="Google Sans Flex,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)" font-weight="600" letter-spacing="0.08em">RADIUS</text>
                     <rect x="30"  y="220" width="20" height="14" rx="2"  fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
                     <rect x="56"  y="220" width="20" height="14" rx="4"  fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
                     <rect x="82"  y="220" width="20" height="14" rx="7"  fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
@@ -459,10 +449,10 @@
                     <circle cx="215" cy="100" r="6"  fill="rgba(0,0,60,0.15)"/>
                     <circle cx="215" cy="100" r="3"  fill="rgba(0,0,60,0.3)"/>
                     <!-- Labels -->
-                    <text x="96"  y="58"  font-family="Inter,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Platform</text>
-                    <text x="172" y="98"  font-family="Inter,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Strategy</text>
-                    <text x="128" y="180" font-family="Inter,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">System</text>
-                    <text x="200" y="163" font-family="Inter,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Delivery</text>
+                    <text x="96"  y="58"  font-family="Google Sans Flex,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Platform</text>
+                    <text x="172" y="98"  font-family="Google Sans Flex,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Strategy</text>
+                    <text x="128" y="180" font-family="Google Sans Flex,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">System</text>
+                    <text x="200" y="163" font-family="Google Sans Flex,sans-serif" font-size="8" fill="rgba(0,0,60,0.35)" font-weight="500">Delivery</text>
                   </svg>
                   <div class="cj-note" style="top:16px;right:16px;transform:rotate(1deg);">maritime SaaS →</div>
                 </div>
@@ -591,9 +581,9 @@
                 <div class="cj-stage__visual cj-visual--today" aria-hidden="true">
                   <svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <!-- Large ✦ mark - arrival point -->
-                    <text x="110" y="140" font-family="Inter,sans-serif" font-size="100" fill="rgba(0,0,0,0.07)" text-anchor="middle" font-weight="300">✦</text>
+                    <text x="110" y="140" font-family="Google Sans Flex,sans-serif" font-size="100" fill="rgba(0,0,0,0.07)" text-anchor="middle" font-weight="300">✦</text>
                     <!-- Year label -->
-                    <text x="110" y="168" font-family="Inter,sans-serif" font-size="11" fill="rgba(0,0,0,0.25)" text-anchor="middle" font-weight="600" letter-spacing="0.08em">2017 → 2026</text>
+                    <text x="110" y="168" font-family="Google Sans Flex,sans-serif" font-size="11" fill="rgba(0,0,0,0.25)" text-anchor="middle" font-weight="600" letter-spacing="0.08em">2017 → 2026</text>
                     <!-- Subtle orbit rings -->
                     <circle cx="110" cy="110" r="72" stroke="rgba(0,0,0,0.04)" stroke-width="1" stroke-dasharray="3 5"/>
                     <circle cx="110" cy="110" r="52" stroke="rgba(0,0,0,0.06)" stroke-width="1" stroke-dasharray="2 4"/>
@@ -829,7 +819,7 @@
     <!-- ═══════════════════════════════════════════
          PRINCIPLES
     ═══════════════════════════════════════════ -->
-    <section class="values-section" aria-labelledby="principles-title">
+    <section class="values-section" aria-labelledby="principles-title" style="display:none;">
       <div class="container">
         <div class="services__header" style="margin-bottom: var(--s10);">
           <h2 class="section-title" id="principles-title" data-reveal>How I work</h2>
@@ -906,23 +896,8 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer__inner">
-        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
-        <nav class="footer__links">
-          <a href="index.html#work"    class="footer__link">Work</a>
-          <a href="about.html"         class="footer__link">About</a>
-          <a href="index.html#contact" class="footer__link">Contact</a>
-        </nav>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <script src="js/main.js?v=20260701"></script>
+  <script src="js/main.js?v=20260901a"></script>
   <script src="js/career-journey.js"></script>
   <!-- Inside My Design Mind - modular system -->
   <script src="js/physics.js"></script>
@@ -932,146 +907,5 @@
   <script src="js/cursor-controller.js"></script>
   <script src="js/mind-map.js"></script>
 
-  <!-- Interactive ripple-distortion effect on the About photo -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof THREE !== 'undefined') {
-      (function () {
-        const container = document.getElementById('about-photo-fx');
-        const img = document.getElementById('about-photo-img');
-        if (!container || !img) return;
-
-        function start() {
-          const rect = container.getBoundingClientRect();
-          if (rect.width < 1 || rect.height < 1) return;
-
-          const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-          renderer.setSize(rect.width, rect.height);
-          renderer.domElement.style.position = 'absolute';
-          renderer.domElement.style.inset = '0';
-          renderer.domElement.style.width = '100%';
-          renderer.domElement.style.height = '100%';
-          container.style.position = 'relative';
-          container.appendChild(renderer.domElement);
-
-          const scene = new THREE.Scene();
-          const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0.1, 10);
-          camera.position.z = 1;
-
-          const texture = new THREE.TextureLoader().load(img.currentSrc || img.src, () => {
-            img.style.opacity = '0';
-          });
-          texture.encoding = THREE.sRGBEncoding;
-
-          const uniforms = {
-            uTexture:  { value: texture },
-            uMouse:    { value: new THREE.Vector2(0.5, 0.5) },
-            uHover:    { value: 0 },
-            uTime:     { value: 0 },
-            uImgAspect:{ value: 1 },
-            uBoxAspect:{ value: rect.width / rect.height }
-          };
-
-          const material = new THREE.ShaderMaterial({
-            uniforms,
-            vertexShader: `
-              varying vec2 vUv;
-              void main() {
-                vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }
-            `,
-            fragmentShader: `
-              uniform sampler2D uTexture;
-              uniform vec2 uMouse;
-              uniform float uHover;
-              uniform float uTime;
-              uniform float uImgAspect;
-              uniform float uBoxAspect;
-              varying vec2 vUv;
-
-              void main() {
-                // cover-fit UV correction so the ripple stays circular, not stretched
-                vec2 uv = vUv;
-                vec2 ratio = uBoxAspect > uImgAspect
-                  ? vec2(uImgAspect / uBoxAspect, 1.0)
-                  : vec2(1.0, uBoxAspect / uImgAspect);
-                vec2 cuv = (uv - 0.5) * ratio + 0.5;
-                vec2 cmouse = (uMouse - 0.5) * ratio + 0.5;
-
-                float dist = distance(cuv, cmouse);
-                float ripple = sin(dist * 34.0 - uTime * 3.2) * 0.014 * uHover * smoothstep(0.4, 0.0, dist);
-                float idle = sin(uv.x * 8.0 + uTime * 0.6) * cos(uv.y * 8.0 + uTime * 0.5) * 0.0025;
-                vec2 dir = normalize(cuv - cmouse + 0.0001);
-
-                vec2 finalUv = uv + dir * ripple + idle;
-                vec4 color = texture2D(uTexture, finalUv);
-
-                // faint chromatic offset in the ripple zone for extra polish
-                float ab = ripple * 2.5;
-                float r = texture2D(uTexture, finalUv + vec2(ab, 0.0)).r;
-                float b = texture2D(uTexture, finalUv - vec2(ab, 0.0)).b;
-                gl_FragColor = vec4(r, color.g, b, color.a);
-              }
-            `
-          });
-
-          const geometry = new THREE.PlaneGeometry(1, 1);
-          const mesh = new THREE.Mesh(geometry, material);
-          scene.add(mesh);
-
-          if (texture.image) {
-            uniforms.uImgAspect.value = texture.image.width / texture.image.height;
-          } else {
-            texture.onUpdate = () => {
-              uniforms.uImgAspect.value = texture.image.width / texture.image.height;
-            };
-          }
-
-          let targetHover = 0;
-          let clock = new THREE.Clock();
-
-          function setMouseFromEvent(e) {
-            const r = container.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width;
-            const y = 1 - (e.clientY - r.top) / r.height;
-            uniforms.uMouse.value.set(x, y);
-          }
-
-          container.addEventListener('mousemove', e => { setMouseFromEvent(e); targetHover = 1; });
-          container.addEventListener('mouseleave', () => { targetHover = 0; });
-          container.addEventListener('touchmove', e => {
-            if (e.touches[0]) { setMouseFromEvent(e.touches[0]); targetHover = 1; }
-          }, { passive: true });
-          container.addEventListener('touchend', () => { targetHover = 0; });
-
-          let raf = null;
-          let visible = true;
-          document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
-
-          function tick() {
-            raf = requestAnimationFrame(tick);
-            if (!visible) return;
-            uniforms.uTime.value = clock.getElapsedTime();
-            uniforms.uHover.value += (targetHover - uniforms.uHover.value) * 0.08;
-            renderer.render(scene, camera);
-          }
-          tick();
-
-          function onResize() {
-            const r = container.getBoundingClientRect();
-            if (r.width < 1 || r.height < 1) return;
-            renderer.setSize(r.width, r.height);
-            uniforms.uBoxAspect.value = r.width / r.height;
-          }
-          window.addEventListener('resize', onResize);
-        }
-
-        if (img.complete) start();
-        else img.addEventListener('load', start, { once: true });
-      })();
-    }
-  </script>
 </body>
 </html>

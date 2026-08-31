@@ -9,14 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260701">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
   <style>
     /* ── Leadership mockup: design team dashboard ── */
     .dl-mockup {
       width: 100%; border-radius: 12px; overflow: hidden;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Google Sans Flex', system-ui, sans-serif;
       box-shadow: 0 24px 64px rgba(0,0,0,0.14);
       border: 1px solid rgba(0,0,0,0.07);
       background: #F8F6FF;
@@ -96,6 +96,8 @@
   <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
 
   <!-- HEADER -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
   <header class="header" role="banner">
     <div class="header__inner">
       <a href="index.html" class="header__logo">Mubeen Ansari</a>
@@ -103,7 +105,6 @@
         <ul class="nav__links" role="list">
           <li><a href="work.html"  class="nav__link is-active">Work</a></li>
           <li><a href="about.html" class="nav__link">About</a></li>
-          <li><a href="index.html#contact" class="nav__link">Contact</a></li>
         </ul>
         <div class="nav__actions">
           <div class="social-links">
@@ -126,7 +127,6 @@
     <nav class="mobile-menu__links">
       <a href="work.html" class="mobile-menu__link">Work</a>
       <a href="about.html" class="mobile-menu__link">About</a>
-      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
     </nav>
   </div>
 
@@ -531,22 +531,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer__inner">
-        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari</p>
-        <nav class="footer__links">
-          <a href="work.html"          class="footer__link">Work</a>
-          <a href="about.html"         class="footer__link">About</a>
-          <a href="index.html#contact" class="footer__link">Contact</a>
-        </nav>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <script src="js/main.js?v=20260701"></script>
+  <script src="js/main.js?v=20260901a"></script>
 </body>
 </html>

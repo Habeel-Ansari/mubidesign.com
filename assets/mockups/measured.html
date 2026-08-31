@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Measured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *{ margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+  html,body{ height:100%; width:100%; background:#fff; }
+  .section{ position:relative; width:100%; height:100vh; overflow:hidden; background:#050506; }
+
+  .grid{ position:absolute; inset:0; z-index:0; opacity:.12; background-image:
+      linear-gradient(rgba(148,163,184,.6) .6px, transparent .6px),
+      linear-gradient(90deg, rgba(148,163,184,.6) .6px, transparent .6px);
+    background-size:48px 48px; }
+
+  .bg-image{ position:absolute; inset:0; z-index:10;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(60,50,45,.9), transparent 70%),
+      linear-gradient(180deg,#0b0b0c 0%, #16130f 55%, #2a2018 100%);
+  }
+  .bg-image::after{ content:''; position:absolute; inset:0;
+    background: radial-gradient(circle 380px at 50% 78%, rgba(255,190,120,.18), transparent 70%); }
+
+  .bg-video{ position:absolute; inset:0; z-index:12; width:100%; height:100%; object-fit:cover;
+    clip-path: inset(40% 0 0 0); opacity:.9; }
+
+  .overlay{ position:absolute; inset:0; z-index:25; pointer-events:none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.15) 60%, rgba(0,0,0,.5) 100%); }
+
+  .hero-word{ position:absolute; top:9%; left:0; right:0; z-index:20; text-align:center; }
+  .hero-word h1{ font-family:'Instrument Serif',serif; color:#fff; font-size:15rem; line-height:.9; text-transform:uppercase; margin:0; letter-spacing:-0.01em; }
+
+  .nav{ position:fixed; top:20px; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:0 40px; }
+  .liquid{ background:rgba(255,255,255,.06); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.12); border-radius:999px; }
+  .nav__logo{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; }
+  .nav__logo svg{ width:22px; height:22px; }
+  .nav__center{ position:absolute; left:50%; top:0; transform:translateX(-50%); display:flex; gap:6px; padding:6px; }
+  .nav__center a{ color:rgba(255,255,255,.7); font-size:13px; font-weight:500; padding:8px 16px; border-radius:999px; text-decoration:none; }
+  .nav__cta{ display:flex; align-items:center; gap:8px; padding:9px 18px; color:#fff; font-size:13px; font-weight:500; }
+  .dot{ width:8px; height:8px; border-radius:50%; background:#4ade80; }
+</style>
+</head>
+<body>
+<section class="section">
+  <div class="grid"></div>
+  <div class="bg-image"></div>
+  <video class="bg-video" autoplay muted loop playsinline
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260815_075403_bdde66c3-c5ad-41ac-ba8f-6a0bc4545c3f.mp4"></video>
+  <div class="overlay"></div>
+  <div class="hero-word"><h1>Measured</h1></div>
+
+  <nav class="nav">
+    <div class="nav__logo liquid">
+      <svg viewBox="0 0 256 256" fill="white"><path d="M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 96 95 L 63.5 128 L 64 128 L 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 64 L 64 0 L 192 0 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z"/></svg>
+    </div>
+    <div class="nav__center liquid">
+      <a href="#">Overview</a><a href="#">Reviews</a><a href="#">Research</a><a href="#">Membership</a><a href="#">Support</a>
+    </div>
+    <div class="nav__cta liquid"><span class="dot"></span>Join Waitlist</div>
+  </nav>
+</section>
+</body>
+</html>

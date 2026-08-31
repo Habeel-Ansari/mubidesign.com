@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>GeoStem · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{
+    --ocean:#0E2347;
+    --land:#3F6BB8;
+    --nav:#0B1B3A;
+    --card:#FFFFFF;
+    --border:#E4E9F2;
+    --text:#0E1A33;
+    --text-2:#5A6B85;
+    --text-dim:#626E83;   /* was #8995AB — 3:1 on white; now 5.15:1 */
+    --brand:#1852FE;
+    --brand-soft:#EAF1FE;
+    --green:#16A34A;
+    --red:#E63946;
+    --chip:#F1F4F9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  /* ── Skip link ── */
+  .skip-link{position:absolute;top:-100%;left:8px;z-index:9999;background:var(--brand);color:#fff;padding:8px 16px;border-radius:0 0 8px 8px;font-size:13px;font-weight:600;text-decoration:none;}
+  .skip-link:focus{top:0;}
+  /* ── Global focus ring ── */
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:3px;}
+  :focus:not(:focus-visible){outline:none;}
+  html,body{height:100%;font-family:'Inter',-apple-system,system-ui,sans-serif;color:var(--text);font-size:13px;background:#0B1B3A;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+
+  .app{position:relative;width:100vw;height:100vh;display:flex;}
+
+  /* ---------- NAV RAIL ---------- */
+  .nav{width:60px;background:#fff;display:flex;flex-direction:column;align-items:center;padding:14px 0 14px;flex-shrink:0;border-right:1px solid #E6EAF2;z-index:6;border-image:linear-gradient(to bottom,transparent,#22C55E,transparent) 1;border-right-width:1.5px;border-right-style:solid;}
+  .nav .burger{width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#0F1F3D;margin-bottom:14px;cursor:pointer;}
+  .nav .burger svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+  .nico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9AA6BC;margin-bottom:4px;position:relative;cursor:pointer;font-weight:700;font-family:inherit;}
+  .nico:hover{background:#F4F7FB;color:#1852FE;}
+  .nico.active{background:#E8F0FF;color:#1852FE;}
+  .nico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .nico.txt{font-size:15px;letter-spacing:-0.5px;}
+  .nico.bottom{margin-top:auto;}
+  .navsep{width:28px;border-top:1px dashed #C9D2E2;margin:8px 0;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:#0F1F3D;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:8px;font-size:11px;}
+
+  /* ---------- MAP ---------- */
+  .map{flex:1;position:relative;background:#0E2347;overflow:hidden;}
+  #leafletMap{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  .leaflet-container{background:#0B1A38!important;}
+  .leaflet-control-zoom{display:none!important;}
+  .leaflet-control-attribution{font-size:9px!important;opacity:0.45;background:rgba(0,0,0,0.5)!important;color:#888!important;padding:2px 6px!important;}
+  .leaflet-control-attribution a{color:#6ea8d8!important;}
+  /* Tint tiles to brand navy/blue — sepia shifts grey to warm, hue-rotate swings to blue */
+  /* Tint tiles to brand navy #0B1A38 / #1852FE palette */
+  .leaflet-tile-pane{
+    filter: sepia(1) hue-rotate(185deg) saturate(3.2) brightness(0.58) contrast(1.05);
+  }
+  /* Port hover card sits above leaflet */
+  .port-card{z-index:10;}
+
+  /* ---------- TOP SEARCH ---------- */
+  .topbar{position:absolute;top:12px;left:12px;display:flex;gap:8px;z-index:5;}
+  .search{width:280px;height:32px;background:#fff;border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 12px;box-shadow:0 4px 12px rgba(0,0,0,0.18);}
+  .search svg{width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2;}
+  .search input{flex:1;border:none;outline:none;font-family:inherit;font-size:12px;color:var(--text);background:none;}
+  .search input::placeholder{color:var(--text-dim);}
+  .nav-btn{width:32px;height:32px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:0 4px 12px rgba(0,0,0,0.18);}
+  .nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ---------- BUNKER PORT CARD (improved) ---------- */
+  .bcard{border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:10px;background:#fff;cursor:pointer;transition:all .15s;}
+  .bcard:hover{border-color:var(--brand);background:#FAFCFF;box-shadow:0 4px 14px rgba(31,111,235,0.08);}
+  .bcard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .bcard-name{font-size:13.5px;font-weight:700;color:var(--text);}
+  .bcard-sub{font-size:11px;color:var(--text-2);margin-top:4px;display:flex;align-items:center;}
+  .bcard-sub .dev{color:#E8600A;font-weight:600;background:#FFF1E6;padding:3px 9px;border-radius:10px;font-size:11px;}
+  .bcard-flag{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#1852FE,#5BA6FF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+  .bcard-grades{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+  .bcard-grade{background:#F4F7FB;border-radius:7px;padding:7px 9px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+  .bcard-grade .g{font-size:10px;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.3px;}
+  .bcard-grade .p{font-size:11.5px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;}
+
+  /* ---------- DRAG HANDLE for stops ---------- */
+  .drag-handle{width:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);cursor:grab;padding:0 2px;flex-shrink:0;line-height:0;}
+  .drag-handle:active{cursor:grabbing;}
+  .drag-handle svg{width:12px;height:14px;}
+  .stop-row.dragging{opacity:0.5;}
+  .stop-row.drag-over{outline:2px dashed var(--brand);outline-offset:2px;border-radius:8px;}
+
+  .cal-btn{width:32px;height:32px;border-radius:8px;background:#F4F7FB;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);flex-shrink:0;}
+  .cal-btn svg{width:15px;height:15px;}
+  .cal-btn:hover{border-color:var(--brand);color:var(--brand);}
+  .cal-btn.active{border-color:var(--brand);background:#EEF4FF;color:var(--brand);}
+  /* ── Custom calendar popup ── */
+  .cal-popup{position:fixed;z-index:9999;width:308px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.18);overflow:hidden;display:none;}
+  .cal-popup.open{display:block;}
+  .cal-popup-hd{background:#0A2540;padding:16px 20px 20px;}
+  .cal-popup-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.82);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;}/* was 0.55 — ~2.5:1; now ~5:1 on #0A2540 */
+  .cal-popup-date{font-size:20px;font-weight:700;color:#fff;line-height:1.25;}
+  .cal-popup-body{padding:16px 18px 18px;}
+  .cal-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .cal-nav-arrow{width:30px;height:30px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0A2540;font-size:20px;line-height:1;transition:background .12s;}
+  .cal-nav-arrow:hover{background:#F4F7FB;}
+  .cal-month-txt{font-size:14px;font-weight:700;color:#0A2540;}
+  .cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px;}
+  .cal-dow{text-align:center;font-size:10.5px;font-weight:700;color:#94A3B8;padding:3px 0;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;}
+  .cal-cell{width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin:0 auto;border-radius:50%;font-size:12.5px;font-weight:500;color:#0A2540;cursor:pointer;transition:background .1s;}
+  .cal-cell:hover:not(.cal-empty){background:#F4F7FB;}
+  .cal-cell.cal-empty{cursor:default;}
+  .cal-cell.cal-today{color:#1F6FEB;font-weight:700;}
+  .cal-cell.cal-sel{background:#1F6FEB !important;color:#fff !important;font-weight:700;}
+  /* Stop dot: radio default, drag-grip on hover */
+  /* ── Stop row & input wrap ── */
+  .stop-row .grip{position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:12px;height:16px;cursor:grab;color:var(--text-dim);opacity:0;transition:opacity .15s;pointer-events:none;flex-shrink:0;}
+  .stop-row:hover .grip{opacity:1;pointer-events:auto;}
+  .stop-input-wrap{flex:1;display:flex;align-items:center;gap:8px;background:#F4F7FB;border:1px solid var(--border);border-radius:8px;padding:0 14px 0 10px;height:36px;min-width:0;position:relative;}
+  .stop-input-wrap:focus-within{border-color:var(--brand);background:#fff;}
+  .stop-input-wrap .flag{width:20px;height:14px;border-radius:2px;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,0.08);}
+  .stop-input-wrap .clear{cursor:pointer;color:var(--text-dim);font-size:11px;background:transparent;border:0;padding:2px 4px;flex-shrink:0;line-height:1;}
+  .stop-input-wrap .clear:hover{color:#E63946;}
+  /* ── Port autocomplete dropdown ── */
+  .port-suggest{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.16);max-height:220px;overflow:auto;z-index:50;display:none;}
+  .port-suggest.open{display:block;}
+  .ps-item{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;font-size:12.5px;color:var(--text);}
+  .ps-item:hover{background:#F4F7FB;}
+  .ps-item .flag{width:20px;height:14px;border-radius:2px;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,0.08);}
+  .flag-nl{background:linear-gradient(to bottom,#AE1C28 33%,#fff 33% 66%,#21468B 66%);}
+  .flag-sg{background:linear-gradient(to bottom,#EF3340 50%,#fff 50%);}
+  .flag-ma{background:#C1272D;}
+  .flag-be{background:linear-gradient(to right,#000 33%,#FAE042 33% 66%,#ED2939 66%);}
+  .flag-de{background:linear-gradient(to bottom,#000 33%,#DD0000 33% 66%,#FFCE00 66%);}
+  .flag-gb{background:linear-gradient(135deg,#012169,#fff,#C8102E,#fff,#012169);}
+  .flag-es{background:linear-gradient(to bottom,#AA151B 25%,#F1BF00 25% 75%,#AA151B 75%);}
+  .flag-eg{background:linear-gradient(to bottom,#CE1126 33%,#fff 33% 66%,#000 66%);}
+  .flag-ae{background:linear-gradient(to bottom,#00732F 33%,#fff 33% 66%,#000 66%);}
+  .flag-in{background:linear-gradient(to bottom,#FF9933 33%,#fff 33% 66%,#138808 66%);}
+  .flag-lk{background:#8D153A;}
+  .flag-hk{background:#DE2910;}
+  .flag-cn{background:#DE2910;}
+  .flag-kr{background:#fff;}
+  .flag-jp{background:radial-gradient(circle,#BC002D 30%,#fff 30%);}
+  .flag-us{background:linear-gradient(to bottom,#B22234 14%,#fff 14% 28%,#B22234 28% 42%,#fff 42% 56%,#B22234 56%);}
+  .flag-pa{background:linear-gradient(to bottom,#fff 50%,#D21034 50%);}
+  .flag-br{background:#009C3B;}
+  .flag-is{background:linear-gradient(to bottom,#02529C 40%,#fff 40% 60%,#DC1E35 60%);}
+  .flag-za{background:linear-gradient(to bottom,#007A4D 33%,#fff 33% 66%,#DE3831 66%);}
+  .flag-ng{background:linear-gradient(to right,#008751 33%,#fff 33% 66%,#008751 66%);}
+  .stop-input-wrap .clear{cursor:pointer;color:var(--text-dim);font-size:13px;background:transparent;border:0;padding:0;flex-shrink:0;line-height:1;width:16px;text-align:center;}
+  .stop-input-wrap .clear:hover{color:#E63946;}
+
+  /* Add Price Indication Modal */
+  .modal-mask{position:fixed;inset:0;background:rgba(8,18,38,0.5);display:none;align-items:center;justify-content:center;z-index:200;}
+  .modal-mask.open{display:flex;}
+  .modal{background:#fff;border-radius:16px;width:560px;max-width:92vw;max-height:88vh;overflow:auto;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,0.25);}
+  .modal h3{margin:0 0 4px;font-size:17px;font-weight:700;color:var(--text);}
+  .modal .sub{font-size:11.5px;color:var(--text-2);margin-bottom:18px;}
+  .modal label{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:8px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .pm-port{font-size:14px;font-weight:700;color:var(--text);padding:11px 14px;background:#F4F7FB;border-radius:9px;margin-bottom:18px;}
+  .chip{padding:7px 12px;border-radius:18px;background:#F4F7FB;border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+  .chip.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);}
+  .chip .x{font-size:11px;opacity:0.7;}
+  .pset{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+  .pset-head{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 24px;gap:10px;font-size:10.5px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px;}
+  .pset-row{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 24px;gap:10px;align-items:center;margin-bottom:8px;}
+  .pset-row select,.pset-row input{height:34px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:12px;font-family:inherit;background:#fff;color:var(--text);outline:none;width:100%;}
+  .pset-row .del{background:transparent;border:0;color:var(--text-dim);cursor:pointer;font-size:14px;}
+  .add-fuel{font-size:11.5px;font-weight:700;color:var(--brand);background:transparent;border:0;cursor:pointer;padding:4px 0;}
+  .add-set{width:100%;height:38px;border:1.5px dashed var(--brand);background:#FAFCFF;border-radius:10px;color:var(--brand);font-weight:700;font-size:12px;cursor:pointer;margin-bottom:14px;}
+  /* Multi-port input */
+  .pm-port-wrap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:6px;border:1px solid var(--border);border-radius:10px;padding:8px 36px 8px 10px;min-height:42px;background:#fff;cursor:text;margin-bottom:18px;}
+  .pm-port-wrap:focus-within{border-color:var(--brand);}
+  .pm-chip{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);border:1px solid rgba(31,111,235,0.2);color:var(--brand);font-size:12px;font-weight:600;padding:3px 8px 3px 10px;border-radius:20px;}
+  .pm-chip button{background:none;border:0;cursor:pointer;color:var(--brand);font-size:13px;line-height:1;padding:0 1px;opacity:0.7;}
+  .pm-chip button:hover{opacity:1;}
+  .pm-port-input{flex:1;min-width:120px;border:0;outline:none;font-size:12.5px;font-family:inherit;color:var(--text);background:transparent;padding:2px 0;}
+  .pm-port-input::placeholder{color:var(--text-dim);}
+  .pm-arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;}
+  .pm-suggest{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:180px;overflow-y:auto;z-index:300;display:none;}
+  .pm-suggest.open{display:block;}
+  .pm-s-item{padding:8px 12px;font-size:12.5px;cursor:pointer;color:var(--text);}
+  .pm-s-item:hover{background:var(--brand-soft);color:var(--brand);}
+  /* Pset port label */
+  .pset-port-label{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+  .pset-port-label .rm-set{background:none;border:0;cursor:pointer;color:var(--text-dim);font-size:12px;padding:0;}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;}
+  .modal-foot .btn{padding:9px 18px;border-radius:9px;font-size:12.5px;font-weight:700;border:1px solid var(--border);background:#fff;color:var(--text-2);cursor:pointer;}
+  .modal-foot .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand);}
+
+  /* Bunker Port Popup (left) */
+  .bp-popup{position:absolute;top:0;left:60px;bottom:0;width:380px;background:#fff;border-right:1px solid var(--border);box-shadow:8px 0 30px rgba(0,0,0,0.18);z-index:9;flex-direction:column;overflow:hidden;display:none;}
+  .bp-popup.open{display:flex;}
+  .bp-head{padding:16px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .bp-back{width:28px;height:28px;border-radius:8px;background:#F4F7FB;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);}
+  .bp-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;}
+  .bp-title{flex:1;}
+  .bp-title .nm{font-size:15px;font-weight:700;color:var(--text);}
+  .bp-title .ct{font-size:11px;color:var(--text-2);margin-top:1px;}
+  .bp-body{flex:1;overflow:auto;padding:14px 18px 0;}
+  .bp-sec{margin-bottom:18px;}
+  .bp-sh{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;}
+  .bp-fuel{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #F0F3F8;font-size:12.5px;}
+  .bp-fuel:last-child{border-bottom:0;}
+  .bp-fuel .g{font-weight:700;color:var(--text);}
+  .bp-fuel .p{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;}
+  .bp-seller{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F0F3F8;}
+  .bp-seller:last-child{border-bottom:0;}
+  .bp-seller .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1852FE,#5BA6FF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;}
+  .bp-seller .meta{flex:1;min-width:0;}
+  .bp-seller .nm{font-size:12px;font-weight:700;color:var(--text);}
+  .bp-seller .em{font-size:10.5px;color:var(--text-2);}
+  .bp-wx{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .bp-wx-card{background:#F4F7FB;border:1px solid var(--border);border-radius:11px;padding:12px 8px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .bp-wx-ico{width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--brand);}
+  .bp-wx-ico svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .bp-wx-lbl{font-size:9.5px;color:var(--text-dim);text-transform:uppercase;font-weight:700;letter-spacing:0.4px;}
+  .bp-wx-val{font-size:13px;font-weight:700;color:var(--text);line-height:1;}
+  .bp-stats{border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .bp-stat{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);font-size:12px;background:#fff;gap:12px;}
+  .bp-stat:last-child{border-bottom:0;}
+  .bp-stat-left{display:flex;align-items:center;gap:10px;}
+  .bp-stat-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .bp-stat-ico svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .bp-stat .l{color:var(--text-2);font-size:12px;}
+  .bp-stat .v{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .bp-foot{padding:14px 18px;border-top:1px solid var(--border);}
+  .bp-cta{width:100%;height:42px;background:var(--brand);color:#fff;border:0;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;}
+  .bp-cta:hover{background:#1858BC;}
+
+  /* ---------- DISTANCE CALCULATOR PANEL ---------- */
+  .calc-panel{position:absolute;top:0;left:60px;bottom:0;width:380px;background:#fff;border-right:1px solid var(--border);box-shadow:8px 0 30px rgba(0,0,0,0.18);z-index:7;display:flex;flex-direction:column;transform:translateX(-120%);transition:transform .28s ease;visibility:hidden;}
+  .calc-panel.open{visibility:visible;}
+  .calc-panel.open{transform:translateX(0);}
+  .calc-head{padding:20px 22px 14px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);}
+  .calc-head h2{font-size:18px;font-weight:700;color:var(--text);}
+  .calc-head .sub{font-size:12px;color:var(--text-2);margin-top:2px;}
+  .calc-close{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);font-size:13px;}
+  .calc-clear-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--text-2);background:#fff;cursor:pointer;transition:all .15s;}
+  .calc-clear-btn:hover{border-color:#E63946;color:#E63946;background:#FFF5F5;}
+  .calc-body{flex:1;overflow-y:auto;padding:18px 22px;}
+  .calc-body::-webkit-scrollbar{width:6px;}
+  .calc-body::-webkit-scrollbar-thumb{background:#E4E9F2;border-radius:3px;}
+
+  .stops-list{position:relative;}
+  .stops-list::before{content:"";position:absolute;left:13px;top:18px;bottom:18px;width:2px;background:repeating-linear-gradient(to bottom,#CCD6E5 0 4px,transparent 4px 8px);}
+  .stop-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;position:relative;z-index:1;}
+  .stop-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;border:2px solid #fff;box-shadow:0 0 0 2px var(--brand);color:var(--brand);background:#fff;}
+  .stop-dot.from{background:#16A34A;color:#fff;box-shadow:0 0 0 2px #16A34A;}
+  .stop-dot.from::before{background:#fff;}
+  .stop-dot.to{background:#E63946;color:#fff;box-shadow:0 0 0 2px #E63946;}
+  .stop-dot.mid{background:#fff;color:var(--brand);box-shadow:0 0 0 2px #9CC3FF;}
+  .stop-input{flex:1;border:0;background:transparent;outline:none;font-size:12.5px;font-family:inherit;color:var(--text);min-width:0;padding-right:4px;}
+  .stop-input::placeholder{color:var(--text-dim);}
+  .stop-remove{width:24px;height:24px;border-radius:50%;color:var(--text-dim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .stop-remove:hover{background:#F4F7FB;color:var(--red);}
+  .add-stop{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--brand);padding:6px 0 6px 38px;margin-top:2px;}
+  .add-stop svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;}
+
+  .calc-cta{margin-top:18px;width:100%;height:44px;border-radius:10px;background:var(--brand);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(31,111,235,0.28);}
+  .calc-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  .results{margin-top:20px;display:none;}
+  .results.show{display:block;}
+  .results-title{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;}
+  /* Route leg card */
+  .leg{background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+  .leg-route{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .leg-dot.from{background:#16A34A;}
+  .leg-dot.to{background:#E63946;}
+  .leg-port{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;}
+  .leg-line{flex:1;height:1px;background:repeating-linear-gradient(to right,#CBD3E0 0 4px,transparent 4px 8px);}
+  .leg-arrow-ico{flex-shrink:0;color:var(--text-dim);}
+  .leg-arrow-ico svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .leg-metrics{display:flex;align-items:center;gap:8px;}
+  .leg-dist-badge{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:700;padding:5px 10px;border-radius:20px;font-variant-numeric:tabular-nums;}
+  .leg-dist-badge svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+  .leg-eca-badge{display:inline-flex;align-items:center;gap:5px;background:#FFF1E6;color:#E8600A;font-size:12px;font-weight:700;padding:5px 10px;border-radius:20px;font-variant-numeric:tabular-nums;}
+  .leg-eca-badge svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+  /* Total distance */
+  .total{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:12px;background:var(--brand-soft);border:1px solid rgba(31,111,235,0.15);margin-top:6px;}
+  .total .l{font-size:12.5px;font-weight:600;color:var(--text-2);display:flex;align-items:center;gap:7px;}
+  .total .l svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .total .v{font-size:15px;font-weight:700;color:var(--brand);}
+
+  .fuel-section{margin-top:22px;}
+  .fuel-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;}
+  .fuel-card:hover{border-color:var(--brand);background:#FAFCFF;}
+  .fuel-icon{width:36px;height:36px;border-radius:8px;background:#FFF6E5;color:#E0A030;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .fuel-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .fuel-meta{flex:1;}
+  .fuel-name{font-size:13px;font-weight:600;color:var(--text);}
+  .fuel-sub{font-size:11px;color:var(--text-2);margin-top:1px;}
+  .fuel-price{font-size:12.5px;font-weight:700;color:var(--green);}
+
+  /* ---------- ROUTE OVERLAY ---------- */
+  .route-overlay{position:absolute;inset:0;pointer-events:none;}
+  .route-overlay svg{width:100%;height:100%;}
+  .route-pin{position:absolute;transform:translate(-50%,-100%);z-index:3;}
+  .route-pin .b{width:28px;height:28px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+  .route-pin.from .b{background:var(--brand);}
+  .route-pin.mid .b{background:#fff;color:var(--brand);border-color:var(--brand);}
+  .route-pin.to .b{background:var(--red);}
+  .route-pin.fuel .b{background:#E0A030;border-color:#fff;}
+  .route-pin .lbl{position:absolute;top:32px;left:50%;transform:translateX(-50%);background:#fff;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:600;color:var(--text);white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,0.18);}
+  .route-pin.fuel .lbl{background:#E0A030;color:#fff;}
+
+  /* ---------- SEARCH DROPDOWN ---------- */
+  .search-wrap{position:relative;}
+  .dropdown{position:absolute;top:38px;left:0;width:340px;background:#fff;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.22);overflow:hidden;display:none;}
+  .search-wrap.open .dropdown{display:block;}
+  .dd-head{padding:10px 14px 6px;font-size:10.5px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;}
+  .dd-item{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;position:relative;transition:background .12s;}
+  .dd-item:hover{background:#F4F7FB;}
+  .flag{width:22px;height:16px;border-radius:2px;flex-shrink:0;overflow:hidden;display:flex;box-shadow:0 0 0 1px rgba(0,0,0,0.06);}
+  .flag span{flex:1;height:100%;}
+  .flag.h{flex-direction:column;}
+  .flag.h span{width:100%;flex:1;}
+  .dd-meta{flex:1;min-width:0;}
+  .dd-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.2;}
+  .dd-sub{font-size:11px;color:var(--text-dim);margin-top:1px;}
+  .dd-actions{display:none;align-items:center;gap:6px;flex-shrink:0;}
+  .dd-item:hover .dd-actions{display:flex;}
+  .dd-btn{width:28px;height:28px;border-radius:6px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;}
+  .dd-btn:hover{background:var(--brand);color:#fff;}
+  .dd-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ---------- SEA-ROUTE LOADING PILL ---------- */
+  .sr-pill{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:10;display:none;align-items:center;gap:9px;background:rgba(11,27,58,0.88);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;padding:8px 16px 8px 12px;border-radius:30px;box-shadow:0 6px 24px rgba(0,0,0,0.45);border:1px solid rgba(110,240,194,0.2);pointer-events:none;}
+  .sr-pill.show{display:flex;}
+  .sr-pill-dot{width:16px;height:16px;border:2px solid rgba(110,240,194,0.3);border-top-color:#6EF0C2;border-radius:50%;flex-shrink:0;}
+  @media(prefers-reduced-motion:no-preference){
+    @keyframes sr-spin{to{transform:rotate(360deg)}}
+    .sr-pill-dot{animation:sr-spin .7s linear infinite;}
+  }
+  .sr-pill em{color:#6EF0C2;font-style:normal;font-weight:600;}
+
+  /* ---------- SEARCH SUGGESTIONS ---------- */
+  .dd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;font-size:12.5px;color:var(--text-dim);}
+  .dd-match{color:var(--brand);font-weight:700;}
+  #searchDropdown{max-height:360px;overflow-y:auto;}
+  #searchDropdown::-webkit-scrollbar{width:5px;}
+  #searchDropdown::-webkit-scrollbar-thumb{background:#E4E9F2;border-radius:3px;}
+  .dd-item.active{background:#F0F5FF;}
+
+  /* ---------- LAYERS FAB ---------- */
+  .layers{position:absolute;top:16px;right:16px;width:42px;height:42px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:0 4px 16px rgba(0,0,0,0.22);z-index:7;cursor:pointer;transition:all .25s ease;overflow:hidden;}
+  .layers svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:opacity .15s;}
+  .layers.open{width:330px;height:auto;border-radius:14px;padding:18px 20px 22px;align-items:stretch;justify-content:flex-start;cursor:default;}
+  .layers.open > svg{display:none;}
+
+  /* ---------- LAYERS POPUP ---------- */
+  .layers-pop{display:none;width:100%;}
+  .layers.open .layers-pop{display:block;}
+  .lp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .lp-head h3{font-size:16px;font-weight:700;color:var(--text);}
+  .lp-close{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:var(--text-2);font-size:14px;}
+  .lp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px;}
+  .lp-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+  .lp-tile{width:54px;height:54px;border-radius:12px;background:#EAF1FE;color:var(--brand);display:flex;align-items:center;justify-content:center;border:2px solid transparent;transition:all .15s;}
+  .lp-tile svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .lp-item .ico-fill{background:var(--brand);color:#fff;}
+  .lp-item.active .lp-tile{border-color:var(--brand);box-shadow:0 0 0 3px rgba(31,111,235,0.12);}
+  .lp-item .lbl{font-size:11.5px;color:var(--text);text-align:center;line-height:1.2;}
+  .lp-divider{height:1px;background:repeating-linear-gradient(to right,#D8DFEA 0 4px,transparent 4px 8px);margin:16px 0;}
+  .lp-section-ttl{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;}
+
+  /* ---------- RIGHT CARDS ---------- */
+  .dp-fuel .right{display:flex;align-items:center;gap:8px;}
+  .card{background:var(--card);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.18);overflow:hidden;}
+
+  /* Live crude price card */
+  .price-card{padding:16px;}
+  .price-head{display:flex;align-items:center;justify-content:space-between;}
+  .price-head h3{font-size:15px;font-weight:600;color:var(--text);}
+  .price-range{display:flex;background:var(--chip);border-radius:6px;padding:2px;}
+  .price-range button{padding:4px 9px;font-size:11px;font-weight:500;color:var(--text-2);border-radius:4px;}
+  .price-range button.on{background:#fff;color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+  .chips{display:flex;gap:6px;margin-top:14px;}
+  .chip{font-size:10.5px;font-weight:500;color:var(--text-2);background:var(--chip);padding:3px 8px;border-radius:10px;}
+  .last-row{display:flex;align-items:center;gap:14px;margin-top:10px;}
+  .last-lbl{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;}
+  .last-val{font-size:14px;font-weight:600;color:var(--text);}
+  .delta{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--green);background:rgba(22,163,74,0.1);padding:2px 6px;border-radius:10px;}
+  .delta svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.5;}
+
+  /* chart */
+  .chart{margin-top:12px;height:160px;position:relative;}
+  .chart svg{width:100%;height:100%;display:block;}
+
+  /* News card */
+  .news-card{padding:16px 0 6px;}
+  .news-head{padding:0 16px;display:flex;align-items:center;justify-content:space-between;}
+  .news-head h3{font-size:15px;font-weight:600;color:var(--text);}
+  .news-tabs{display:flex;gap:18px;padding:14px 16px 0;border-bottom:1px solid var(--border);}
+  .news-tab{font-size:12px;font-weight:500;color:var(--text-dim);padding-bottom:10px;border-bottom:2px solid transparent;cursor:pointer;}
+  .news-tab.on{color:var(--brand);border-bottom-color:var(--brand);}
+  .news-list{}
+  .news-item{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px;}
+  .news-item:last-child{border-bottom:none;}
+  .news-thumb{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,#3F6BB8,#1852FE);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);}
+  .news-thumb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;}
+  .news-body{flex:1;min-width:0;}
+  .news-source{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;font-weight:500;}
+  .news-title{font-size:12.5px;font-weight:500;color:var(--text);margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .news-date{font-size:10.5px;color:var(--text-dim);flex-shrink:0;}
+
+  /* ---------- MAP PINS ---------- */
+  .pin{position:absolute;transform:translate(-50%,-100%);width:34px;height:38px;}
+  .pin svg.shape{width:34px;height:38px;}
+  .pin .icon{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:18px;height:18px;color:#fff;}
+  .pin .icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ---------- PORT HOVER CARD ---------- */
+  .port-card{position:absolute;width:280px;background:#fff;border-radius:16px;box-shadow:0 18px 48px rgba(0,0,0,0.28);padding:18px;z-index:8;pointer-events:auto;transform:translate(-50%,calc(-100% - 14px));}
+  @media(prefers-reduced-motion:no-preference){
+    .port-card{animation:popIn .14s ease-out;}
+    @keyframes popIn{from{opacity:0;transform:translate(-50%,calc(-100% - 6px))}to{opacity:1;transform:translate(-50%,calc(-100% - 14px))}}
+  }
+  .port-card h3{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:14px;}
+  .pc-chips{display:flex;gap:10px;margin-bottom:14px;}
+  .pc-chip{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:24px;font-size:13px;font-weight:600;}
+  .pc-chip.dev{background:#FFF6D6;color:#B58A1A;}
+  .pc-chip.co2{background:#FCEBE3;color:#C9531F;}
+  .pc-chip svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .pc-fuels{background:#F4F6FA;border-radius:12px;padding:14px 16px;}
+  .pc-fuel-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:5px 0;}
+  .pc-fuel-row .g{color:var(--text-2);font-weight:500;}
+  .pc-fuel-row .p{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;}
+  .pc-updated{font-size:12px;color:var(--text-dim);text-align:center;margin:14px 0 12px;}
+  .pc-actions{display:flex;gap:8px;}
+  .pc-btn{flex:1;padding:11px 8px;border-radius:10px;background:#EAF1FE;border:1.5px solid var(--brand);color:var(--brand);font-weight:600;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .pc-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .pc-btn:hover{background:var(--brand);color:#fff;}
+  .pc-no-price{background:#F4F6FA;border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .pc-no-price-msg{font-size:12.5px;color:var(--text-dim);text-align:center;}
+  .pc-add-price-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;background:var(--brand-soft);border:1.5px solid var(--brand);color:var(--brand);font-size:12px;font-weight:700;cursor:pointer;}
+  .pc-add-price-btn:hover{background:var(--brand);color:#fff;}
+  .pc-add-price-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;}
+
+  /* ---------- PORT DETAIL PANEL (left) — REFINED ---------- */
+  .detail-panel{position:absolute;top:0;left:60px;bottom:0;width:380px;max-width:calc(100vw - 60px);background:#F7F9FC;border-right:1px solid var(--border);box-shadow:12px 0 40px rgba(0,0,0,0.18);z-index:8;display:flex;flex-direction:column;transform:translateX(-120%);visibility:hidden;}
+  @media(prefers-reduced-motion:no-preference){.detail-panel{transition:transform .32s cubic-bezier(.4,0,.2,1);}}
+  @media(prefers-reduced-motion:reduce){.detail-panel.open{transform:translateX(0)!important;}}
+  .detail-panel.open{visibility:visible;}
+  .detail-panel.open{transform:translateX(0);}
+
+  /* Hero */
+  .dp-hero{position:relative;padding:24px 24px 20px;background:#0B1828;color:#fff;overflow:hidden;border-bottom:1px solid rgba(99,143,255,0.15);}
+  .dp-hero::before{content:none;}
+  .dp-hero::after{content:none;}
+  .dp-hero-row{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;}
+  .dp-hero-flag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.6px;background:rgba(99,143,255,0.15);border:1px solid rgba(99,143,255,0.25);padding:4px 10px;border-radius:6px;margin-bottom:10px;}
+  .dp-hero-flag .swatch{width:14px;height:10px;border-radius:1px;background:linear-gradient(to bottom,#ED2939 33%,#fff 33% 66%,#002395 66%);box-shadow:0 0 0 1px rgba(255,255,255,0.3);}
+  .dp-hero h2{font-size:26px;font-weight:700;letter-spacing:-0.4px;line-height:1.05;margin-bottom:4px;color:#fff;}
+  .dp-hero .coords{font-size:11.5px;color:rgba(255,255,255,0.5);font-variant-numeric:tabular-nums;}
+  .dp-close{width:32px;height:32px;border-radius:8px;background:rgba(99,143,255,0.15);border:1px solid rgba(99,143,255,0.25);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:13px;flex-shrink:0;transition:all .15s;}
+  .dp-close:hover{background:rgba(99,143,255,0.28);color:#fff;}
+  /* Hero fuel prices — single container with dashed vertical dividers */
+  .dp-hero-fuels{display:flex;margin-top:18px;position:relative;z-index:1;background:rgba(99,143,255,0.1);border:1px solid rgba(99,143,255,0.22);border-radius:10px;overflow:hidden;}
+  .dp-hero-fuel{flex:1;padding:12px 8px;text-align:center;border-right:1px dashed rgba(99,143,255,0.28);}
+  .dp-hero-fuel:last-child{border-right:none;}
+  .dp-hero-fuel .hf-grade{font-size:10px;font-weight:600;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}/* was 0.5 — ~3:1 */
+  .dp-hero-fuel .hf-price{font-size:13.5px;font-weight:700;color:#fff;line-height:1;}
+  .dp-hero-fuel .hf-unit{font-size:9px;color:rgba(255,255,255,0.65);margin-top:3px;}/* was 0.4 — ~2:1 */
+  .dp-hero-updated{display:flex;align-items:center;gap:5px;margin-top:12px;position:relative;z-index:1;font-size:10.5px;color:rgba(255,255,255,0.62);}/* was 0.38 — ~1.9:1 */
+  .dp-hero-updated svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+  .dp-hero-updated span{font-weight:500;color:rgba(255,255,255,0.85);}/* was 0.58 — ~3:1 */
+
+  .dp-body{flex:1;overflow-y:auto;padding:18px;}
+  .dp-body::-webkit-scrollbar{width:6px;}
+  .dp-body::-webkit-scrollbar-thumb{background:#D8DFEA;border-radius:3px;}
+
+  /* Card wrapper */
+  .dp-card{background:#fff;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(14,26,51,0.04),0 4px 14px rgba(14,26,51,0.04);}
+  .dp-sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
+  .dp-sh .ttl{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--text);}
+  .dp-sh .ico{width:30px;height:30px;border-radius:8px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;}
+  .dp-sh .ico svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .dp-sh .chev{color:var(--text-dim);cursor:pointer;}
+  .dp-sh .chev svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+
+  /* Fuel grid */
+  .dp-fuels{display:flex;flex-direction:column;gap:2px;}
+  .dp-fuel{background:transparent;border:0;border-bottom:1px solid #EFF2F8;border-radius:0;padding:11px 4px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .dp-fuel:last-child{border-bottom:0;}
+  .dp-fuel .lbl{display:flex;align-items:center;gap:10px;}
+  .dp-fuel .grade{font-size:12.5px;font-weight:700;color:var(--text);letter-spacing:0.2px;}
+  .dp-fuel .price{font-size:13.5px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;}
+  .dp-fuel .right{display:flex;align-items:center;gap:8px;}
+  .dp-fuel .trend{font-size:10.5px;font-weight:600;display:inline-flex;align-items:center;gap:2px;padding:3px 6px;border-radius:10px;}
+  .dp-fuel .trend.up{color:#C9531F;background:#FDEAE0;}
+  .dp-fuel .trend.dn{color:#16A34A;background:#E4F6EA;}
+  .dp-fuel .trend svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2.5;}
+
+  /* Weather */
+  .dp-wx{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .dp-wx-item{text-align:center;background:#F4F7FB;border-radius:10px;padding:12px 8px;}
+  .dp-wx-item .ico-c{width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:var(--brand);}
+  .dp-wx-item .ico-c svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .dp-wx-item .l{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;font-weight:600;}
+  .dp-wx-item .v{font-size:14px;font-weight:700;color:var(--text);margin-top:2px;}
+  .dp-wx-item .u{font-size:10px;font-weight:500;color:var(--text-2);}
+
+  /* Sellers */
+  .dp-seller{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #EEF1F6;}
+  .dp-seller:last-child{border-bottom:none;padding-bottom:0;}
+  .dp-seller:first-child{padding-top:0;}
+  .dp-seller .av{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex-shrink:0;}
+  .dp-seller .meta{flex:1;min-width:0;}
+  .dp-seller .nm{font-size:13px;font-weight:600;color:var(--text);}
+  .dp-seller .sub{font-size:11px;color:var(--text-dim);margin-top:1px;display:flex;align-items:center;gap:6px;}
+  .dp-seller .stars{color:#E0A030;font-size:10px;letter-spacing:0.5px;}
+  .dp-seller .price{font-size:13px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;position:relative;cursor:default;}
+  .dp-seller .price::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);right:0;background:#0A2540;color:#fff;font-size:11px;font-weight:500;white-space:nowrap;padding:5px 9px;border-radius:7px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;}
+  .dp-seller .price::after{content:'';position:absolute;bottom:calc(100% + 1px);right:12px;border:5px solid transparent;border-top-color:#0A2540;pointer-events:none;opacity:0;transition:opacity .15s;}
+  .dp-seller .price:hover::before,.dp-seller .price:hover::after{opacity:1;transform:translateY(0);}
+
+  /* Nearby ports */
+  .dp-near{background:#F4F7FB;border:1px solid #EBEFF6;border-radius:12px;padding:14px;margin-bottom:10px;transition:all .15s;cursor:pointer;}
+  .dp-near:hover{border-color:var(--brand);background:#FAFCFF;transform:translateY(-1px);}
+  .dp-near:last-child{margin-bottom:0;}
+  .dp-near.empty{background:#fff;border-style:dashed;}
+  .dp-near-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .dp-near-name{font-size:14px;font-weight:700;color:var(--text);}
+  .dp-near-dist{font-size:11px;color:var(--text-dim);margin-top:2px;display:flex;align-items:center;gap:4px;}
+  .dp-near-dist svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
+  .dp-near-date{font-size:10px;color:var(--text-dim);background:#fff;padding:3px 7px;border-radius:10px;font-weight:600;}
+  .dp-near-link{font-size:11px;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:5px 9px;border-radius:10px;}
+  .dp-near-prices{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;}
+  .dp-near-prices > div{background:#fff;border-radius:8px;padding:7px 8px;text-align:center;}
+  .dp-near-prices .l{font-size:9.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600;letter-spacing:0.3px;}
+  .dp-near-prices .v{font-size:11.5px;font-weight:700;color:var(--text);margin-top:2px;font-variant-numeric:tabular-nums;}
+  .dp-near .empty-msg{font-size:11.5px;color:var(--text-dim);margin-top:10px;text-align:center;padding-top:10px;border-top:1px dashed #DDE3EE;}
+
+  /* Footer */
+  .dp-foot{padding:16px 18px;background:#fff;border-top:1px solid var(--border);display:flex;gap:10px;}
+  .dp-foot .ghost{flex:0 0 auto;width:48px;border-radius:12px;background:#F4F7FB;color:var(--text);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
+  .dp-foot .ghost:hover{background:#EAF1FE;color:var(--brand);border-color:var(--brand);}
+  .dp-foot .ghost svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .dp-cta{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#1852FE,#3F8DFF);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 18px rgba(31,111,235,0.32);}
+  .dp-cta svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ── Detail panel loader overlay ── */
+  .dp-loader{position:absolute;inset:0;z-index:20;background:#F7F9FC;display:flex;flex-direction:column;gap:0;pointer-events:none;opacity:0;transition:opacity .18s ease;}
+  .dp-loader.show{opacity:1;pointer-events:all;}
+
+  /* Shimmer hero */
+  .dp-loader-hero{height:196px;background:linear-gradient(135deg,#0B1A38,#0E2347);position:relative;overflow:hidden;flex-shrink:0;}
+  .dp-loader-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.07) 50%,transparent 100%);}
+
+  /* Shimmer rows */
+  .dp-loader-body{padding:20px 18px;display:flex;flex-direction:column;gap:14px;}
+  .dp-skel{border-radius:8px;background:#E8EDF5;background-size:400% 100%;}
+  .dp-skel-title{height:14px;width:55%;}
+  .dp-skel-row{height:52px;width:100%;border-radius:10px;}
+  .dp-skel-row.sm{height:40px;}
+  .dp-skel-row.xs{height:32px;width:75%;}
+
+  @media(prefers-reduced-motion:no-preference){
+    @keyframes dpShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    .dp-loader-hero::after{animation:dpShimmer 1.1s ease-in-out infinite;}
+    .dp-skel{background:linear-gradient(90deg,#E8EDF5 0%,#F4F7FC 50%,#E8EDF5 100%);background-size:400% 100%;animation:dpShimmer 1.1s ease-in-out infinite;}
+    .dp-skel-title{animation-delay:.05s;}
+    .dp-skel-row{animation-delay:.1s;}
+    .dp-skel-row.sm{animation-delay:.15s;}
+    .dp-skel-row.xs{animation-delay:.2s;}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .detail-panel{transition:none;}
+    .dp-near{transition:none;}
+    .dp-near:hover{transform:none;}
+    .bcard{transition:background .0s,border-color .0s;}
+  }
+</style>
+</head>
+<body>
+<a href="#map-region" class="skip-link">Skip to map</a>
+<div class="app">
+
+  <!-- ============ NAV RAIL ============ -->
+  <aside class="nav">
+    <div class="burger"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
+    <a href="index.html" class="nico" title="Dashboard" style="text-decoration:none;">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+    </a>
+    <button class="nico" title="Documents">
+      <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg>
+    </button>
+    <button class="nico" title="Reports">
+      <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 13l2 2 4-4"/></svg>
+    </button>
+    <button class="nico" title="Files">
+      <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+    </button>
+    <div class="navsep"></div>
+    <button class="nico" title="Settings">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8 2 2 0 11-2.8 2.8 1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0 1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3 2 2 0 11-2.8-2.8 1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4 1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8 2 2 0 112.8-2.8 1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0 1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3 2 2 0 112.8 2.8 1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+    </button>
+    <button class="nico" title="CO₂ Emissions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 017 7c0 4-3 6-5 8H10c-2-2-5-4-5-8a7 7 0 017-7z"/><path d="M9 21h6"/><path d="M9.5 17c.5 1 2.5 1.5 3 0"/></svg>
+    </button>
+    <button class="nico" title="Analytics">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+    </button>
+    <button class="nico" title="Exchange">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3L4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg>
+    </button>
+    <button class="nico" title="AI">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z"/></svg>
+    </button>
+    <button class="nico bottom" title="Notifications">
+      <svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 10-12 0v5l-2 2h16z"/><path d="M10 21a2 2 0 004 0"/></svg>
+    </button>
+    <button class="nico" title="Apps">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="6" cy="6" r="1.4"/><circle cx="12" cy="6" r="1.4"/><circle cx="18" cy="6" r="1.4"/><circle cx="6" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="18" cy="12" r="1.4"/><circle cx="6" cy="18" r="1.4"/><circle cx="12" cy="18" r="1.4"/><circle cx="18" cy="18" r="1.4"/></svg>
+    </button>
+    <div class="nav-avatar">A</div>
+  </aside>
+
+  <!-- ============ PORT DETAIL PANEL ============ -->
+  <aside class="detail-panel" id="detailPanel">
+    <!-- Loader overlay -->
+    <div class="dp-loader" id="dpLoader">
+      <div class="dp-loader-hero"></div>
+      <div class="dp-loader-body">
+        <div class="dp-skel dp-skel-title"></div>
+        <div class="dp-skel dp-skel-row"></div>
+        <div class="dp-skel dp-skel-row sm"></div>
+        <div class="dp-skel dp-skel-row sm"></div>
+        <div class="dp-skel dp-skel-row xs"></div>
+      </div>
+    </div>
+    <!-- Hero -->
+    <div class="dp-hero">
+      <div class="dp-hero-row">
+        <div>
+          <div class="dp-hero-flag"><span class="swatch"></span><span id="dpCountry">Netherlands</span></div>
+          <h2 id="dpName">Antwerp</h2>
+          <div class="coords">51.2194° N, 4.4025° E · UTC+1</div>
+        </div>
+        <button class="dp-close" id="dpClose">✕</button>
+      </div>
+      <div class="dp-hero-fuels" id="dpHeroFuels">
+        <div class="dp-hero-fuel"><div class="hf-grade">VLSFO</div><div class="hf-price">$620</div><div class="hf-unit">/mt</div></div>
+        <div class="dp-hero-fuel"><div class="hf-grade">HSFO</div><div class="hf-price">$440</div><div class="hf-unit">/mt</div></div>
+        <div class="dp-hero-fuel"><div class="hf-grade">LSMGO</div><div class="hf-price">$798</div><div class="hf-unit">/mt</div></div>
+        <div class="dp-hero-fuel"><div class="hf-grade">MGO</div><div class="hf-price">$830</div><div class="hf-unit">/mt</div></div>
+      </div>
+      <div class="dp-hero-updated" id="dpHeroUpdated">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Prices updated &nbsp;<span>24 Mar 2026, 09:41 UTC</span>
+      </div>
+    </div>
+
+    <div class="dp-body">
+
+      <!-- hidden fuels element kept for JS populateDetail compatibility -->
+      <div id="dpFuels" style="display:none"></div>
+
+      <!-- Weather -->
+      <div class="dp-card">
+        <div class="dp-sh">
+          <div class="ttl">
+            <span class="ico"><svg viewBox="0 0 24 24"><path d="M18 15a4 4 0 00-7.5-2A5 5 0 105 19h13a3 3 0 000-6z"/></svg></span>
+            Weather Conditions
+          </div>
+          <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></span>
+        </div>
+        <div class="dp-wx">
+          <div class="dp-wx-item">
+            <div class="ico-c"><svg viewBox="0 0 24 24"><path d="M3 12h13a3 3 0 100-6"/><path d="M3 18h17a3 3 0 100-6"/></svg></div>
+            <div class="l">Wind</div>
+            <div class="v">20 <span class="u">kn E</span></div>
+          </div>
+          <div class="dp-wx-item">
+            <div class="ico-c"><svg viewBox="0 0 24 24"><path d="M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg></div>
+            <div class="l">Wave</div>
+            <div class="v">1.8 <span class="u">m</span></div>
+          </div>
+          <div class="dp-wx-item">
+            <div class="ico-c"><svg viewBox="0 0 24 24"><path d="M14 14V6a2 2 0 10-4 0v8a4 4 0 104 0z"/></svg></div>
+            <div class="l">Temp</div>
+            <div class="v">19 <span class="u">°C</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Sellers -->
+      <div class="dp-card">
+        <div class="dp-sh">
+          <div class="ttl">
+            <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></span>
+            Top 3 Sellers
+          </div>
+          <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></span>
+        </div>
+        <div class="dp-seller">
+          <div class="av" style="background:linear-gradient(135deg,#1852FE,#5BA6FF)">VV</div>
+          <div class="meta">
+            <div class="nm">Vessel Visionary LLP</div>
+            <div class="sub">vessel@geoserves.com</div>
+          </div>
+          <div class="price" data-tip="Price starts from">$616</div>
+        </div>
+        <div class="dp-seller">
+          <div class="av" style="background:linear-gradient(135deg,#16A34A,#52C77A)">SS</div>
+          <div class="meta">
+            <div class="nm">Seafarer Scout LLP</div>
+            <div class="sub">seafarer@geoserves.com</div>
+          </div>
+          <div class="price" data-tip="Price starts from">$620</div>
+        </div>
+        <div class="dp-seller">
+          <div class="av" style="background:linear-gradient(135deg,#E0A030,#F0C060)">SE</div>
+          <div class="meta">
+            <div class="nm">Sailor's Sentry LLP</div>
+            <div class="sub">sentry@geoserves.com</div>
+          </div>
+          <div class="price" data-tip="Price starts from">$624</div>
+        </div>
+      </div>
+
+      <!-- Nearby Ports -->
+      <div class="dp-card">
+        <div class="dp-sh">
+          <div class="ttl">
+            <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 6-8 12-8 12S4 16 4 10a8 8 0 018-8z"/></svg></span>
+            Nearby Ports
+          </div>
+          <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></span>
+        </div>
+
+        <div class="dp-near" onclick="(function(){const p=PIN_PORTS.find(x=>x.name==='Rotterdam');if(p)openDetail(p);})()">
+          <div class="dp-near-top">
+            <div>
+              <div class="dp-near-name">Rotterdam</div>
+              <div class="dp-near-dist"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>1,036 nm</div>
+            </div>
+            <div class="dp-near-date">24 Mar 2026</div>
+          </div>
+          <div class="dp-near-prices">
+            <div><div class="l">VLSFO</div><div class="v">$620</div></div>
+            <div><div class="l">HSFO</div><div class="v">$440</div></div>
+            <div><div class="l">LSMGO</div><div class="v">$798</div></div>
+            <div><div class="l">MGO</div><div class="v">$830</div></div>
+          </div>
+        </div>
+
+        <div class="dp-near empty">
+          <div class="dp-near-top">
+            <div>
+              <div class="dp-near-name">Hamburg</div>
+              <div class="dp-near-dist"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>1,036 nm</div>
+            </div>
+            <button class="dp-near-link">+ Add price</button>
+          </div>
+          <div class="empty-msg">No price indication available</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dp-foot">
+      <button class="dp-cta" id="dpCalcBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M6 8l-3 4 3 4M18 8l3 4-3 4"/></svg>
+        Calculate Distance
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ DISTANCE CALCULATOR PANEL ============ -->
+  <aside class="calc-panel" id="calcPanel">
+    <div class="calc-head">
+      <div>
+        <h2>Distance Calculator</h2>
+        <div class="sub">Plan your voyage with stops & bunker ports</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="calc-clear-btn" id="clearCalc" title="Clear route">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+          Clear
+        </button>
+        <button class="calc-close" id="closeCalc">✕</button>
+      </div>
+    </div>
+    <div class="calc-body">
+      <div class="stops-list" id="stopsList"></div>
+      <button class="add-stop" id="addStop">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add stop
+      </button>
+
+      <div class="results" id="results">
+        <div class="results-title">Route Legs</div>
+        <div id="legs"></div>
+        <div class="total">
+          <span class="l"><svg viewBox="0 0 24 24"><path d="M3 12h18M15 6l6 6-6 6"/></svg>Total Distance</span>
+          <span class="v" id="totalDist" style="font-size:16px;font-weight:700;color:#1852FE;font-variant-numeric:tabular-nums;">— nm</span>
+        </div>
+
+        <div class="fuel-section">
+          <div class="results-title">Bunker Ports On Route</div>
+          <div id="bunkerList"></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAP ============ -->
+  <div class="map" id="map-region" tabindex="-1">
+    <div id="leafletMap"></div>
+
+    <!-- SEA ROUTE LOADING PILL -->
+    <div class="sr-pill" id="srPill">
+      <div class="sr-pill-dot"></div>
+      Plotting <em>sea route</em>…
+    </div>
+
+    <!-- TOP SEARCH -->
+    <div class="topbar">
+      <div class="search-wrap" id="searchWrap">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="searchInput" placeholder="Search port name or port code" autocomplete="off" />
+        </div>
+        <div class="dropdown" id="searchDropdown">
+          <div class="dd-head" id="ddHead">Suggested ports</div>
+          <div id="ddResults"></div>
+          <div class="dd-empty" id="ddEmpty" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:28px;height:28px;color:#C5CDD9;margin-bottom:8px;"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <div>No ports found</div>
+          </div>
+        </div>
+      </div>
+      <button class="nav-btn" id="openCalc" title="Distance calculator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M5.46973 1.75C6.98978 1.75002 8.67705 2.63514 9.1123 4.54102V4.54199C9.48991 6.18414 8.85488 7.92467 7.10449 9.59863L7.10254 9.59961C6.6515 10.0342 6.06854 10.25 5.46973 10.25C4.87997 10.25 4.28734 10.0337 3.83691 9.59961L3.83398 9.59766C2.07598 7.92557 1.44969 6.18598 1.82715 4.54297C2.27178 2.62503 3.95027 1.75 5.46973 1.75ZM5.47949 2.25C4.31905 2.25006 2.73407 2.86121 2.3125 4.65527V4.65918C1.86849 6.61055 3.16843 8.26522 4.18262 9.22949V9.23047C4.91052 9.93091 6.04446 9.91097 6.7627 9.2334L6.76367 9.23242C7.77876 8.26809 9.0819 6.61047 8.62598 4.64648C8.21479 2.8606 6.62854 2.25 5.47949 2.25Z" fill="#1852FE" stroke="#1852FE"/>
+          <path d="M5.50977 4.69922H5.51953C5.79339 4.69922 6.01953 4.92536 6.01953 5.19922C6.01953 5.46984 5.79687 5.69922 5.50977 5.69922C5.23591 5.69922 5.00977 5.47308 5.00977 5.19922C5.00977 4.92209 5.22916 4.69922 5.50977 4.69922Z" fill="#1852FE" stroke="#1852FE"/>
+          <path d="M18.4894 22.7502C17.7794 22.7502 17.0594 22.4902 16.4994 21.9602C14.6494 20.2102 13.8994 18.3002 14.3394 16.4202C14.8494 14.2302 16.7894 13.2402 18.4894 13.2402C20.1894 13.2402 22.1294 14.2302 22.6394 16.4202C23.0694 18.2902 22.3194 20.2102 20.4694 21.9502C19.9194 22.4902 19.2094 22.7502 18.4894 22.7502ZM18.4894 14.7502C17.4694 14.7502 16.1494 15.2802 15.7994 16.7702C15.4094 18.4402 16.5294 19.9302 17.5294 20.8802C18.0594 21.3902 18.8994 21.3902 19.4394 20.8802C20.4394 19.9302 21.5594 18.4502 21.1694 16.7802C20.8394 15.2802 19.5194 14.7502 18.4894 14.7502Z" fill="#1852FE"/>
+          <path d="M18.5293 18.1992C17.9793 18.1992 17.5293 17.7492 17.5293 17.1992C17.5293 16.6492 17.9693 16.1992 18.5293 16.1992H18.5393C19.0893 16.1992 19.5393 16.6492 19.5393 17.1992C19.5393 17.7492 19.0793 18.1992 18.5293 18.1992Z" fill="#1852FE"/>
+          <path d="M11.9995 19.75H9.31945C8.15945 19.75 7.14945 19.05 6.74945 17.97C6.33945 16.89 6.63945 15.7 7.50945 14.93L15.4995 7.94C15.9795 7.52 15.9895 6.95 15.8495 6.56C15.6995 6.17 15.3195 5.75 14.6795 5.75H11.9995C11.5895 5.75 11.2495 5.41 11.2495 5C11.2495 4.59 11.5895 4.25 11.9995 4.25H14.6795C15.8395 4.25 16.8495 4.95 17.2495 6.03C17.6595 7.11 17.3595 8.3 16.4895 9.07L8.49945 16.06C8.01945 16.48 8.00945 17.05 8.14945 17.44C8.29945 17.83 8.67945 18.25 9.31945 18.25H11.9995C12.4095 18.25 12.7495 18.59 12.7495 19C12.7495 19.41 12.4095 19.75 11.9995 19.75Z" fill="#1852FE"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- LAYERS FAB (morphs into popup) -->
+    <div class="layers" id="layersBtn" title="Layers" role="button" tabindex="0" aria-label="Toggle map overlays">
+      <svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5M3 18l9 5 9-5"/></svg>
+    <div class="layers-pop" id="layersPop">
+      <div class="lp-head">
+        <h3>Overlays</h3>
+        <button class="lp-close" id="layersClose">✕</button>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg></div><div class="lbl">ECA</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 0114 0v6H5z"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/></svg></div><div class="lbl">Piracy</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M3 8c3-2 6 2 9 0s6-2 9 0M3 14c3-2 6 2 9 0s6-2 9 0"/></svg></div><div class="lbl">Pressure</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="lbl">Storm</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M12 3l4 14-4-3-4 3z"/></svg></div><div class="lbl">Nautical</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M9 11V6a2 2 0 014 0v6"/><path d="M13 12V5a2 2 0 014 0v9a7 7 0 11-14 0v-3l3 2"/></svg></div><div class="lbl">No-go's</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg></div><div class="lbl">Ice lines</div></div>
+      </div>
+      <div class="lp-divider"></div>
+      <div class="lp-grid">
+        <div class="lp-item active" role="button" tabindex="0" aria-pressed="true"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/></svg></div><div class="lbl">Current</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M3 8h11a3 3 0 100-6"/><path d="M3 14h15a3 3 0 110 6"/></svg></div><div class="lbl">Wind</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M5 12h14M19 12l-5-5M19 12l-5 5"/></svg></div><div class="lbl">Swell Direction</div></div>
+      </div>
+      <div class="lp-divider"></div>
+      <div class="lp-section-ttl">Base layer</div>
+      <div class="lp-grid">
+        <div class="lp-item active" role="button" tabindex="0" aria-pressed="true"><div class="lp-tile ico-fill"><svg viewBox="0 0 24 24"><path d="M3 16c3-3 6 3 9 0s6-3 9 0"/><path d="M3 20c3-3 6 3 9 0s6-3 9 0"/></svg></div><div class="lbl">Default</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile"><svg viewBox="0 0 24 24"><path d="M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg></div><div class="lbl">Swell</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile"><svg viewBox="0 0 24 24"><path d="M3 12c2-3 4 3 6 0s4 3 6 0 4-3 6 0"/><path d="M3 18c2-3 4 3 6 0s4 3 6 0 4-3 6 0"/></svg></div><div class="lbl">Wave</div></div>
+        <div class="lp-item" role="button" tabindex="0"><div class="lp-tile"><svg viewBox="0 0 24 24"><path d="M3 8l4 4-4 4M11 8l4 4-4 4M19 8l2 4-2 4"/></svg></div><div class="lbl">Current Speed</div></div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+  <!-- Bunker Port Popup -->
+  <div class="bp-popup" id="bpPopup">
+    <div class="bp-head">
+      <button class="bp-back" id="bpBack"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="bp-title"><div class="nm" id="bpName">Morocco</div><div class="ct" id="bpCountry">Morocco</div></div>
+    </div>
+    <div class="bp-body">
+      <div class="bp-sec">
+        <div class="bp-sh">Fuel Prices</div>
+        <div id="bpFuels">
+          <div class="bp-fuel"><span class="g">VLSFO</span><span class="p">$620/mt</span></div>
+          <div class="bp-fuel"><span class="g">HSFO</span><span class="p">$440/mt</span></div>
+          <div class="bp-fuel"><span class="g">LSMGO</span><span class="p">$798/mt</span></div>
+        </div>
+      </div>
+      <div class="bp-sec">
+        <div class="bp-sh">Top 3 Sellers</div>
+        <div class="bp-seller"><div class="av">VV</div><div class="meta"><div class="nm">Vessel Visionary LLP</div><div class="em">Vessel@geoserves.com</div></div></div>
+        <div class="bp-seller"><div class="av" style="background:linear-gradient(135deg,#16A34A,#52C77A)">SS</div><div class="meta"><div class="nm">Seafarer Scout LLP</div><div class="em">Vessel@geoserves.com</div></div></div>
+        <div class="bp-seller"><div class="av" style="background:linear-gradient(135deg,#E0A030,#F0C060)">SE</div><div class="meta"><div class="nm">Sailor's Sentry LLP</div><div class="em">Vessel@geoserves.com</div></div></div>
+      </div>
+      <div class="bp-sec">
+        <div class="bp-sh">Weather Conditions</div>
+        <div class="bp-wx">
+          <div class="bp-wx-card">
+            <div class="bp-wx-ico"><svg viewBox="0 0 24 24"><path d="M3 12h13a3 3 0 100-6"/><path d="M3 18h17a3 3 0 100-6"/></svg></div>
+            <div class="bp-wx-lbl">Wind</div>
+            <div class="bp-wx-val">20 kn E</div>
+          </div>
+          <div class="bp-wx-card">
+            <div class="bp-wx-ico"><svg viewBox="0 0 24 24"><path d="M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg></div>
+            <div class="bp-wx-lbl">Wave</div>
+            <div class="bp-wx-val">1.8 m</div>
+          </div>
+          <div class="bp-wx-card">
+            <div class="bp-wx-ico"><svg viewBox="0 0 24 24"><path d="M14 14V6a2 2 0 10-4 0v8a4 4 0 104 0z"/></svg></div>
+            <div class="bp-wx-lbl">Temp</div>
+            <div class="bp-wx-val">19 °C</div>
+          </div>
+        </div>
+      </div>
+      <div class="bp-sec">
+        <div class="bp-stats">
+          <div class="bp-stat">
+            <div class="bp-stat-left">
+              <div class="bp-stat-ico" style="background:#EAF1FE;color:#1852FE"><svg viewBox="0 0 24 24"><path d="M3 12h18M15 6l6 6-6 6"/></svg></div>
+              <span class="l">Total Distance</span>
+            </div>
+            <span class="v">5,534 nm</span>
+          </div>
+          <div class="bp-stat">
+            <div class="bp-stat-left">
+              <div class="bp-stat-ico" style="background:#FFF6D6;color:#B58A1A"><svg viewBox="0 0 24 24"><path d="M6 4v6a4 4 0 004 4h4a4 4 0 014 4v2"/><path d="M3 7l3-3 3 3M21 17l-3 3-3-3"/></svg></div>
+              <span class="l">Additional Distance</span>
+            </div>
+            <span class="v" style="color:#B58A1A">+744 nm</span>
+          </div>
+          <div class="bp-stat">
+            <div class="bp-stat-left">
+              <div class="bp-stat-ico" style="background:#FCEBE3;color:#C9531F"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg></div>
+              <span class="l">Emission Control Area (ECA)</span>
+            </div>
+            <span class="v">363 nm</span>
+          </div>
+          <div class="bp-stat">
+            <div class="bp-stat-left">
+              <div class="bp-stat-ico" style="background:#E4F6EA;color:#16A34A"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 6-8 12-8 12S4 16 4 10a8 8 0 018-8z"/></svg></div>
+              <span class="l">Number of Stops</span>
+            </div>
+            <span class="v">3 Stops</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bp-foot"><button class="bp-cta">+ Create an Enquiry</button></div>
+  </div>
+
+</div>
+
+<!-- Add Price Indication Modal -->
+<div class="modal-mask" id="priceModal">
+  <div class="modal" style="width:600px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <h3>Add Price Indication</h3>
+      <button id="pmX" style="background:none;border:0;cursor:pointer;color:var(--text-2);font-size:18px;line-height:1;padding:2px 4px;">✕</button>
+    </div>
+    <div class="sub">Select one or more ports and add fuel price indications</div>
+
+    <!-- Port name multi-select -->
+    <label>Port Name *</label>
+    <div class="pm-port-wrap" id="pmPortWrap">
+      <div class="pm-chips" id="pmChips"></div>
+      <input class="pm-port-input" id="pmPortInput" placeholder="Type to add a port…" autocomplete="off"/>
+      <svg class="pm-arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      <div class="pm-suggest" id="pmSuggest"></div>
+    </div>
+
+    <!-- Fuel sets -->
+    <div id="pmSets" style="margin-top:16px;"></div>
+
+    <!-- Add new set -->
+    <button class="add-set" id="pmAddSet">＋ Add new set</button>
+
+    <div class="modal-foot">
+      <button class="btn" id="pmCancel">Cancel</button>
+      <button class="btn primary" id="pmSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- pin template via JS to avoid duplicating SVG markup -->
+<script>
+  // ── Leaflet map init ────────────────────────────────────────────────
+  const lmap = L.map('leafletMap', {
+    center: [20, 15],
+    zoom: 3,
+    zoomControl: false,
+    attributionControl: true,
+    scrollWheelZoom: true,
+    dragging: true,
+    minZoom: 2,
+    maxZoom: 8,
+  });
+
+  // Stadia dark maritime tile — matches dark ocean color tone
+  // CartoDB Dark Matter — free, no API key, dark maritime style
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19,
+  }).addTo(lmap);
+
+  // Custom pin SVG for Leaflet divIcon
+  function makePinIcon(color='#1852FE'){
+    return L.divIcon({
+      className: '',
+      html: `<div style="position:relative;width:34px;height:38px;cursor:pointer;">
+        <svg viewBox="0 0 34 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:38px;">
+          <path d="M5 2h24a3 3 0 013 3v20a3 3 0 01-3 3h-9l-3 5-3-5H5a3 3 0 01-3-3V5a3 3 0 013-3z"
+            fill="${color}" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+        <div style="position:absolute;top:7px;left:50%;transform:translateX(-50%);width:18px;height:18px;display:flex;align-items:center;justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <path d="M6.78396 15.8456H10.0727C10.3754 15.8456 10.6208 16.091 10.6208 16.3937V18.0381C10.6208 18.3408 10.3754 18.5862 10.0727 18.5862H6.78396C6.48124 18.5862 6.23583 18.3408 6.23583 18.0381V16.3937C6.23583 16.091 6.48124 15.8456 6.78396 15.8456Z" fill="rgba(255,255,255,0.25)" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.42834 15.8454V10.9123" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.5392 21.875H20.213" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.2946 21.875V6.52744C18.2946 6.22487 18.049 5.97931 17.7464 5.97931H15.0058C14.7032 5.97931 14.4577 6.22487 14.4577 6.52744V21.875" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.7171 10.9121H6.49786C6.10979 10.9121 5.84449 10.5208 5.9892 10.1601L6.64695 8.51573C6.73026 8.30744 6.93198 8.17151 7.15561 8.17151H14.4578" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.2946 8.17151H21.0352C21.3378 8.17151 21.5834 8.41707 21.5834 8.71964V10.364C21.5834 10.6666 21.3378 10.9121 21.0352 10.9121H14.4577" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.2946 14.2012H14.4577" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.2947 17.4902H14.4578" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>`,
+      iconSize: [34, 38],
+      iconAnchor: [17, 38],
+      popupAnchor: [0, -40],
+    });
+  }
+  function makeBunkerPinIcon() {
+    return L.divIcon({
+      className: '',
+      html: `<div style="position:relative;width:34px;height:38px;cursor:pointer;">
+        <svg viewBox="0 0 34 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:38px;">
+          <path d="M5 2h24a3 3 0 013 3v20a3 3 0 01-3 3h-9l-3 5-3-5H5a3 3 0 01-3-3V5a3 3 0 013-3z"
+            fill="#0D9E82" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+        <div style="position:absolute;top:7px;left:50%;transform:translateX(-50%);width:18px;height:18px;display:flex;align-items:center;justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+            <g clip-path="url(#clip0_2777_41302)">
+              <path d="M2.33594 11.3075V3.05113C2.33594 2.2578 2.9785 1.61523 3.77183 1.61523H7.0026C7.79594 1.61523 8.4385 2.2578 8.4385 3.05113V11.3075" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1.25781 11.3066H9.51422" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.33594 6.28125H8.4385" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10.5894 3.05078L12.174 4.63529C12.3089 4.77027 12.3843 4.95263 12.3843 5.14288V8.4354C12.3843 9.02986 11.9019 9.51232 11.3074 9.51232C10.7129 9.51232 10.2305 9.02986 10.2305 8.4354V7.71745" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.4883 3.94922V5.20563C11.4883 5.60194 11.8099 5.92358 12.2062 5.92358H12.3857" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_2777_41302">
+                <rect width="12.9231" height="12.9231" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>`,
+      iconSize: [34, 38],
+      iconAnchor: [17, 38],
+      popupAnchor: [0, -40],
+    });
+  }
+
+  function makeSelectedPinIcon(portName, country) {
+    const label = portName;
+    const sub = country || '';
+    return L.divIcon({
+      className: '',
+      // transform: translate(-50%, -100%) centers horizontally and lifts the
+      // entire card above the anchor point so the tail tip lands on the port.
+      html: `<div style="transform:translate(-50%,-100%);display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:10px 14px 10px 10px;box-shadow:0 6px 24px rgba(0,0,0,0.22);border:2px solid #1852FE;">
+          <div style="width:34px;height:34px;border-radius:9px;background:#1852FE;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+              <circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 6-8 12-8 12S4 16 4 10a8 8 0 018-8z"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#0D1F3C;line-height:1.2;">${label}</div>
+            <div style="font-size:11px;color:#6B7A99;margin-top:2px;">${sub}</div>
+          </div>
+        </div>
+        <svg viewBox="0 0 24 12" style="width:24px;height:12px;display:block;margin-top:-1px;flex-shrink:0;">
+          <path d="M0 0 L12 12 L24 0Z" fill="#fff"/>
+          <path d="M0 0 L12 11 L24 0" fill="none" stroke="#1852FE" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>`,
+      iconSize: [0, 0],
+      iconAnchor: [0, 0],
+    });
+  }
+
+  let selectedMarkerName = null;
+
+  // Sample port data for hover cards (max 4 fuel grades)
+  const PIN_PORTS = [
+    {name:"Reykjavik",  dev:120, co2:55,  fuels:[["VLSFO","$640/mt"],["HSFO","$455/mt"],["LSMGO","$810/mt"]]},
+    {name:"Rotterdam",  dev:0,   co2:0,   fuels:[["VLSFO","$610/mt"],["HSFO","$435/mt"],["LSMGO","$795/mt"],["MGO","$830/mt"]]},
+    {name:"Hamburg",    dev:42,  co2:18,  fuels:[]},
+    {name:"Antwerp",    dev:18,  co2:8,   fuels:[["VLSFO","$612/mt"],["HSFO","$438/mt"],["LSMGO","$796/mt"],["MGO","$828/mt"]]},
+    {name:"Algeciras",  dev:62,  co2:30,  fuels:[["VLSFO","$582/mt"],["HSFO","$420/mt"],["LSMGO","$788/mt"]]},
+    {name:"Gibraltar",  dev:58,  co2:28,  fuels:[["VLSFO","$585/mt"],["HSFO","$424/mt"],["LSMGO","$790/mt"]]},
+    {name:"Casablanca", dev:744, co2:363, fuels:[["VLSFO","$620/mt"],["HSFO","$440/mt"],["LSMGO","$440/mt"]]},
+    {name:"Las Palmas", dev:520, co2:240, fuels:[["VLSFO","$628/mt"],["HSFO","$448/mt"],["LSMGO","$805/mt"]]},
+    {name:"Lagos",      dev:1240,co2:580, fuels:[["VLSFO","$650/mt"],["HSFO","$465/mt"],["LSMGO","$820/mt"]]},
+    {name:"Cape Town",  dev:1820,co2:880, fuels:[["VLSFO","$642/mt"],["HSFO","$458/mt"],["LSMGO","$815/mt"],["MGO","$845/mt"]]},
+    {name:"Port Said",  dev:38,  co2:14,  fuels:[["VLSFO","$595/mt"],["HSFO","$428/mt"],["LSMGO","$792/mt"]]},
+    {name:"Suez",       dev:46,  co2:18,  fuels:[["VLSFO","$598/mt"],["HSFO","$430/mt"],["LSMGO","$793/mt"]]},
+    {name:"Fujairah",   dev:38,  co2:16,  fuels:[["VLSFO","$566/mt"],["HSFO","$418/mt"],["LSMGO","$782/mt"],["MGO","$815/mt"]]},
+    {name:"Mumbai",     dev:120, co2:58,  fuels:[["VLSFO","$604/mt"],["HSFO","$432/mt"],["LSMGO","$796/mt"]]},
+    {name:"Colombo",    dev:240, co2:115, fuels:[["VLSFO","$608/mt"],["HSFO","$436/mt"],["LSMGO","$798/mt"]]},
+    {name:"Singapore",  dev:0,   co2:0,   fuels:[["VLSFO","$574/mt"],["HSFO","$415/mt"],["LSMGO","$780/mt"],["MGO","$812/mt"]]},
+    {name:"Hong Kong",  dev:380, co2:178, fuels:[["VLSFO","$596/mt"],["HSFO","$426/mt"],["LSMGO","$792/mt"]]},
+    {name:"Shanghai",   dev:520, co2:248, fuels:[["VLSFO","$602/mt"],["HSFO","$430/mt"],["LSMGO","$794/mt"]]},
+    {name:"Busan",      dev:680, co2:320, fuels:[["VLSFO","$610/mt"],["HSFO","$436/mt"],["LSMGO","$798/mt"]]},
+    {name:"Yokohama",   dev:740, co2:355, fuels:[["VLSFO","$615/mt"],["HSFO","$438/mt"],["LSMGO","$800/mt"]]},
+    {name:"Houston",    dev:1640,co2:780, fuels:[["VLSFO","$590/mt"],["HSFO","$422/mt"],["LSMGO","$786/mt"],["MGO","$818/mt"]]},
+    {name:"New York",   dev:1480,co2:710, fuels:[["VLSFO","$598/mt"],["HSFO","$428/mt"],["LSMGO","$790/mt"]]},
+    {name:"Panama",     dev:1820,co2:870, fuels:[["VLSFO","$612/mt"],["HSFO","$436/mt"],["LSMGO","$798/mt"]]},
+    {name:"Santos",     dev:2240,co2:1080,fuels:[["VLSFO","$628/mt"],["HSFO","$448/mt"],["LSMGO","$806/mt"]]}
+  ];
+
+  // ── Port lat/lng lookup ─────────────────────────────────────────────
+  const PORT_LATLNG = {
+    "Reykjavik":  [64.1, -21.9],  "Rotterdam":  [51.9, 4.5],
+    "Hamburg":    [53.5, 10.0],   "Antwerp":    [51.2, 4.4],
+    "Algeciras":  [36.1, -5.5],   "Gibraltar":  [36.1, -5.4],
+    "Casablanca": [33.6, -7.6],   "Las Palmas": [28.1, -15.4],
+    "Lagos":      [6.4,  3.4],    "Cape Town":  [-33.9, 18.4],
+    "Port Said":  [31.3, 32.3],   "Suez":       [30.0, 32.6],
+    "Fujairah":   [25.1, 56.3],   "Mumbai":     [18.9, 72.8],
+    "Colombo":    [6.9,  79.8],   "Singapore":  [1.3,  103.8],
+    "Hong Kong":  [22.3, 114.2],  "Shanghai":   [31.2, 121.5],
+    "Busan":      [35.1, 129.0],  "Yokohama":   [35.4, 139.6],
+    "Houston":    [29.7, -95.0],  "New York":   [40.7, -74.0],
+    "Panama":     [9.0,  -79.5],  "Santos":     [-23.9,-46.3],
+  };
+
+  // ── Place Leaflet markers for all ports ─────────────────────────────
+  let hoverCard = null;
+  let hoverTimer = null;
+  const leafletMarkers = {};
+
+  PIN_PORTS.forEach(port => {
+    const ll = PORT_LATLNG[port.name];
+    if (!ll) return;
+    const marker = L.marker(ll, { icon: makePinIcon('#1852FE') }).addTo(lmap);
+    leafletMarkers[port.name] = marker;
+
+    marker.on('mouseover', () => { clearTimeout(hoverTimer); showCardAt(port, marker); });
+    marker.on('mouseout',  () => scheduleHide());
+    marker.on('click',     () => openDetail(port));
+  });
+  const PORT_FLAG = {
+    "Reykjavik":"🇮🇸","Rotterdam":"🇳🇱","Hamburg":"🇩🇪","Antwerp":"🇧🇪",
+    "Algeciras":"🇪🇸","Gibraltar":"🇬🇮","Casablanca":"🇲🇦","Las Palmas":"🇪🇸",
+    "Lagos":"🇳🇬","Cape Town":"🇿🇦","Port Said":"🇪🇬","Suez":"🇪🇬",
+    "Fujairah":"🇦🇪","Mumbai":"🇮🇳","Colombo":"🇱🇰","Singapore":"🇸🇬",
+    "Hong Kong":"🇭🇰","Shanghai":"🇨🇳","Busan":"🇰🇷","Yokohama":"🇯🇵",
+    "Houston":"🇺🇸","New York":"🇺🇸","Panama":"🇵🇦","Santos":"🇧🇷",
+  };
+
+  function buildCard(port, showChips){
+    const grades = (port.fuels || []).slice(0,4);
+    const hasPrice = grades.length > 0;
+    const chips = showChips ? `
+      <div class="pc-chips">
+        <span class="pc-chip dev">
+          <svg viewBox="0 0 24 24"><path d="M6 4v6a4 4 0 004 4h4a4 4 0 014 4v2"/><path d="M3 7l3-3 3 3M21 17l-3 3-3-3"/></svg>
+          +${port.dev} nm
+        </span>
+        <span class="pc-chip co2">
+          <svg viewBox="0 0 24 24"><path d="M18 15a4 4 0 00-7.5-2A5 5 0 105 19h13a3 3 0 000-6z"/><text x="9" y="18" font-size="6" fill="currentColor" stroke="none" font-weight="700">CO₂</text></svg>
+          ${port.co2} nm
+        </span>
+      </div>` : '';
+    const flag = PORT_FLAG[port.name] || '';
+    const priceBlock = hasPrice ? `
+      <div class="pc-fuels">
+        ${grades.map(f=>`<div class="pc-fuel-row"><span class="g">${f[0]}</span><span class="p">${f[1]}</span></div>`).join('')}
+      </div>
+      <div class="pc-updated">Last updated price on 24 Mar 2026</div>` : `
+      <div class="pc-no-price">
+        <div class="pc-no-price-msg">No price indication available</div>
+        <button class="pc-add-price-btn" data-action="addprice">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add price indication
+        </button>
+      </div>`;
+    return `
+      <h3>${flag ? `<span style="margin-right:6px;font-size:18px;line-height:1;vertical-align:middle;">${flag}</span>` : ''}${port.name}</h3>
+      ${chips}
+      ${priceBlock}
+      <div class="pc-actions" style="margin-top:${hasPrice?'0':'12px'}">
+        <button class="pc-btn" data-action="calc">
+          <svg viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M6 8l-3 4 3 4M18 8l3 4-3 4"/></svg>
+          Distance
+        </button>
+        <button class="pc-btn" data-action="detail">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/></svg>
+          View Details
+        </button>
+      </div>`;
+  }
+  function showCardAt(port, marker){
+    hideCard();
+    hoverCard = document.createElement('div');
+    hoverCard.className = 'port-card';
+    const calcOpen = document.getElementById('calcPanel').classList.contains('open');
+    hoverCard.innerHTML = buildCard(port, false);
+    const mapEl = document.querySelector('.map');
+    mapEl.appendChild(hoverCard);
+    // Position relative to marker element
+    const mr = mapEl.getBoundingClientRect();
+    const me = marker.getElement();
+    const pr = me ? me.getBoundingClientRect() : mr;
+    const cardW = hoverCard.offsetWidth, cardH = hoverCard.offsetHeight;
+    const pinCenterX = pr.left - mr.left + pr.width/2;
+    const pinTopY = pr.top - mr.top;
+    const pad = 12;
+    let left = pinCenterX - cardW/2;
+    let top = pinTopY - cardH - 14;
+    if (left < pad) left = pad;
+    if (left + cardW > mr.width - pad) left = mr.width - cardW - pad;
+    if (top < pad) top = pinTopY + pr.height + 8;
+    hoverCard.style.left = left + 'px';
+    hoverCard.style.top  = top + 'px';
+    hoverCard.addEventListener('mouseenter', () => clearTimeout(hoverTimer));
+    hoverCard.addEventListener('mouseleave', () => scheduleHide());
+    hoverCard.querySelector('[data-action="detail"]').addEventListener('click', () => { openDetail(port); hideCard(); });
+    hoverCard.querySelector('[data-action="calc"]').addEventListener('click', () => { openCalculator(port.name); hideCard(); });
+    hoverCard.querySelector('[data-action="addprice"]')?.addEventListener('click', () => { openPriceModal(); hideCard(); });
+  }
+
+  // Port detail panel
+  const detailPanel = document.getElementById('detailPanel');
+  function clearSelectedMarker() {
+    if (selectedMarkerName && leafletMarkers[selectedMarkerName]) {
+      leafletMarkers[selectedMarkerName].setIcon(makePinIcon('#1852FE'));
+    }
+    selectedMarkerName = null;
+  }
+
+  document.getElementById('dpClose').addEventListener('click', () => {
+    detailPanel.classList.remove('open');
+    clearSelectedMarker();
+  });
+  document.getElementById('dpCalcBtn').addEventListener('click',()=>{
+    const name = document.getElementById('dpName').textContent.trim();
+    openCalculator(name);
+  });
+  const dpLoader = document.getElementById('dpLoader');
+
+  // ── Collapsible dp-cards ─────────────────────────────────────────────
+  // Add CSS for collapse transition
+  const collapseStyle = document.createElement('style');
+  collapseStyle.textContent = `
+    .dp-card-body{overflow:hidden;transition:max-height .28s cubic-bezier(.4,0,.2,1),opacity .22s ease,padding .28s cubic-bezier(.4,0,.2,1);padding-top:14px;}
+    .dp-card-body.collapsed{max-height:0!important;opacity:0;padding-top:0;}
+    .dp-sh .chev{transition:transform .25s cubic-bezier(.4,0,.2,1);}
+    .dp-sh .chev.collapsed{transform:rotate(180deg);}
+  `;
+  document.head.appendChild(collapseStyle);
+
+  // Wrap each card's content (everything after .dp-sh) in a .dp-card-body div
+  document.querySelectorAll('#detailPanel .dp-card').forEach(card => {
+    const header = card.querySelector('.dp-sh');
+    if (!header) return;
+    // Gather all siblings after header
+    const children = Array.from(card.children).filter(c => c !== header);
+    const body = document.createElement('div');
+    body.className = 'dp-card-body';
+    children.forEach(c => body.appendChild(c));
+    card.appendChild(body);
+    // Start fully open — no clipping
+    body.style.maxHeight = 'none';
+    body.style.opacity = '1';
+
+    // Wire chevron click
+    const chev = header.querySelector('.chev');
+    if (!chev) return;
+    chev.addEventListener('click', () => {
+      const isCollapsed = body.classList.contains('collapsed');
+      if (isCollapsed) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.style.opacity = '1';
+        body.classList.remove('collapsed');
+        chev.classList.remove('collapsed');
+        // After transition, release max-height so content can grow freely
+        body.addEventListener('transitionend', function release(e) {
+          if (e.propertyName === 'max-height') {
+            body.style.maxHeight = 'none';
+            body.removeEventListener('transitionend', release);
+          }
+        });
+      } else {
+        // Snapshot current height before collapsing so transition has a from-value
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.offsetHeight; // force reflow
+        body.classList.add('collapsed');
+        chev.classList.add('collapsed');
+      }
+    });
+  });
+
+  function populateDetail(port){
+    const countryMap = {Rotterdam:"Netherlands",Antwerp:"Belgium",Hamburg:"Germany",Algeciras:"Spain",Gibraltar:"Gibraltar",
+      Casablanca:"Morocco","Las Palmas":"Spain",Lagos:"Nigeria","Cape Town":"South Africa","Port Said":"Egypt",Suez:"Egypt",
+      Fujairah:"United Arab Emirates",Mumbai:"India",Colombo:"Sri Lanka",Singapore:"Singapore","Hong Kong":"Hong Kong",
+      Shanghai:"China",Busan:"South Korea",Yokohama:"Japan",Houston:"United States","New York":"United States",
+      Panama:"Panama",Santos:"Brazil",Reykjavik:"Iceland"};
+    document.getElementById('dpName').textContent = port.name;
+    document.getElementById('dpCountry').textContent = countryMap[port.name] || "—";
+    const trends = [['dn','2.10'],['up','1.40'],['dn','4.75'],['up','0.80']];
+    const fuels = port.fuels.slice(0,4);
+
+    // Hero fuel grid
+    const heroFuelsEl = document.getElementById('dpHeroFuels');
+    heroFuelsEl.innerHTML = fuels.map(f => {
+      const price = f[1].replace('/mt','');
+      return `<div class="dp-hero-fuel"><div class="hf-grade">${f[0]}</div><div class="hf-price">${price}</div><div class="hf-unit">/mt</div></div>`;
+    }).join('');
+
+    // Last updated timestamp — only shown when prices are available
+    const updatedEl = document.getElementById('dpHeroUpdated');
+    if (fuels.length > 0) {
+      const now = new Date();
+      const updatedStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})
+        + ', ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' UTC';
+      updatedEl.innerHTML =
+        `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+         Prices updated &nbsp;<span>${updatedStr}</span>`;
+      updatedEl.style.display = 'flex';
+    } else {
+      updatedEl.style.display = 'none';
+    }
+
+    // Body fuel card
+    const fuelsEl = document.getElementById('dpFuels');
+    fuelsEl.innerHTML = fuels.map((f,i)=>{
+      const [dir,val] = trends[i] || ['up','0.50'];
+      const arrow = dir==='up' ? 'M5 12l7-7 7 7' : 'M19 12l-7 7-7-7';
+      return `<div class="dp-fuel"><div class="lbl"><span class="grade">${f[0]}</span></div><div class="right"><span class="price">${f[1]}</span><span class="trend ${dir}"><svg viewBox="0 0 24 24"><path d="${arrow}"/></svg>${val}</span></div></div>`;
+    }).join('');
+    // wire nearby port click → open detail for that port
+    detailPanel.querySelectorAll('.dp-near').forEach(card => {
+      const name = card.querySelector('.dp-near-name')?.textContent.trim();
+      if (!name) return;
+      card.onclick = (e) => {
+        if (e.target.closest('.dp-near-link')) return;
+        const np = PIN_PORTS.find(p => p.name === name) || {name, dev:0, co2:0, fuels:[["VLSFO","$620/mt"],["HSFO","$440/mt"],["LSMGO","$798/mt"]]};
+        openDetail(np);
+      };
+    });
+  }
+
+  function openDetail(port){
+    const alreadyOpen = detailPanel.classList.contains('open');
+    calcPanel.classList.remove('open');
+    detailPanel.classList.add('open');
+
+    // Restore previous selected marker, then highlight new one
+    clearSelectedMarker();
+    if (leafletMarkers[port.name]) {
+      const countryMap = {Rotterdam:"Netherlands",Antwerp:"Belgium",Hamburg:"Germany",Algeciras:"Spain",Gibraltar:"Gibraltar",
+        Casablanca:"Morocco","Las Palmas":"Spain",Lagos:"Nigeria","Cape Town":"South Africa","Port Said":"Egypt",Suez:"Egypt",
+        Fujairah:"United Arab Emirates",Mumbai:"India",Colombo:"Sri Lanka",Singapore:"Singapore","Hong Kong":"Hong Kong",
+        Shanghai:"China",Busan:"South Korea",Yokohama:"Japan",Houston:"United States","New York":"United States",
+        Panama:"Panama",Santos:"Brazil",Reykjavik:"Iceland"};
+      leafletMarkers[port.name].setIcon(makeSelectedPinIcon(port.name, countryMap[port.name] || ''));
+      selectedMarkerName = port.name;
+    }
+
+    // Pan map so the port is centered in the visible area (accounting for the 440px left panel)
+    const ll = PORT_LATLNG[port.name];
+    if (ll) {
+      const panelWidth = 440; // 60px nav + 380px detail panel
+      const zoom = lmap.getZoom();
+      const targetPx = lmap.project(ll, zoom);
+      const offsetPx = L.point(targetPx.x - panelWidth / 2, targetPx.y);
+      const offsetLatLng = lmap.unproject(offsetPx, zoom);
+      lmap.flyTo(offsetLatLng, zoom, { animate: true, duration: 0.5 });
+    }
+
+    if (alreadyOpen) {
+      // Show shimmer loader, populate after delay, then fade out
+      dpLoader.classList.add('show');
+      setTimeout(() => {
+        populateDetail(port);
+        dpLoader.classList.remove('show');
+      }, 520);
+    } else {
+      populateDetail(port);
+    }
+  }
+  function scheduleHide(){
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(hideCard, 180);
+  }
+  function hideCard(){
+    if (hoverCard){ hoverCard.remove(); hoverCard=null; }
+  }
+  // Pin hover wired via Leaflet marker.on('add') above — no DOM pins needed
+
+  // ── Port metadata for search suggestions ──────────────────────────
+  const PORT_META = {
+    "Reykjavik":  { country:"Iceland",              portCode:"IS REY", flag:"is" },
+    "Rotterdam":  { country:"Netherlands",          portCode:"NL RTM", flag:"nl" },
+    "Hamburg":    { country:"Germany",              portCode:"DE HAM", flag:"de" },
+    "Antwerp":    { country:"Belgium",              portCode:"BE ANR", flag:"be" },
+    "Algeciras":  { country:"Spain",                portCode:"ES ALG", flag:"es" },
+    "Gibraltar":  { country:"Gibraltar",            portCode:"GI GIB", flag:"gb" },
+    "Casablanca": { country:"Morocco",              portCode:"MA CAS", flag:"ma" },
+    "Las Palmas": { country:"Spain",                portCode:"ES LPA", flag:"es" },
+    "Lagos":      { country:"Nigeria",              portCode:"NG LOS", flag:"ng" },
+    "Cape Town":  { country:"South Africa",         portCode:"ZA CPT", flag:"za" },
+    "Port Said":  { country:"Egypt",                portCode:"EG PSD", flag:"eg" },
+    "Suez":       { country:"Egypt",                portCode:"EG SUZ", flag:"eg" },
+    "Fujairah":   { country:"United Arab Emirates", portCode:"AE FJR", flag:"ae" },
+    "Mumbai":     { country:"India",                portCode:"IN BOM", flag:"in" },
+    "Colombo":    { country:"Sri Lanka",            portCode:"LK CMB", flag:"lk" },
+    "Singapore":  { country:"Singapore",            portCode:"SG SIN", flag:"sg" },
+    "Hong Kong":  { country:"Hong Kong",            portCode:"HK HKG", flag:"hk" },
+    "Shanghai":   { country:"China",                portCode:"CN SHA", flag:"cn" },
+    "Busan":      { country:"South Korea",          portCode:"KR PUS", flag:"kr" },
+    "Yokohama":   { country:"Japan",                portCode:"JP YOK", flag:"jp" },
+    "Houston":    { country:"United States",        portCode:"US HOU", flag:"us" },
+    "New York":   { country:"United States",        portCode:"US NYC", flag:"us" },
+    "Panama":     { country:"Panama",               portCode:"PA PTY", flag:"pa" },
+    "Santos":     { country:"Brazil",               portCode:"BR SSZ", flag:"br" },
+  };
+
+  // ── Search dropdown ────────────────────────────────────────────────
+  const wrap        = document.getElementById('searchWrap');
+  const input       = document.getElementById('searchInput');
+  const ddResults   = document.getElementById('ddResults');
+  const ddEmpty     = document.getElementById('ddEmpty');
+  const ddHead      = document.getElementById('ddHead');
+
+  const ALL_PORTS   = PIN_PORTS.map(p => p.name); // ordered list
+  const SUGGEST_DEF = ["Rotterdam","Singapore","Fujairah","Hamburg","Antwerp","Houston"]; // default set
+
+  let ddActiveIdx = -1; // keyboard nav cursor
+
+  function highlight(text, q) {
+    if (!q) return text;
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return text;
+    return text.slice(0, idx)
+      + `<span class="dd-match">${text.slice(idx, idx + q.length)}</span>`
+      + text.slice(idx + q.length);
+  }
+
+  function buildItem(portName, q) {
+    const meta  = PORT_META[portName] || { country:'', portCode:'', flag:'' };
+    const item  = document.createElement('div');
+    item.className  = 'dd-item';
+    item.dataset.name = portName;
+    item.innerHTML  = `
+      <div class="flag flag-${meta.flag}" style="width:22px;height:16px;border-radius:2px;flex-shrink:0;"></div>
+      <div class="dd-meta">
+        <div class="dd-name">${highlight(portName, q)}</div>
+        <div class="dd-sub">${highlight(meta.country, q)} · ${meta.portCode}</div>
+      </div>
+      <div class="dd-actions">
+        <button class="dd-btn" data-action="detail" title="View details">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/></svg>
+        </button>
+        <button class="dd-btn" data-action="calc" title="Distance calculator">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.89087 18.0755L9.7417 14.2249M13.1202 17.676L13.538 17.2582C14.5412 16.255 14.5412 14.6285 13.538 13.6253L15.7177 11.4456L16.4383 12.1723L18.1094 10.5012L13.538 5.92372L11.7397 7.72201L12.4481 8.43045L10.3774 10.5012C9.23305 9.35681 7.37831 9.35478 6.23145 10.4966L6.10932 10.6182L13.1202 17.676Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>`;
+
+    // Click on row → fly to port + open detail
+    item.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.dd-btn')) return; // handled separately
+      e.preventDefault();
+      const port = PIN_PORTS.find(p => p.name === portName)
+        || { name: portName, dev:0, co2:0, fuels:[] };
+      openDetail(port);
+      input.value = portName;
+      wrap.classList.remove('open');
+    });
+
+    item.querySelector('[data-action="detail"]').addEventListener('mousedown', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const port = PIN_PORTS.find(p => p.name === portName)
+        || { name: portName, dev:0, co2:0, fuels:[] };
+      openDetail(port);
+      input.value = portName;
+      wrap.classList.remove('open');
+    });
+
+    item.querySelector('[data-action="calc"]').addEventListener('mousedown', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      openCalculator(portName);
+      input.value = portName;
+      wrap.classList.remove('open');
+    });
+
+    return item;
+  }
+
+  function renderSuggestions(q) {
+    ddResults.innerHTML = '';
+    ddActiveIdx = -1;
+
+    const matches = q
+      ? ALL_PORTS.filter(n =>
+          n.toLowerCase().includes(q.toLowerCase()) ||
+          (PORT_META[n]?.country || '').toLowerCase().includes(q.toLowerCase()) ||
+          (PORT_META[n]?.portCode || '').toLowerCase().includes(q.toLowerCase())
+        )
+      : SUGGEST_DEF;
+
+    ddHead.textContent = q
+      ? `${matches.length} result${matches.length !== 1 ? 's' : ''} for "${q}"`
+      : 'Suggested ports';
+
+    if (matches.length === 0) {
+      ddEmpty.style.display = 'flex';
+    } else {
+      ddEmpty.style.display = 'none';
+      matches.slice(0, 10).forEach(name => ddResults.appendChild(buildItem(name, q)));
+    }
+  }
+
+  function setActive(idx) {
+    const items = ddResults.querySelectorAll('.dd-item');
+    items.forEach(el => el.classList.remove('active'));
+    ddActiveIdx = Math.max(-1, Math.min(items.length - 1, idx));
+    if (ddActiveIdx >= 0) {
+      items[ddActiveIdx].classList.add('active');
+      items[ddActiveIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  input.addEventListener('focus', () => {
+    renderSuggestions(input.value.trim());
+    wrap.classList.add('open');
+  });
+  input.addEventListener('input', () => {
+    renderSuggestions(input.value.trim());
+    wrap.classList.add('open');
+  });
+  input.addEventListener('keydown', (e) => {
+    const items = ddResults.querySelectorAll('.dd-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(ddActiveIdx + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(ddActiveIdx - 1); }
+    else if (e.key === 'Enter' && ddActiveIdx >= 0) {
+      e.preventDefault();
+      items[ddActiveIdx].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    }
+    else if (e.key === 'Escape') { wrap.classList.remove('open'); input.blur(); }
+  });
+  document.addEventListener('mousedown', (e) => {
+    if (!wrap.contains(e.target)) wrap.classList.remove('open');
+  });
+
+  // Layers popup toggle
+  const layersBtn = document.getElementById('layersBtn');
+  const layersPop = document.getElementById('layersPop');
+  layersBtn.addEventListener('click', (e) => { e.stopPropagation(); if (!layersBtn.classList.contains('open')) layersBtn.classList.add('open'); });
+  document.getElementById('layersClose').addEventListener('click', (e) => { e.stopPropagation(); layersBtn.classList.remove('open'); });
+  document.addEventListener('mousedown', (e) => {
+    if (!layersBtn.contains(e.target)) layersBtn.classList.remove('open');
+  });
+
+
+  // ====== Distance Calculator ======
+  const PORTS = {
+    "Rotterdam":   {x:54.5, y:34, country:"NL"},
+    "Antwerp":     {x:53.0, y:36, country:"BE"},
+    "Hamburg":     {x:56.0, y:32, country:"DE"},
+    "Algeciras":   {x:51.5, y:44, country:"ES"},
+    "Gibraltar":   {x:51.5, y:44, country:"GI"},
+    "Port Said":   {x:60.5, y:46, country:"EG"},
+    "Suez":        {x:61.0, y:48, country:"EG"},
+    "Fujairah":    {x:67.5, y:51, country:"AE"},
+    "Mumbai":      {x:71.0, y:54, country:"IN"},
+    "Colombo":     {x:73.5, y:60, country:"LK"},
+    "Singapore":   {x:80.0, y:64, country:"SG"},
+    "Shanghai":    {x:87.0, y:48, country:"CN"},
+    "Houston":     {x:18.5, y:54, country:"US"},
+    "New York":    {x:25.0, y:44, country:"US"}
+  };
+  // Bunker ports (highlighted on the map when on/near route)
+  const BUNKERS = ["Algeciras","Fujairah","Singapore"];
+
+  const calcPanel = document.getElementById('calcPanel');
+  const openCalc = document.getElementById('openCalc');
+  const closeCalc = document.getElementById('closeCalc');
+  const stopsList = document.getElementById('stopsList');
+  const addStop = document.getElementById('addStop');
+  const results = document.getElementById('results');
+  const legsEl = document.getElementById('legs');
+  const totalEl = document.getElementById('totalDist');
+  const bunkerList = document.getElementById('bunkerList');
+
+  let bunkerHighlightedNames  = [];
+  let routeHiddenPortNames    = [];
+  let routeHiddenNonBunkerNames = []; // all non-bunker ports hidden during route view
+  let detailHiddenMarkers = [];       // markers hidden while detail panel is open
+
+  const BUNKER_CANDIDATES = ["Algeciras","Fujairah","Singapore","Gibraltar","Port Said"];
+
+  // Hide every marker that is neither a bunker port nor a route endpoint.
+  // Called after renderBunkers so bunkerHighlightedNames is already populated.
+  function hideNonBunkerMarkers(routePortNames) {
+    // Restore any previously hidden non-bunker markers first
+    routeHiddenNonBunkerNames.forEach(n => {
+      if (leafletMarkers[n]) leafletMarkers[n].setOpacity(1);
+    });
+    routeHiddenNonBunkerNames = [];
+
+    Object.keys(leafletMarkers).forEach(name => {
+      if (BUNKER_CANDIDATES.includes(name)) return;  // keep bunker ports visible
+      if (routePortNames.includes(name))    return;  // A/B ports handled by placePortMarkers
+      if (leafletMarkers[name]) {
+        leafletMarkers[name].setOpacity(0);
+        routeHiddenNonBunkerNames.push(name);
+      }
+    });
+  }
+
+  function clearRoute() {
+    if (routeLayer) { lmap.removeLayer(routeLayer); routeLayer = null; }
+    if (routeGlow)  { lmap.removeLayer(routeGlow);  routeGlow = null; }
+    routeMarkers.forEach(m => lmap.removeLayer(m)); routeMarkers = [];
+    // Restore A/B route-port markers
+    routeHiddenPortNames.forEach(name => {
+      if (leafletMarkers[name]) leafletMarkers[name].setOpacity(1);
+    });
+    routeHiddenPortNames = [];
+    // Restore all hidden non-bunker markers
+    routeHiddenNonBunkerNames.forEach(name => {
+      if (leafletMarkers[name]) leafletMarkers[name].setOpacity(1);
+    });
+    routeHiddenNonBunkerNames = [];
+    // Restore bunker-highlighted markers back to normal blue
+    bunkerHighlightedNames.forEach(name => {
+      if (leafletMarkers[name] && name !== selectedMarkerName) {
+        leafletMarkers[name].setIcon(makePinIcon('#1852FE'));
+      }
+    });
+    bunkerHighlightedNames = [];
+  }
+
+  function hideMarkersForDetail(keepName) {
+    restoreDetailMarkers(); // clear any previous
+    Object.keys(leafletMarkers).forEach(name => {
+      if (name === keepName) return;
+      const m = leafletMarkers[name];
+      if (m) { m.setOpacity(0); detailHiddenMarkers.push(name); }
+    });
+  }
+
+  function restoreDetailMarkers() {
+    detailHiddenMarkers.forEach(name => {
+      if (leafletMarkers[name]) leafletMarkers[name].setOpacity(1);
+    });
+    detailHiddenMarkers = [];
+  }
+
+  function resetCalculator() {
+    stopsList.innerHTML = '';
+    results.classList.remove('show');
+    clearRoute();
+    const r1 = makeRow('from', '');
+    const r2 = makeRow('to', '');
+    stopsList.appendChild(r1); stopsList.appendChild(r2);
+    attachRowEvents(r1); attachRowEvents(r2);
+    relabelStops();
+  }
+
+  openCalc.addEventListener('click', () => openCalculator(null));
+  closeCalc.addEventListener('click', () => {
+    calcPanel.classList.remove('open');
+    clearRoute();
+  });
+  document.getElementById('clearCalc').addEventListener('click', resetCalculator);
+
+  function openCalculator(prefillFrom) {
+    detailPanel.classList.remove('open');
+    bpPopup && bpPopup.classList.remove('open');
+    clearSelectedMarker();
+    calcPanel.classList.add('open');
+    if (stopsList.children.length === 0) {
+      initStops(prefillFrom || '');
+    } else if (prefillFrom) {
+      const fromRow = stopsList.querySelector('[data-role="from"]');
+      const fromInput = fromRow.querySelector('.stop-input');
+      fromInput.value = prefillFrom;
+      updateRowFlag(fromRow);
+      recalc();
+    }
+  }
+
+  function todayISO(){
+    const d = new Date();
+    return d.toISOString().slice(0,10);
+  }
+
+  function makeRow(role, value){
+    const row = document.createElement('div');
+    row.className = 'stop-row';
+    row.draggable = true;
+    row.dataset.role = role;
+    const dotClass = role === 'from' ? 'from' : (role === 'to' ? 'to' : 'mid');
+    row.innerHTML = `
+      <svg class="grip" viewBox="0 0 12 14" fill="currentColor"><circle cx="3" cy="3" r="1.2"/><circle cx="9" cy="3" r="1.2"/><circle cx="3" cy="7" r="1.2"/><circle cx="9" cy="7" r="1.2"/><circle cx="3" cy="11" r="1.2"/><circle cx="9" cy="11" r="1.2"/></svg>
+      <div class="stop-dot ${dotClass}"></div>
+      <div class="stop-input-wrap">
+        <span class="flag" style="display:none"></span>
+        <input class="stop-input" autocomplete="off" placeholder="${role==='from'?'From port':role==='to'?'To port':'Stop port'}" value="${value||''}" />
+        <button class="clear" title="Clear">✕</button>
+        <div class="port-suggest"></div>
+      </div>
+      ${role==='from' ? `<button class="cal-btn" title="Departure date" onclick="toggleCalPopup(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button>` : ''}`;
+    return row;
+  }
+
+  function relabelStops(){
+    const rows = [...stopsList.children];
+
+    // Preserve the current departure date value from whichever row currently has the cal-btn
+    let savedCalValue = null;
+    rows.forEach(r => {
+      const btn = r.querySelector('.cal-btn');
+      if (btn) savedCalValue = btn.dataset.calValue || todayISO();
+    });
+
+    rows.forEach((r,i) => {
+      const dot = r.querySelector('.stop-dot');
+      dot.classList.remove('from','to','mid');
+      if (i===0){ dot.classList.add('from'); dot.textContent='A'; r.dataset.role='from';
+      } else if (i===rows.length-1){ dot.classList.add('to'); dot.textContent='B'; r.dataset.role='to';
+      } else { dot.classList.add('mid'); dot.textContent=String(i); r.dataset.role='stop'; }
+
+      // Ensure calendar button exists only on the A (first) row
+      const existingCalBtn = r.querySelector('.cal-btn');
+      if (i === 0) {
+        if (!existingCalBtn) {
+          // Inject the cal-btn after the stop-input-wrap
+          const calBtn = document.createElement('button');
+          calBtn.className = 'cal-btn';
+          calBtn.title = 'Departure date';
+          calBtn.dataset.calValue = savedCalValue || todayISO();
+          calBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`;
+          calBtn.addEventListener('click', () => window.toggleCalPopup(calBtn));
+          const wrap = r.querySelector('.stop-input-wrap');
+          wrap.after(calBtn);
+        } else if (savedCalValue) {
+          existingCalBtn.dataset.calValue = savedCalValue;
+        }
+      } else {
+        // Remove cal-btn from any non-A row
+        if (existingCalBtn) existingCalBtn.remove();
+      }
+    });
+  }
+
+  const FLAG_MAP = {Rotterdam:'nl',Antwerp:'be',Hamburg:'de',Singapore:'sg',Casablanca:'ma',Gibraltar:'gb',Algeciras:'es','Las Palmas':'es',Lagos:'ng','Cape Town':'za','Port Said':'eg',Suez:'eg',Fujairah:'ae',Mumbai:'in',Colombo:'lk','Hong Kong':'hk',Shanghai:'cn',Busan:'kr',Yokohama:'jp',Houston:'us','New York':'us',Panama:'pa',Santos:'br',Reykjavik:'is'};
+  function updateRowFlag(row){
+    const name = row.querySelector('.stop-input').value.trim();
+    const flag = row.querySelector('.flag');
+    if (FLAG_MAP[name]) {
+      flag.className = 'flag flag-' + FLAG_MAP[name];
+      flag.style.display = '';
+    } else {
+      flag.className = 'flag';
+      flag.style.display = 'none';
+    }
+  }
+  function showSuggestions(row){
+    const input = row.querySelector('.stop-input');
+    const wrap = row.querySelector('.stop-input-wrap');
+    const sg = wrap.querySelector('.port-suggest');
+    const q = input.value.trim().toLowerCase();
+    const allPorts = Object.keys(PORTS);
+    const matches = (q.length === 0 ? allPorts : allPorts.filter(n => n.toLowerCase().includes(q))).slice(0, 8);
+    if (matches.length === 0) { sg.classList.remove('open'); row.style.zIndex = ''; return; }
+    sg.innerHTML = matches.map(n => `<div class="ps-item" data-name="${n}"><span class="flag ${FLAG_MAP[n]?'flag-'+FLAG_MAP[n]:''}"></span>${n}</div>`).join('');
+    sg.classList.add('open');
+    row.style.zIndex = '100'; // lift above sibling rows so dropdown overlaps them
+    sg.querySelectorAll('.ps-item').forEach(it => it.addEventListener('mousedown', e => {
+      e.preventDefault();
+      input.value = it.dataset.name;
+      updateRowFlag(row);
+      sg.classList.remove('open');
+      row.style.zIndex = '';
+      recalc();
+    }));
+  }
+  function attachRowEvents(row){
+    const input = row.querySelector('.stop-input');
+    const wrap = row.querySelector('.stop-input-wrap');
+    input.addEventListener('input', () => { updateRowFlag(row); showSuggestions(row); recalc(); });
+    input.addEventListener('focus', () => showSuggestions(row));
+    input.addEventListener('blur', () => setTimeout(() => {
+      wrap.querySelector('.port-suggest').classList.remove('open');
+      row.style.zIndex = ''; // restore row stacking order
+    }, 150));
+    updateRowFlag(row);
+    row.querySelector('.clear')?.addEventListener('click', () => {
+      if (row.dataset.role === 'stop') {
+        row.remove(); relabelStops(); recalc();
+      } else {
+        input.value=''; updateRowFlag(row); recalc(); input.focus();
+      }
+    });
+    // drag
+    row.addEventListener('dragstart', (e) => { row.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    row.addEventListener('dragend', () => row.classList.remove('dragging'));
+    row.addEventListener('dragover', (e) => { e.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', (e) => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      const dragging = stopsList.querySelector('.dragging');
+      if (dragging && dragging !== row) {
+        const rows = [...stopsList.children];
+        const fromIdx = rows.indexOf(dragging);
+        const toIdx = rows.indexOf(row);
+        if (fromIdx < toIdx) row.after(dragging); else row.before(dragging);
+        relabelStops(); recalc();
+      }
+    });
+  }
+
+  function initStops(fromVal){
+    stopsList.innerHTML='';
+    const r1 = makeRow('from', fromVal || '');
+    const r2 = makeRow('to', '');
+    stopsList.appendChild(r1); stopsList.appendChild(r2);
+    attachRowEvents(r1); attachRowEvents(r2);
+    relabelStops(); recalc();
+  }
+
+  addStop.addEventListener('click', () => {
+    const row = makeRow('stop','');
+    const rows = [...stopsList.children].filter(c=>c.classList.contains('stop-row'));
+    const lastRow = rows[rows.length-1]; // the "to" row
+    stopsList.insertBefore(row, lastRow);
+    attachRowEvents(row);
+    relabelStops(); recalc();
+  });
+
+  function distNm(nameA, nameB){
+    const llA = PORT_LATLNG[nameA], llB = PORT_LATLNG[nameB];
+    if (!llA || !llB) {
+      // fallback to old percentage coords if in PORTS
+      const a = PORTS[nameA], b = PORTS[nameB];
+      if (!a||!b) return 0;
+      const dx = (b.x-a.x)*60, dy=(b.y-a.y)*60;
+      return Math.round(Math.sqrt(dx*dx + dy*dy) * 18);
+    }
+    // Haversine formula
+    const R = 3440.065; // nm
+    const φ1 = llA[0]*Math.PI/180, φ2 = llB[0]*Math.PI/180;
+    const Δφ = (llB[0]-llA[0])*Math.PI/180;
+    const Δλ = (llB[1]-llA[1])*Math.PI/180;
+    const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+    return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+  }
+
+  function recalc(){
+    const rows = [...stopsList.querySelectorAll('.stop-row')];
+    const names = rows.map(r => r.querySelector('.stop-input').value.trim());
+    const valid = names.filter(n => PORT_LATLNG[n] || PORTS[n]);
+    if (valid.length < 2) {
+      results.classList.remove('show');
+      if (routeLayer) { lmap.removeLayer(routeLayer); routeLayer = null; }
+      routeMarkers.forEach(m => lmap.removeLayer(m)); routeMarkers = [];
+      return;
+    }
+    legsEl.innerHTML='';
+    let total=0;
+    for (let i=0;i<valid.length-1;i++){
+      const d = distNm(valid[i], valid[i+1]);
+      total += d;
+      const leg = document.createElement('div');
+      leg.className='leg';
+      const eca = Math.round(d * 0.18);
+      leg.innerHTML = `
+        <div class="leg-route">
+          <span class="leg-dot from"></span>
+          <span class="leg-port">${valid[i]}</span>
+          <span class="leg-line"></span>
+          <span class="leg-arrow-ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <span class="leg-line"></span>
+          <span class="leg-port" style="text-align:right">${valid[i+1]}</span>
+          <span class="leg-dot to"></span>
+        </div>
+        <div class="leg-metrics">
+          <span class="leg-dist-badge">
+            <svg viewBox="0 0 24 24"><path d="M3 12h18M15 6l6 6-6 6"/></svg>
+            ${d.toLocaleString()} nm
+          </span>
+          <span class="leg-eca-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg>
+            ECA · ${eca} nm
+          </span>
+        </div>`;
+      legsEl.appendChild(leg);
+    }
+    totalEl.textContent = total.toLocaleString()+' nm';
+    renderBunkers(valid);
+    hideNonBunkerMarkers(valid);
+    results.classList.add('show');
+    drawRoute(valid);
+  }
+
+  // Haversine distance in nm between two [lat, lon] points
+  function _routeHaversine(a, b) {
+    const R = 3440.065;
+    const φ1 = a[0]*Math.PI/180, φ2 = b[0]*Math.PI/180;
+    const Δφ = (b[0]-a[0])*Math.PI/180, Δλ = (b[1]-a[1])*Math.PI/180;
+    const x = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+  }
+
+  // Returns the minimum extra nm needed to detour via bunkerLL across any leg of the route
+  function _minDetour(bunkerLL, routePortNames) {
+    let min = Infinity;
+    for (let i = 0; i < routePortNames.length - 1; i++) {
+      const llA = PORT_LATLNG[routePortNames[i]];
+      const llB = PORT_LATLNG[routePortNames[i+1]];
+      if (!llA || !llB) continue;
+      const detour = _routeHaversine(llA, bunkerLL) + _routeHaversine(bunkerLL, llB) - _routeHaversine(llA, llB);
+      min = Math.min(min, detour);
+    }
+    return min;
+  }
+
+  const MAX_BUNKER_DETOUR_NM = 700; // only show bunker ports within 700 nm detour
+
+  function renderBunkers(routeNames){
+    bunkerList.innerHTML='';
+    const candidates = ["Algeciras","Fujairah","Singapore","Gibraltar","Port Said"];
+    let shown = 0;
+
+    candidates.forEach(name => {
+      if (routeNames.includes(name)) return;           // already a stop
+      const bunkerLL = PORT_LATLNG[name];
+      if (!bunkerLL) return;
+
+      // Filter: skip ports that are too far off this route
+      const detour = _minDetour(bunkerLL, routeNames);
+      if (detour > MAX_BUNKER_DETOUR_NM) return;
+
+      const port = PIN_PORTS.find(p => p.name === name);
+      if (!port) return;
+      shown++;
+      const devNm = Math.round(detour);
+      const grades = port.fuels.slice(0,4);
+      const gradeHtml = grades.map(g => `<div class="bcard-grade"><div class="g">${g[0]}</div><div class="p">${g[1].replace('/mt','')}</div></div>`).join('');
+      const card = document.createElement('div');
+      card.className='bcard';
+      card.innerHTML = `
+        <div class="bcard-top">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="bcard-flag">${name.slice(0,2).toUpperCase()}</div>
+            <div>
+              <div class="bcard-name">${name}</div>
+              <div class="bcard-sub"><span class="dev">+${devNm} nm · deviation</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bcard-grades">${gradeHtml}</div>`;
+      card.addEventListener('click', () => openDetail(port));
+      bunkerList.appendChild(card);
+    });
+
+    // Empty state
+    if (shown === 0) {
+      bunkerList.innerHTML = `<div style="padding:24px 4px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;">
+        <svg width="160" height="155" viewBox="0 0 220 215" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grey circle backdrop -->
+          <circle cx="122" cy="118" r="88" fill="#E4E6EB"/>
+
+          <!-- ── Waves ─────────────────────────────────────── -->
+          <path d="M22 186 Q44 172 66 186 Q88 200 110 186 Q132 172 154 186 Q176 200 198 186"
+                stroke="#C8CAD2" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M10 198 Q36 186 62 198 Q88 210 114 198 Q140 186 166 198 Q192 210 210 198"
+                stroke="#C8CAD2" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+          <!-- ── Ship Hull – front view ─────────────────────── -->
+          <!-- Left half fill (white) -->
+          <path d="M110 114
+                   L60 114
+                   Q40 116 32 132
+                   Q22 152 38 168
+                   Q56 184 85 188
+                   Q98 190 110 189 Z"
+                fill="white"/>
+          <!-- Right half fill (blue) -->
+          <path d="M110 114
+                   L160 114
+                   Q180 116 188 132
+                   Q198 152 182 168
+                   Q164 184 135 188
+                   Q122 190 110 189 Z"
+                fill="#2563EB"/>
+          <!-- Full hull outline -->
+          <path d="M60 114
+                   Q40 116 32 132
+                   Q22 152 38 168
+                   Q56 184 85 188
+                   Q98 190 110 189
+                   Q122 190 135 188
+                   Q164 184 182 168
+                   Q198 152 188 132
+                   Q180 116 160 114 Z"
+                fill="none" stroke="#111827" stroke-width="5" stroke-linejoin="round"/>
+          <!-- Centre divider -->
+          <line x1="110" y1="114" x2="110" y2="189" stroke="#111827" stroke-width="4"/>
+
+          <!-- ── Lower container row (5 col × 2 row) ───────── -->
+          <!-- Gray fill alternating cells (paint before borders) -->
+          <rect x="74"  y="76" width="22" height="20" fill="#D2D5DE"/>
+          <rect x="118" y="76" width="22" height="20" fill="#D2D5DE"/>
+          <rect x="52"  y="96" width="22" height="20" fill="#D2D5DE"/>
+          <rect x="96"  y="96" width="22" height="20" fill="#D2D5DE"/>
+          <rect x="140" y="96" width="22" height="20" fill="#D2D5DE"/>
+          <!-- Outer rect -->
+          <rect x="52" y="76" width="110" height="40" fill="none" stroke="#111827" stroke-width="4.5"/>
+          <!-- Vertical dividers -->
+          <line x1="74"  y1="76" x2="74"  y2="116" stroke="#111827" stroke-width="3.5"/>
+          <line x1="96"  y1="76" x2="96"  y2="116" stroke="#111827" stroke-width="3.5"/>
+          <line x1="118" y1="76" x2="118" y2="116" stroke="#111827" stroke-width="3.5"/>
+          <line x1="140" y1="76" x2="140" y2="116" stroke="#111827" stroke-width="3.5"/>
+          <!-- Horizontal mid -->
+          <line x1="52" y1="96" x2="162" y2="96" stroke="#111827" stroke-width="3.5"/>
+
+          <!-- ── Upper container row (4 col × 1 row) ───────── -->
+          <rect x="85" y="38" width="22" height="40" fill="#D2D5DE"/>
+          <rect x="63" y="38" width="88" height="40" fill="none" stroke="#111827" stroke-width="4.5"/>
+          <line x1="85"  y1="38" x2="85"  y2="78" stroke="#111827" stroke-width="3.5"/>
+          <line x1="107" y1="38" x2="107" y2="78" stroke="#111827" stroke-width="3.5"/>
+          <line x1="129" y1="38" x2="129" y2="78" stroke="#111827" stroke-width="3.5"/>
+
+          <!-- ── Funnels ─────────────────────────────────────── -->
+          <!-- Left funnel (taller) -->
+          <rect x="80" y="10" width="22" height="32" rx="9" fill="#111827"/>
+          <rect x="80" y="32" width="22" height="10" fill="#111827"/>
+          <!-- Right funnel (shorter) -->
+          <rect x="116" y="16" width="18" height="26" rx="8" fill="#111827"/>
+          <rect x="116" y="34" width="18" height="8" fill="#111827"/>
+
+          <!-- ── Warning triangle ───────────────────────────── -->
+          <path d="M20 82 L46 36 L72 82 Z" fill="#2563EB"/>
+          <!-- Exclamation stem -->
+          <rect x="43" y="50" width="6" height="18" rx="3" fill="white"/>
+          <!-- Exclamation dot -->
+          <circle cx="46" cy="75" r="3.5" fill="white"/>
+        </svg>
+        <div style="font-size:12px;color:var(--text-dim);text-align:center;line-height:1.6;">No bunker ports on this route</div>
+      </div>`;
+    }
+  }
+
+  // ── Leaflet route layer ─────────────────────────────────────────────
+  let routeLayer  = null;
+  let routeGlow   = null;
+  let routeMarkers = [];
+  let routeDrawId  = 0; // cancel stale draws
+  const srPill = document.getElementById('srPill');
+
+  // Fetch the real sea-route geometry from the local searoute Python server.
+  // llA / llB are [lat, lon] (Leaflet convention).
+  // Returns an array of [lat, lon] pairs tracing the actual maritime path.
+  async function fetchSeaRouteCoords(llA, llB) {
+    // server.py expects lon,lat (geographic convention)
+    const url = `http://localhost:5001/route` +
+                `?origin=${llA[1]},${llA[0]}` +
+                `&dest=${llB[1]},${llB[0]}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    if (!res.ok) throw new Error('searoute server ' + res.status);
+    const feat = await res.json();
+    // coords come as [lon, lat] — swap to [lat, lon] for Leaflet
+    return (feat.geometry?.coordinates ?? []).map(([lon, lat]) => [lat, lon]);
+  }
+
+  // Place A / B / mid circle markers on the map at each named port.
+  function placePortMarkers(validNames) {
+    routeHiddenPortNames.forEach(n => { if (leafletMarkers[n]) leafletMarkers[n].setOpacity(1); });
+    routeHiddenPortNames = [];
+    validNames.forEach(name => {
+      if (leafletMarkers[name]) { leafletMarkers[name].setOpacity(0); routeHiddenPortNames.push(name); }
+    });
+    validNames.forEach((name, i) => {
+      const ll = PORT_LATLNG[name];
+      if (!ll) return;
+      const isFrom = i === 0, isTo = i === validNames.length - 1;
+      const color = isFrom ? '#16A34A' : isTo ? '#E63946' : '#1852FE';
+      const label = isFrom ? 'A' : isTo ? 'B' : String(i);
+      const icon = L.divIcon({
+        className: '',
+        html: `<div style="width:28px;height:28px;border-radius:50%;background:${color};border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;font-family:Inter,sans-serif;">${label}</div>`,
+        iconSize: [28, 28], iconAnchor: [14, 14],
+      });
+      routeMarkers.push(L.marker(ll, { icon, zIndexOffset: 1000 }).addTo(lmap));
+    });
+  }
+
+  async function drawRoute(portNames) {
+    // 1. Clear existing layers immediately
+    if (routeLayer) { lmap.removeLayer(routeLayer); routeLayer = null; }
+    if (routeGlow)  { lmap.removeLayer(routeGlow);  routeGlow  = null; }
+    routeMarkers.forEach(m => lmap.removeLayer(m));
+    routeMarkers = [];
+
+    const validNames = portNames.filter(n => PORT_LATLNG[n]);
+    if (validNames.length < 2) return;
+
+    // 2. Show port markers + fit map straight away (snappy feel)
+    placePortMarkers(validNames);
+    const portLls  = validNames.map(n => PORT_LATLNG[n]);
+    lmap.fitBounds(L.latLngBounds(portLls), { padding: [80, 80] });
+
+    // 3. Show loading pill
+    const myId = ++routeDrawId;
+    srPill.classList.add('show');
+
+    // 4. Fetch each leg from the searoute API
+    const fullPath = [];
+    for (let i = 0; i < validNames.length - 1; i++) {
+      if (myId !== routeDrawId) { srPill.classList.remove('show'); return; } // superseded
+      const llA = PORT_LATLNG[validNames[i]];
+      const llB = PORT_LATLNG[validNames[i + 1]];
+      let coords;
+      try {
+        coords = await fetchSeaRouteCoords(llA, llB);
+        if (!coords.length) throw new Error('empty');
+      } catch (_) {
+        // Fallback: straight line between the two ports
+        coords = [llA, llB];
+      }
+      // Avoid duplicating the junction point between legs
+      if (i === 0) fullPath.push(...coords);
+      else         fullPath.push(...coords.slice(1));
+    }
+
+    if (myId !== routeDrawId) { srPill.classList.remove('show'); return; }
+    srPill.classList.remove('show');
+
+    if (fullPath.length < 2) return;
+
+    // 5. Draw the real sea-route polyline
+    routeGlow = L.polyline(fullPath, {
+      color: '#6EF0C2', weight: 10, opacity: 0.15, smoothFactor: 1,
+    }).addTo(lmap);
+    routeLayer = L.polyline(fullPath, {
+      color: '#6EF0C2', weight: 2.5, opacity: 0.95, smoothFactor: 1,
+    }).addTo(lmap);
+
+    // 6. Fit map to the actual route (may curve around land)
+    lmap.fitBounds(L.latLngBounds(fullPath), { padding: [80, 80] });
+  }
+
+  // ===== Add Price Indication Modal =====
+  // ── Price Indication Modal ─────────────────────────────────────────────
+  (function(){
+    const modal     = document.getElementById('priceModal');
+    const chipsEl   = document.getElementById('pmChips');
+    const portInput = document.getElementById('pmPortInput');
+    const suggest   = document.getElementById('pmSuggest');
+    const setsEl    = document.getElementById('pmSets');
+    const ALL_PORT_NAMES = Object.keys(PORTS);
+    const FUELS = ['VLSFO','HSFO','LSMGO','MGO'];
+    let selectedPorts = [];
+
+    function openPriceModal(prefill){
+      selectedPorts = prefill ? [prefill] : [];
+      renderChips();
+      setsEl.innerHTML = '';
+      addSet();
+      modal.classList.add('open');
+      portInput.focus();
+    }
+    window.openPriceModal = openPriceModal;
+
+    function closePriceModal(){ modal.classList.remove('open'); suggest.classList.remove('open'); }
+    window.closePriceModal = closePriceModal;
+
+    modal.addEventListener('click', e => { if (e.target === modal) closePriceModal(); });
+    document.getElementById('pmX').addEventListener('click', closePriceModal);
+    document.getElementById('pmCancel').addEventListener('click', closePriceModal);
+    document.getElementById('pmSave').addEventListener('click', closePriceModal);
+    document.getElementById('pmAddSet').addEventListener('click', addSet);
+
+    // ── Port chips ──────────────────────────────────────────────────────
+    function renderChips(){
+      chipsEl.innerHTML = selectedPorts.map((p,i) =>
+        `<span class="pm-chip">${p}<button data-i="${i}">×</button></span>`
+      ).join('');
+      chipsEl.querySelectorAll('button').forEach(b =>
+        b.addEventListener('click', () => { selectedPorts.splice(+b.dataset.i,1); renderChips(); })
+      );
+    }
+
+    // ── Port autocomplete ───────────────────────────────────────────────
+    portInput.addEventListener('input', () => {
+      const q = portInput.value.trim().toLowerCase();
+      if (!q) { suggest.classList.remove('open'); return; }
+      const matches = ALL_PORT_NAMES.filter(n =>
+        n.toLowerCase().includes(q) && !selectedPorts.includes(n)
+      ).slice(0,8);
+      if (!matches.length) { suggest.classList.remove('open'); return; }
+      suggest.innerHTML = matches.map(n => `<div class="pm-s-item">${n}</div>`).join('');
+      suggest.classList.add('open');
+      suggest.querySelectorAll('.pm-s-item').forEach(it =>
+        it.addEventListener('mousedown', e => {
+          e.preventDefault();
+          selectedPorts.push(it.textContent);
+          renderChips();
+          portInput.value = '';
+          suggest.classList.remove('open');
+        })
+      );
+    });
+    portInput.addEventListener('blur', () => setTimeout(()=>suggest.classList.remove('open'),150));
+    document.getElementById('pmPortWrap').addEventListener('click', () => portInput.focus());
+
+    // ── Fuel sets ───────────────────────────────────────────────────────
+    function fuelRow(fuel='', supplier='', price=''){
+      const row = document.createElement('div');
+      row.className = 'pset-row';
+      row.innerHTML = `
+        <select>${FUELS.map(f=>`<option${f===fuel?' selected':''}>${f}</option>`).join('')}</select>
+        <input placeholder="Supplier name" value="${supplier}"/>
+        <input placeholder="USD 0.00" value="${price}" style="text-align:right;"/>
+        <button class="del" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#E63946;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`;
+      row.querySelector('.del').addEventListener('click', () => {
+        const pset = row.closest('.pset');
+        row.remove();
+        // if no rows left, remove whole set (unless last)
+        if (!pset.querySelectorAll('.pset-row').length && setsEl.children.length > 1) pset.remove();
+      });
+      return row;
+    }
+
+    function addSet(){
+      const pset = document.createElement('div');
+      pset.className = 'pset';
+      const setNum = setsEl.children.length + 1;
+      pset.innerHTML = `
+        <div class="pset-port-label">
+          <span>Set ${setNum}</span>
+          <button class="rm-set" title="Remove set">Remove</button>
+        </div>
+        <div class="pset-head"><div>Fuel Type</div><div>Supplier</div><div>Price / (MT)</div><div></div></div>`;
+      // Default first row
+      pset.appendChild(fuelRow('VLSFO'));
+      // Empty "Select" row
+      const emptyRow = document.createElement('div');
+      emptyRow.className = 'pset-row';
+      emptyRow.innerHTML = `
+        <select style="color:var(--text-dim)"><option value="">Select</option>${FUELS.map(f=>`<option>${f}</option>`).join('')}</select>
+        <input placeholder="Select" style="color:var(--text-dim);"/>
+        <input placeholder="Add price" style="text-align:right;color:var(--text-dim);"/>
+        <button class="del" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#E63946;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`;
+      emptyRow.querySelector('.del').addEventListener('click', () => emptyRow.remove());
+      pset.appendChild(emptyRow);
+
+      const addFuelBtn = document.createElement('button');
+      addFuelBtn.className = 'add-fuel';
+      addFuelBtn.textContent = '+ Add Fuel';
+      addFuelBtn.addEventListener('click', () => pset.insertBefore(fuelRow(), addFuelBtn));
+      pset.appendChild(addFuelBtn);
+
+      pset.querySelector('.rm-set').addEventListener('click', () => {
+        if (setsEl.children.length > 1) pset.remove();
+      });
+      setsEl.appendChild(pset);
+    }
+
+    // ── Wire "Add price indication" buttons ─────────────────────────────
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.pc-add-price-btn, .dp-near-link');
+      if (!btn) return;
+      e.stopPropagation();
+      // Try to detect current port from context
+      const card = btn.closest('[data-port]');
+      const portName = card ? card.dataset.port : null;
+      openPriceModal(portName);
+    });
+  })();
+
+  // ===== Bunker Port Popup =====
+  const bpPopup = document.getElementById('bpPopup');
+  document.getElementById('bpBack').addEventListener('click', () => { bpPopup.classList.remove('open'); calcPanel.classList.add('open'); });
+  function openBunkerPopup(port){
+    detailPanel.classList.remove('open');
+    calcPanel.classList.remove('open');
+    document.getElementById('bpName').textContent = port.name;
+    const countryMap2 = {Rotterdam:"Netherlands",Antwerp:"Belgium",Hamburg:"Germany",Gibraltar:"Gibraltar",Algeciras:"Spain",Casablanca:"Morocco",Reykjavik:"Iceland",Fujairah:"UAE",Singapore:"Singapore","Hong Kong":"Hong Kong",Shanghai:"China",Houston:"USA",Panama:"Panama"};
+    document.getElementById('bpCountry').textContent = countryMap2[port.name] || "International Port";
+    const grades = (port.fuels||[]).slice(0,3);
+    document.getElementById('bpFuels').innerHTML = grades.map(f => `<div class="bp-fuel"><span class="g">${f[0]}</span><span class="p">${f[1]}</span></div>`).join('');
+    bpPopup.classList.add('open');
+  }
+  // Override bcard click to open bunker popup instead of detail panel
+  const _origRender = renderBunkers;
+  renderBunkers = function(routeNames){
+    // Reset previously highlighted bunker markers before re-highlighting
+    bunkerHighlightedNames.forEach(name => {
+      if (leafletMarkers[name] && name !== selectedMarkerName) {
+        leafletMarkers[name].setIcon(makePinIcon('#1852FE'));
+      }
+    });
+    bunkerHighlightedNames = [];
+
+    _origRender(routeNames);
+
+    document.querySelectorAll('.bcard').forEach((card) => {
+      const name = card.querySelector('.bcard-name').textContent.trim();
+      const port = PIN_PORTS.find(p=>p.name===name);
+      card.onclick = () => openBunkerPopup(port);
+      // Apply teal bunker icon on the map marker
+      if (leafletMarkers[name] && name !== selectedMarkerName) {
+        leafletMarkers[name].setIcon(makeBunkerPinIcon());
+        bunkerHighlightedNames.push(name);
+      }
+    });
+  };
+  // Stops are initialised on first open of the calculator — not at startup
+
+  // Invalidate Leaflet map size whenever any side panel opens/closes
+  const _panelObserver = new MutationObserver(() => {
+    setTimeout(() => lmap.invalidateSize(), 320);
+  });
+  [document.getElementById('calcPanel'), document.getElementById('detailPanel'), document.getElementById('bpPopup')]
+    .forEach(el => { if(el) _panelObserver.observe(el, {attributes:true, attributeFilter:['class']}); });
+
+  // Ensure map renders correctly on initial load
+  setTimeout(() => lmap.invalidateSize(), 100);
+
+  // ── Custom calendar popup ──────────────────────────────────────────────────
+  (function(){
+    const DOW   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const MONTHS= ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DAYS  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+    let _btn = null, _state = null;
+
+    // Build popup DOM once
+    const popup = document.createElement('div');
+    popup.id = 'calPopup';
+    popup.className = 'cal-popup';
+    popup.innerHTML = `
+      <div class="cal-popup-hd">
+        <div class="cal-popup-label">Departure Date</div>
+        <div class="cal-popup-date" id="calHdDate"></div>
+      </div>
+      <div class="cal-popup-body">
+        <div class="cal-nav-row">
+          <button class="cal-nav-arrow" id="calPrev">&#8249;</button>
+          <span class="cal-month-txt" id="calMonthLbl"></span>
+          <button class="cal-nav-arrow" id="calNext">&#8250;</button>
+        </div>
+        <div class="cal-dow-row">${DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>`;
+    document.body.appendChild(popup);
+
+    document.getElementById('calPrev').addEventListener('click', e => { e.stopPropagation(); navMonth(-1); });
+    document.getElementById('calNext').addEventListener('click', e => { e.stopPropagation(); navMonth(1); });
+
+    function navMonth(dir) {
+      _state.month += dir;
+      if (_state.month < 0)  { _state.month = 11; _state.year--; }
+      if (_state.month > 11) { _state.month = 0;  _state.year++; }
+      render();
+    }
+
+    function render() {
+      const { year, month, sel } = _state;
+      const today = new Date();
+      // Header
+      document.getElementById('calHdDate').textContent =
+        `${DAYS[sel.getDay()]}, ${sel.getDate()} ${SHORT[sel.getMonth()]} ${sel.getFullYear()}`;
+      document.getElementById('calMonthLbl').textContent = `${MONTHS[month]} ${year}`;
+      // Grid
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+      const firstDow = new Date(year, month, 1).getDay(); // 0=Sun
+      const offset   = firstDow === 0 ? 6 : firstDow - 1; // Mon-based
+      const days     = new Date(year, month + 1, 0).getDate();
+      for (let i = 0; i < offset; i++) {
+        const c = document.createElement('div');
+        c.className = 'cal-cell cal-empty';
+        grid.appendChild(c);
+      }
+      for (let d = 1; d <= days; d++) {
+        const c = document.createElement('div');
+        c.className = 'cal-cell';
+        c.textContent = d;
+        const isSel   = sel.getFullYear()===year && sel.getMonth()===month && sel.getDate()===d;
+        const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===d;
+        if (isSel)   c.classList.add('cal-sel');
+        else if (isToday) c.classList.add('cal-today');
+        c.addEventListener('click', () => pick(year, month, d));
+        grid.appendChild(c);
+      }
+    }
+
+    function pick(y, m, d) {
+      _state.sel = new Date(y, m, d);
+      if (_btn) {
+        const iso = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        _btn.dataset.calValue = iso;
+      }
+      render();
+      setTimeout(close, 160);
+    }
+
+    function close() {
+      popup.classList.remove('open');
+      if (_btn) { _btn.classList.remove('active'); _btn = null; }
+    }
+
+    window.toggleCalPopup = function(btn) {
+      if (popup.classList.contains('open') && _btn === btn) { close(); return; }
+      if (_btn) _btn.classList.remove('active');
+      _btn = btn;
+      _btn.classList.add('active');
+      const iso = btn.dataset.calValue || todayISO();
+      const d   = new Date(iso + 'T00:00:00');
+      _state = { year: d.getFullYear(), month: d.getMonth(), sel: new Date(d) };
+      render();
+      popup.classList.add('open');
+      // Position: align right edge of popup to right edge of btn, drop below
+      const r   = btn.getBoundingClientRect();
+      const top = r.bottom + window.scrollY + 8;
+      const left= Math.max(8, r.right - 308);
+      popup.style.top  = top + 'px';
+      popup.style.left = left + 'px';
+    };
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      if (!popup.classList.contains('open')) return;
+      if (!popup.contains(e.target) && !e.target.closest('.cal-btn')) close();
+    });
+  })();
+</script>
+</body>
+</html>

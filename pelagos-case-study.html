@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pelagos - Geoserve's Design System | Case Study by Mubeen Ansari</title>
+  <meta name="description" content="Pelagos, the design system behind Geoserve's maritime platforms - foundations, token layering, a 12-component library, and a working ops dashboard built entirely from it.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+</head>
+<body>
+
+  <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Mubeen Ansari</a>
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__links" role="list">
+          <li><a href="work.html"  class="nav__link is-active">Work</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+        </ul>
+        <div class="nav__actions">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            </a>
+          </div>
+          <a href="index.html#contact" class="btn btn--primary btn--sm">Let's talk</a>
+        </div>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__links">
+      <a href="work.html"  class="mobile-menu__link">Work</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- CASE STUDY HERO -->
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · Pelagos</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Pelagos</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
+          The design system behind Geoserve's maritime platforms - foundations, token layering, a 12-component library, and a working ops dashboard built entirely from it.
+        </p>
+
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Engagement</p>
+            <p class="cs-meta-item__value">Geoserve</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">System</p>
+            <p class="cs-meta-item__value">Pelagos</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Design Systems Lead · UX · UI</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">Foundations → Components</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Year</p>
+            <p class="cs-meta-item__value">2026</p>
+          </div>
+        </div>
+
+        <div class="cs-cover" style="background:#0D1E4C;" data-load-reveal data-delay="5">
+          <img src="assets/images/work/pelagos-cover.webp" alt="Pelagos design system: colour ramps, button states and a real Geoserve dashboard, shown as overlapping documentation cards">
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDY BODY -->
+    <article class="cs-body">
+      <div class="container container--narrow">
+
+        <!-- 01 Overview -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">01 - Overview</p>
+          <h2 class="cs-section__title">One system, many maritime products</h2>
+          <p class="cs-section__text">
+            Geoserve's products - GeoStem's fuel-trading dashboards, vessel-ops tools like the GeoOne and vessel 360 dashboards, port-cost estimators - had grown screen by screen, each one solving its own problem in its own way.
+          </p>
+          <p class="cs-section__text">
+            Pelagos is the shared system underneath them: a documented set of foundations and components so a button, a filter drawer, or an alert reads the same everywhere it shows up, and every new screen starts from a defined pattern instead of a blank canvas.
+          </p>
+        </div>
+
+        <!-- 02 The problem -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">02 - The problem</p>
+          <h2 class="cs-section__title">Screens that grew apart</h2>
+          <p class="cs-section__text">
+            Three issues showed up repeatedly across the product surface, and Pelagos exists to close all three:
+          </p>
+          <div class="cs-steps">
+            <div class="cs-step">
+              <span class="cs-step__num">01</span>
+              <div>
+                <h3 class="cs-step__title">No shared visual language</h3>
+                <p class="cs-step__desc">GeoStem, the vessel dashboards and the port-cost estimator each evolved their own colours, spacing and component shapes - the same idea (a filter drawer, an alert, a button) looked different depending on which screen you were on.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">02</span>
+              <div>
+                <h3 class="cs-step__title">Design-to-dev drift</h3>
+                <p class="cs-step__desc">Without a documented source of truth, components got rebuilt ad hoc per screen. Some of that drift is still visible in the system today - the spacing and padding tables ship without usage guidance, and one margin token is mislabelled.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <span class="cs-step__num">03</span>
+              <div>
+                <h3 class="cs-step__title">Inconsistent state coverage</h3>
+                <p class="cs-step__desc">Some components (Buttons, Text fields) fully specify every state from Default to Disabled; others (Upload) only mock up two of the states they describe in writing. Documenting the gap was the first step to closing it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 Foundations overview -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">03 - Foundations</p>
+          <h2 class="cs-section__title">Five foundations, one visual language</h2>
+          <p class="cs-section__text">
+            Colour and type carry real values down to the hex and the pixel; spacing and shadow are small, deliberate scales rather than open-ended options; icons split cleanly between a general UI set and a bespoke maritime one.
+          </p>
+
+          <div class="cs-image" data-reveal style="margin-top:2em;">
+            <img src="assets/images/work/pelagos/foundations-overview.png" alt="Pelagos foundations overview: Gilroy type, the Marine and Navy primary colours, the Blue ramp, and a sample of the component library">
+          </div>
+
+          <div class="cs-screens" style="margin-top:2em;">
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/colors.webp" alt="Pelagos colour palette" loading="lazy"></div>
+              <div class="cs-doc__name">Colour</div>
+              <div class="cs-doc__stat">9 ramps × 11 shades</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/typography.webp" alt="Pelagos typography scale" loading="lazy"></div>
+              <div class="cs-doc__name">Typography</div>
+              <div class="cs-doc__stat">18 styles, 4 weights</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/spacing.webp" alt="Pelagos spacing tokens" loading="lazy"></div>
+              <div class="cs-doc__name">Spacing &amp; padding</div>
+              <div class="cs-doc__stat">2-32px, 7 steps</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/shadow.webp" alt="Pelagos shadow tokens" loading="lazy"></div>
+              <div class="cs-doc__name">Shadow</div>
+              <div class="cs-doc__stat">4 elevation levels</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/icons.webp" alt="Pelagos icon library" loading="lazy"></div>
+              <div class="cs-doc__name">Icons</div>
+              <div class="cs-doc__stat">~90 icons × 2 styles</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 Colour detail -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">04 - Colour</p>
+          <h2 class="cs-section__title">Nine ramps, one restrained accent job</h2>
+          <p class="cs-section__text">
+            Colour splits into four jobs. Primary (Marine blue, Navy, White) carries the brand and every key interactive element. Semantic (Red, Yellow, Orange, Green) communicates meaning and feedback. Neutral (Grey, Black) is the foundation of layout - text, borders, backgrounds. Accent (Teal, Purple) exists to differentiate specific modules and is meant to be used sparingly. Every ramp scales the same way, 900 down to 10, so a designer reaches for "Red 700" the same way regardless of which family they're in.
+          </p>
+        </div>
+        <div class="cs-image" data-reveal>
+          <img src="assets/images/work/pelagos/colors.webp" alt="Pelagos colour palette: primary, semantic, neutral and accent ramps, each scaling 900 to 10">
+        </div>
+
+        <!-- 05 Typography detail -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">05 - Typography</p>
+          <h2 class="cs-section__title">Eighteen styles on Gilroy, mostly un-wired</h2>
+          <p class="cs-section__text">
+            The scale runs Display → Heading → Title → Subtitle → Body → Caption, 18 named styles across 11 pixel sizes (10-58px) and 4 weights. It's built on Gilroy with a documented fallback stack, and the page states its own base unit plainly: 1rem = 10px, not the usual 16px - worth knowing before you implement against it.
+          </p>
+          <p class="cs-section__text">
+            The honest part: of all 18 styles, only <strong>Caption 2 Semi-bold</strong> ships with an actual token (<code>text-label-sb</code>) wired to it. Everything else is a fully specified visual spec waiting to be connected - a real, visible example of the gap this system still has to close.
+          </p>
+        </div>
+        <div class="cs-image" data-reveal>
+          <img src="assets/images/work/pelagos/typography.webp" alt="Pelagos typography scale: 18 styles across 11 sizes and 4 weights, built on Gilroy">
+        </div>
+
+        <!-- 06 Spacing, shadow & icons -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">06 - Spacing, shadow &amp; icons</p>
+          <h2 class="cs-section__title">Small scales, deliberately</h2>
+          <p class="cs-section__text">
+            Spacing and padding share one 4px-based scale, 2 to 32px in 7 steps. Margin breaks from that pattern on purpose - it's context-specific, not incremental: 16px for slide-outs, 32px as the layout default, 60px for modals at their maximum case, 180px for the GeoOne and vessel 360 dashboards specifically. Shadow is even smaller: 4 elevation levels, one colour source (Navy), where only opacity and blur scale - xs for dashboard cards up to lg for modals and toasts.
+          </p>
+          <p class="cs-section__text">
+            Icons split in two: a general 24px UI set with both line and filled variants for roughly 90 icons, and a bespoke Marine set - ships, ports, anchors, bunkers, weather - built specifically because a maritime product needed iconography a generic library doesn't carry.
+          </p>
+          <div class="cs-screens" style="margin-top:2em;">
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/spacing.webp" alt="Pelagos spacing, padding and margin tables" loading="lazy"></div>
+              <div class="cs-doc__name">Spacing &amp; padding &amp; margin</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/shadow.webp" alt="Pelagos shadow and elevation tokens" loading="lazy"></div>
+              <div class="cs-doc__name">Shadow</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/icons.webp" alt="Pelagos icon library including a bespoke Marine icon set" loading="lazy"></div>
+              <div class="cs-doc__name">Icons, incl. Marine set</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 07 The layering -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">07 - The layering</p>
+          <h2 class="cs-section__title">Real tokens, partially wired</h2>
+          <p class="cs-section__text">
+            The intent is a normal three-layer system: a raw scale (900→10 on colour, 2-32px on spacing), a named token on top of it (<code>spacing-16</code>, <code>padding-24</code>, <code>shadow-xs</code>, <code>margin-32</code>), and a component that consumes that token rather than a raw value. Shadow is where this works end to end - every elevation level names its token and states exactly which component uses it, down to "widget cards in dashboard" for <code>shadow-xs</code> and "modals, slideouts, toast banner" for <code>shadow-lg</code>.
+          </p>
+          <p class="cs-section__text">
+            Elsewhere the layering is aspirational rather than real yet: spacing and padding have named tokens with no usage documented against them, typography has 18 specified styles and one wired token, and one margin token is mislabelled (<code>Margin-60</code> pointing to <code>margin-48</code>). Naming this honestly is part of the system's documentation - it's the actual punch list for finishing the layer, not a hidden gap.
+          </p>
+        </div>
+
+        <!-- 08 Components -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">08 - Components</p>
+          <h2 class="cs-section__title">Twelve components, one anatomy each</h2>
+          <p class="cs-section__text">
+            Every component documents the same way: a definition, a structural anatomy, every state, and usage notes - so a new pattern can be added without reinventing how patterns get written down.
+          </p>
+
+          <div class="cs-screens" style="margin-top:2em;">
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/buttons.webp" alt="Pelagos button types, sizes and states" loading="lazy"></div>
+              <div class="cs-doc__name">Buttons</div>
+              <div class="cs-doc__stat">4 types, 5 states</div>
+              <div class="cs-doc__note">Default, Danger, Neutral and Link, each up to 5 styles and 3 sizes, states from Default through Disabled.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/text-field.webp" alt="Pelagos text field and dropdown states" loading="lazy"></div>
+              <div class="cs-doc__name">Text field</div>
+              <div class="cs-doc__stat">4 field types, 8 states</div>
+              <div class="cs-doc__note">Text input and dropdown, plus composite price and phone-number fields with currency and country pickers.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/accordions.webp" alt="Pelagos accordion structure and variants" loading="lazy"></div>
+              <div class="cs-doc__name">Accordion</div>
+              <div class="cs-doc__stat">3 layout variants</div>
+              <div class="cs-doc__note">Card, menu-item and table accordions - the same collapse pattern reused for dispute threads, quick-access nav and dense data rows.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/toggle-switches.webp" alt="Pelagos toggle and switch component, applied to a real vessel dashboard" loading="lazy"></div>
+              <div class="cs-doc__name">Toggle &amp; switches</div>
+              <div class="cs-doc__stat">5 colour states</div>
+              <div class="cs-doc__note">Binary switches and segmented toggle buttons - shown landing in a real "MV Andes" vessel dashboard, before and after.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/calendar.webp" alt="Pelagos calendar, date and time picker variants" loading="lazy"></div>
+              <div class="cs-doc__name">Calendar</div>
+              <div class="cs-doc__stat">3 picker types</div>
+              <div class="cs-doc__note">Date-only, date + time, and month/year pickers - same chrome, same Clear / Submit footer.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/tooltip.webp" alt="Pelagos tooltip component and onboarding walkthrough" loading="lazy"></div>
+              <div class="cs-doc__name">Tooltip</div>
+              <div class="cs-doc__stat">3 use cases</div>
+              <div class="cs-doc__note">From a one-line hover label up to a 5-step onboarding walkthrough with a light and dark pair for every step.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/notification-panel.webp" alt="Pelagos notification panel grouped by time" loading="lazy"></div>
+              <div class="cs-doc__name">Notification panel</div>
+              <div class="cs-doc__stat">9 alert types</div>
+              <div class="cs-doc__note">Grouped by Today / Yesterday / Earlier, colour-coded by category - claims, disputes, laycan and bunker alerts.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/slide-outs.webp" alt="Pelagos slide-out filter drawer, inline and overlay variants" loading="lazy"></div>
+              <div class="cs-doc__name">Slide outs</div>
+              <div class="cs-doc__stat">2 placements</div>
+              <div class="cs-doc__note">The same filter-drawer anatomy, docked inline in the layout or floated over a scrimmed backdrop.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/email-panel.webp" alt="Pelagos email compose panel with validation error state" loading="lazy"></div>
+              <div class="cs-doc__name">Email panel</div>
+              <div class="cs-doc__stat">6-part anatomy</div>
+              <div class="cs-doc__note">A compose modal for voyage summaries and nomination documents, with live validation-error handling.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/upload.webp" alt="Pelagos upload component states and accessibility notes" loading="lazy"></div>
+              <div class="cs-doc__name">Upload</div>
+              <div class="cs-doc__stat">2 states, 2 sizes</div>
+              <div class="cs-doc__note">Drag-and-drop with accessible fallbacks - keyboard nav, ARIA progress, and a non-drag Browse option.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/table.webp" alt="Pelagos table component with row states and inline-editable variant" loading="lazy"></div>
+              <div class="cs-doc__name">Table</div>
+              <div class="cs-doc__stat">4 row states</div>
+              <div class="cs-doc__note">Sortable headers and an overflow menu, plus an inline-editable variant used for bunker-fuel specs.</div>
+            </div>
+            <div class="cs-doc">
+              <div class="cs-doc__frame"><img src="assets/images/work/pelagos/dashboard-components.webp" alt="Pelagos dashboard widgets assembled into a real Geoserve operations dashboard" loading="lazy"></div>
+              <div class="cs-doc__name">Dashboard components</div>
+              <div class="cs-doc__stat">11 widget types</div>
+              <div class="cs-doc__note">KPI tiles, charts, fleet alerts and a live map - the system's foundations, fully assembled.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 09 Documentation -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">09 - Documentation</p>
+          <h2 class="cs-section__title">Every component, written down the same way</h2>
+          <p class="cs-section__text">
+            The standard is consistent across all twelve: a plain-language definition of what the component is for, a structural anatomy diagram with real measurements (Buttons' Large variant, for instance, calls out 24px horizontal padding and a 48×48 icon-only footprint), a card for every state the component supports, and a short list of usage notes - what to do, and occasionally what not to.
+          </p>
+          <p class="cs-section__text">
+            That consistency is what makes the gaps easy to spot rather than easy to hide: Text field documents 8 states in full, while Upload only mocks up 2 of the states its own usage notes describe. Same standard, applied honestly - so the punch list writes itself.
+          </p>
+        </div>
+
+        <!-- 10 In production -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">10 - In production</p>
+          <h2 class="cs-section__title">Where the system actually lands</h2>
+          <p class="cs-section__text">
+            The dashboard-components page isn't an abstract catalogue - it's assembled into a real Geoserve operations dashboard: KPI tiles, fleet alerts, a vessel list with live route progress, and a nautical map, all built from the same eleven widget types documented above. The toggle component tells the same story at smaller scale, shown landing directly in a live "MV Andes" vessel dashboard - the same screen, before and after the system's applied to it.
+          </p>
+        </div>
+        <div class="cs-image" data-reveal>
+          <img src="assets/images/work/pelagos/dashboard-components.webp" alt="A full Geoserve operations dashboard assembled from Pelagos dashboard widgets - KPI tiles, charts, fleet alerts, vessel list and a map">
+        </div>
+
+        <!-- By the numbers -->
+        <div class="cs-section" data-reveal>
+          <p class="cs-section__label">By the numbers</p>
+          <h2 class="cs-section__title">The system, counted</h2>
+        </div>
+        <div class="cs-metrics" data-reveal>
+          <div class="cs-metric">
+            <div class="cs-metric__value">9</div>
+            <div class="cs-metric__label">Colour ramps, 11 shades each</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">18</div>
+            <div class="cs-metric__label">Typography styles across 11 sizes and 4 weights</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">7</div>
+            <div class="cs-metric__label">Spacing &amp; padding steps, one shared 4px scale</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">4</div>
+            <div class="cs-metric__label">Shadow elevation levels, one colour source</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">12</div>
+            <div class="cs-metric__label">Components documented with variants, states and usage notes</div>
+          </div>
+          <div class="cs-metric">
+            <div class="cs-metric__value">11</div>
+            <div class="cs-metric__label">Dashboard widget types, shipped in a real ops dashboard</div>
+          </div>
+        </div>
+
+      </div><!-- /.container--narrow -->
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="geoserve-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">Maritime SaaS · B2B</p>
+              <h2 class="cs-next__title">GeoStem</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <script src="js/main.js?v=20260901a"></script>
+</body>
+</html>

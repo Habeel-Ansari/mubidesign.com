@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomerang - Every Message, Remembered</title>
+<link href="https://db.onlinewebfonts.com/c/9d4d074c9335825a23cce178ee03b498?family=P22+Mackinac+W01+Book" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#191919; --panel:#F4F3F3; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+    background:#FFFFFF; color:var(--ink); overflow-x:hidden;
+  }
+  .font-serif{ font-family:'P22 Mackinac W01 Book','Georgia','serif'; }
+
+  .page{ position:relative; min-height:100vh; background:#fff; }
+
+  .bg{
+    position:absolute; inset:0; z-index:0; overflow:hidden;
+  }
+  .bg video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .bg__wash{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.55) 45%, rgba(255,255,255,.8) 100%);
+  }
+
+  .nav{ position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:20px 56px; }
+  .nav__brand{ display:flex; align-items:center; gap:10px; }
+  .nav__brand svg{ width:24px; height:24px; color:var(--ink); }
+  .nav__word{ font-weight:600; font-size:16px; letter-spacing:-0.01em; color:var(--ink); }
+  .nav__links{ display:flex; gap:36px; }
+  .nav__links a{ font-size:14px; color:rgba(25,25,25,.7); text-decoration:none; transition:color .2s; }
+  .nav__links a:hover{ color:var(--ink); }
+  .nav__cta{ padding:10px 20px; background:var(--ink); color:#fff; font-size:14px; font-weight:500; border-radius:8px; border:none; }
+
+  .hero{ position:relative; z-index:10; display:flex; flex-direction:column; align-items:center; height:100vh; }
+  .hero__copy{ padding-top:150px; text-align:center; padding-left:16px; padding-right:16px; }
+  .hero__copy h1{ font-weight:400; font-size:88px; line-height:1.05; letter-spacing:-0.03em; margin:0; }
+  .hero__copy p{ max-width:420px; margin:22px auto 0; font-size:16px; line-height:1.6; color:rgba(25,25,25,.7); }
+  .hero__cta{ margin-top:34px; padding:14px 32px; background:var(--ink); color:#fff; border-radius:999px; font-size:15px; font-weight:500; border:none; display:inline-block; }
+
+  .panel{ margin-top:auto; width:100%; max-width:1080px; padding:0 24px; }
+  .panel__card{ background:rgba(255,255,255,.9); border:1px solid #e5e5e5; border-bottom:none; padding:48px 48px 0 48px; box-shadow:0 -20px 60px rgba(0,0,0,.04); }
+  .panel__row1{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .panel__label{ font-size:11px; text-transform:uppercase; letter-spacing:.2em; color:rgba(25,25,25,.5); font-weight:500; }
+  .panel__title{ margin-top:12px; font-size:34px; line-height:1.2; letter-spacing:-0.01em; font-weight:400; }
+  .panel__desc{ font-size:15px; color:rgba(25,25,25,.7); line-height:1.6; align-self:end; }
+  .panel__hr{ margin-top:36px; height:1px; background:#e5e5e5; }
+  .panel__row2{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; padding:24px 0; }
+  .feat{ background:var(--panel); padding:15px 22px; display:flex; align-items:center; justify-content:space-between; border-radius:2px; }
+  .feat__label span:first-child{ color:rgba(25,25,25,.4); }
+  .feat__label span.sep{ margin:0 8px; color:rgba(25,25,25,.3); }
+  .feat__label span.name{ font-weight:500; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="bg">
+    <video autoplay muted loop playsinline
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260518_003132_8b7edcb6-c64d-4a52-a9ca-879942e122ad.mp4"></video>
+    <div class="bg__wash"></div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav__brand">
+      <svg viewBox="0 0 256 256" fill="currentColor"><path d="M 144 256 L 27.598 256 L 144 139.598 Z M 256 207.5 L 200 256 L 200 56 L 0 56 L 48 0 L 256 0 Z M 0 204.402 L 0 112 L 92.402 112 Z"/></svg>
+      <span class="nav__word">Boomerang</span>
+    </div>
+    <div class="nav__links">
+      <a href="#">Product</a><a href="#">Solutions</a><a href="#">Pricing</a><a href="#">Company</a>
+    </div>
+    <button class="nav__cta">Book A Demo</button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero__copy">
+      <h1 class="font-serif">Every message,<br>remembered.</h1>
+      <p>An AI teammate for lending teams - it follows up, answers questions, and keeps every borrower conversation moving, across email, SMS, and voice.</p>
+      <button class="hero__cta">See It Work</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel__card">
+        <div class="panel__row1">
+          <div>
+            <div class="panel__label">HOW IT HELPS</div>
+            <h2 class="panel__title font-serif">Fewer drop-offs,<br>faster closings</h2>
+          </div>
+          <p class="panel__desc">Built for credit unions and community lenders. Every reply is logged, every handoff is clean, and nothing falls through email.</p>
+        </div>
+        <div class="panel__hr"></div>
+        <div class="panel__row2">
+          <div class="feat"><span class="feat__label"><span>01</span><span class="sep">/</span><span class="name">Always-on</span></span></div>
+          <div class="feat"><span class="feat__label"><span>02</span><span class="sep">/</span><span class="name">Human-handoff</span></span></div>
+          <div class="feat"><span class="feat__label"><span>03</span><span class="sep">/</span><span class="name">Audit-ready</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

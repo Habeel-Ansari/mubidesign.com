@@ -15,14 +15,86 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/style.css?v=20260701">
+  <link rel="stylesheet" href="css/style.css?v=20260901a">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <style>
+    /* ── Explorations: static bento gallery ── */
+    .mk-scroll {
+      padding: clamp(3rem,7vw,5rem) 0;
+      background: var(--bg-warm);
+      clip-path: polygon(
+        0% 2%, 2.5% 5%, 5% 1%, 8% 4.5%, 11% 0.5%, 14% 6%, 17% 2.5%, 20% 5.5%,
+        24% 1%, 27% 4%, 30% 0%, 33% 6.5%, 37% 2%, 40% 5%, 43% 1.5%, 47% 4.5%,
+        50% 0.5%, 53% 6%, 57% 2.5%, 60% 5%, 64% 1%, 67% 4%, 70% 0%, 74% 6%,
+        77% 2%, 81% 5.5%, 84% 1.5%, 88% 4%, 91% 0.5%, 95% 5%, 98% 2%, 100% 3.5%,
+        100% 100%, 0% 100%
+      );
+    }
+    .mk-scroll__head { position: relative; padding: 0 var(--gutter); max-width: var(--container); margin: 0 auto clamp(1.5rem,4vw,2.5rem); text-align: center; }
+    .mk-scroll__title { font-family: var(--font-serif); font-size: clamp(1.6rem,3vw,2.2rem); color: var(--text); }
+
+    /* Hand-drawn "click here" poke — invites the gravity easter egg */
+    .mk-poke {
+      position: absolute;
+      top: -6px;
+      right: clamp(0px, 8vw, 90px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .mk-poke.is-gone { opacity: 0; transform: translateY(-8px) scale(0.9); pointer-events: none; }
+    .mk-poke__text {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--accent-color);
+      transform: rotate(-4deg);
+      transition: transform 0.25s ease;
+    }
+    .mk-poke:hover .mk-poke__text { transform: rotate(-4deg) scale(1.08); }
+    .mk-poke__arrow { width: 60px; height: 54px; color: var(--accent-color); margin-top: -2px; }
+    .mk-poke__arrow path { stroke-dasharray: 220; stroke-dashoffset: 220; animation: mkPokeDraw 1.8s 0.6s var(--ease-out) forwards; }
+    @keyframes mkPokeDraw { to { stroke-dashoffset: 0; } }
+    @media (max-width: 760px) { .mk-poke { position: static; margin: 0 auto var(--s4); } }
+
+    .mk-bento { display: grid; grid-template-columns: repeat(12,1fr); gap: clamp(1rem,2.5vw,1.5rem); max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
+    .mk-bento > * { grid-column: span 12; }
+    .mk-bento .span-8 { grid-column: span 8; }
+    .mk-bento .span-6 { grid-column: span 6; }
+    .mk-bento .span-4 { grid-column: span 4; }
+
+    .mk-card { position: relative; aspect-ratio: 1440 / 900; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.12); background: #F4F3F3; }
+    .mk-card--dark { background: #0a0a0a; }
+    .mk-card iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; pointer-events: none; transform-origin: top left; }
+
+    /* Physics mode — flat "loose paper" look, no drop shadows while tumbling */
+    .mk-bento.is-physics .mk-card { box-shadow: none; }
+
+    @media (max-width: 860px) {
+      .mk-bento > [class*="span-"] { grid-column: span 12; }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Loader -->
+  <div class="loader bg-grain" id="loader" aria-hidden="true">
+    <div class="loader__name">
+      <span class="loader__name-mask"><span class="loader__name-text">Mubeen</span></span>
+      <span class="loader__name-mask"><span class="loader__name-text">Ansari</span></span>
+    </div>
+    <div class="loader__bar"><span class="loader__bar-fill"></span></div>
+  </div>
 
   <!-- Custom cursor -->
   <div class="cursor cursor--dot"  id="cursor-dot"  aria-hidden="true"></div>
@@ -31,6 +103,8 @@
   <!-- ═══════════════════════════════════════════
        HEADER
   ═══════════════════════════════════════════ -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
   <header class="header" role="banner">
     <div class="header__inner">
       <a href="/" class="header__logo" aria-label="Mubeen Ansari home">Mubeen Ansari</a>
@@ -39,7 +113,6 @@
         <ul class="nav__links" role="list">
           <li><a href="#work"    class="nav__link">Work</a></li>
           <li><a href="about.html" class="nav__link">About</a></li>
-          <li><a href="#contact" class="nav__link">Contact</a></li>
         </ul>
 
         <div class="nav__actions">
@@ -73,7 +146,6 @@
     <nav class="mobile-menu__links">
       <a href="#work"    class="mobile-menu__link">Work</a>
       <a href="about.html" class="mobile-menu__link">About</a>
-      <a href="#contact" class="mobile-menu__link">Contact</a>
     </nav>
     <div class="mobile-menu__foot">
       <div class="social-links">
@@ -92,29 +164,21 @@
     <!-- ═══════════════════════════════════════════
          HERO
     ═══════════════════════════════════════════ -->
-    <section class="hero">
+    <section class="hero bg-grid-brown">
       <div class="container">
         <div class="hero__inner">
 
           <div class="hero__grid">
             <div>
-              <div class="hero__badge" data-load-reveal data-delay="1">
-                <span class="hero__badge-dot" aria-hidden="true"></span>
-                Open to new opportunities
-              </div>
-
               <h1 class="hero__headline" data-load-reveal data-delay="2">
-                I turn problems into <em>pixel-perfect experiences</em>
+                <span class="hero__headline-top">I</span>
+                <em class="hero__rotate" id="heroRotate" aria-live="polite"
+                  data-words="Make brands|Design Products|ViBe code|Make Design systems|Build teams">Make brands</em>
               </h1>
 
               <p class="hero__sub" data-load-reveal data-delay="3">
-                I build products that are smart, scalable, and just feel right.
+                Designing human-centered AI experiences with exceptional craft, thoughtful product judgment and systems thinking.
               </p>
-
-              <div class="hero__actions" data-load-reveal data-delay="4">
-                <a href="#work" class="btn btn--primary">See my work</a>
-                <a href="#contact" class="btn btn--ghost">Let's connect</a>
-              </div>
 
               <div class="hero__meta" data-load-reveal data-delay="5">
                 <span class="hero__location">
@@ -122,15 +186,36 @@
                   Bangalore, India
                 </span>
                 <span class="hero__avail">
-                  <strong>9</strong> years · Product Design Consultant at Geoserve
+                  <strong>9</strong> years · Currently at Geoserve as a Product Designer
                 </span>
               </div>
             </div>
 
-            <div class="hero__video-wrapper" data-load-reveal data-delay="3">
-              <video class="hero__video" autoplay loop muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg" aria-label="Mubeen Ansari">
-                <source src="assets/video/hero.webm" type="video/webm">
-              </video>
+            <div class="hero__visual">
+              <a class="hero__medium-card" href="https://medium.com/@mubzansari96" target="_blank" rel="noopener noreferrer" aria-label="Read my articles on Medium" data-load-reveal="throw-left" data-delay="3">
+                <span class="hero__medium-badge">Me</span>
+                <p class="hero__medium-text">I write about my design thinking and processes.</p>
+                <span class="hero__medium-cta">
+                  Read
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </span>
+              </a>
+
+              <div class="hero__video-wrapper" data-load-reveal data-delay="3">
+                <video class="hero__video" autoplay loop muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg" aria-label="Mubeen Ansari">
+                  <source src="assets/video/hero.webm" type="video/webm">
+                </video>
+              </div>
+
+              <div class="hero__stats-card" data-load-reveal="throw-right" data-delay="3">
+                <p class="hero__stats-title">Cool stats</p>
+                <ol class="hero__stats-list">
+                  <li>9+ products shipped</li>
+                  <li>60% client growth delivered</li>
+                  <li>Built a brand from 0 to 8K followers</li>
+                  <li>Multiple award-winning designs</li>
+                </ol>
+              </div>
             </div>
           </div>
 
@@ -144,7 +229,7 @@
     <!-- ═══════════════════════════════════════════
          POSITIONING
     ═══════════════════════════════════════════ -->
-    <section class="services" id="positioning" aria-labelledby="positioning-title">
+    <section class="services" id="positioning" aria-labelledby="positioning-title" style="display:none;">
       <div class="container">
 
         <div class="services__header">
@@ -193,25 +278,30 @@
       <div class="container">
         <div class="work__header">
           <h2 class="work__title" id="work-title" data-reveal>Selected work</h2>
+          <div class="work-filters" data-load-reveal data-delay="2" role="group" aria-label="Filter work by domain">
+            <button class="filter-btn is-active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="b2b">B2B</button>
+            <button class="filter-btn" data-filter="b2c">B2C</button>
+            <button class="filter-btn" data-filter="system">Design system</button>
+          </div>
         </div>
       </div>
 
       <div class="case-stack">
 
         <!-- ─── GeoStem ─── -->
-        <div class="case-item">
+        <div class="case-item" data-category="b2b">
           <div class="container">
             <article class="case-card case-card--navy" data-tilt data-reveal>
               <div class="case-card__inner">
                 <div class="case-card__content">
-                  <div class="case-card__meta">
-                    <span class="case-card__tag">Maritime SaaS · B2B</span>
-                    <span class="case-card__sep" aria-hidden="true"></span>
-                    <span class="case-card__year">Geoserve</span>
+                  <div class="case-card__brand">
+                    <img src="assets/images/work/geoserve-logo.svg" alt="Geoserve" class="case-card__brand-logo">
+                    <span class="case-card__chip">B2B | Maritime</span>
                   </div>
                   <div class="case-card__body">
-                    <h3 class="case-card__title">GeoStem - Maritime fuel trading intelligence platform</h3>
-                    <p class="case-card__desc">Designed a unified 0-to-1 platform for maritime fuel traders - live commodity pricing, global port bunkering rates, deal pipeline, and a real-time port map in one interface. Challenged myself to build the UI in 5 days using Claude Code - now live in production.</p>
+                    <h3 class="case-card__title">How I designed a maritime trading dashboard in 5 days using an AI workflow.</h3>
+                    <p class="case-card__desc">From trader research → design system → UI → working product - all in 5 days using Claude Code.</p>
                   </div>
                   <div class="case-card__footer">
                     <a href="geoserve-case-study.html" class="case-card__link">
@@ -220,7 +310,7 @@
                     </a>
                   </div>
                 </div>
-                <div class="case-card__media case-card__media--navy">
+                <div class="case-card__media case-card__media--navy" data-parallax="10">
                   <img src="assets/images/work/geostem-dashboard.webp" alt="GeoStem maritime fuel trading dashboard on tablet">
                   <div class="case-card__glare" aria-hidden="true"></div>
                 </div>
@@ -230,19 +320,18 @@
         </div>
 
         <!-- ─── Green Getaways ─── -->
-        <div class="case-item">
+        <div class="case-item" data-category="b2c">
           <div class="container">
-            <article class="case-card" style="--card-bg:#F0F7F0;" data-tilt data-reveal>
+            <article class="case-card" style="--card-bg:#F0F7F0;" data-tilt data-reveal="left">
               <div class="case-card__inner">
                 <div class="case-card__content">
-                  <div class="case-card__meta">
-                    <span class="case-card__tag">WordPress · React · Booking Systems</span>
-                    <span class="case-card__sep" aria-hidden="true"></span>
-                    <span class="case-card__year">Green Getaways</span>
+                  <div class="case-card__brand">
+                    <img src="assets/images/work/green-getaways-logo.svg" alt="Green Getaways" class="case-card__brand-logo">
+                    <span class="case-card__chip">B2C | Travel</span>
                   </div>
                   <div class="case-card__body">
-                    <h3 class="case-card__title">Building a self-service booking engine as a co-founder, in two weeks</h3>
-                    <p class="case-card__desc">Replaced a spreadsheet-and-WhatsApp booking process with a React booking frontend on a WordPress backend, complete with Razorpay payments and automated confirmations - for an eco-travel company I co-founded.</p>
+                    <h3 class="case-card__title">I don't just design products. I like figuring out how they should work.</h3>
+                    <p class="case-card__desc">When a booking workflow became buried in WhatsApp, spreadsheets, and manual coordination, I redesigned the entire experience and turned it into a working product—with live availability, payments, and automated confirmations.</p>
                   </div>
                   <div class="case-card__footer">
                     <a href="green-getaways-case-study.html" class="case-card__link">
@@ -251,8 +340,38 @@
                     </a>
                   </div>
                 </div>
-                <div class="case-card__media" style="background:linear-gradient(145deg,#071A08 0%,#0E2B12 50%,#14381A 100%);">
-                  <img src="assets/images/work/green-getaways.webp" alt="Green Getaways booking website">
+                <div class="case-card__media" data-parallax="10" style="background:linear-gradient(145deg,#071A08 0%,#0E2B12 50%,#14381A 100%);">
+                  <img src="assets/images/work/green-getaways-laptop-mockup.webp" alt="Green Getaways booking website shown on a laptop">
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ─── PayTrack ─── -->
+        <div class="case-item" data-category="b2c">
+          <div class="container">
+            <article class="case-card" data-tilt data-reveal="right">
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__brand">
+                    <img src="assets/images/work/paytrack.png" alt="PayTrack" class="case-card__brand-logo">
+                    <span class="case-card__chip">B2C | FinTech</span>
+                  </div>
+                  <div class="case-card__body">
+                    <h3 class="case-card__title">Rethinking the visual language of a UPI expense tracker</h3>
+                    <p class="case-card__desc">A self-directed exploration focused on visual design, product UI, and brand expression. I developed a distinctive visual direction and translated it across 40+ screens, covering onboarding, home, transactions, and profile. I also built the design patterns and visual guidelines needed to keep the experience cohesive and scalable.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="paytrack-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                </div>
+                <div class="case-card__media" data-parallax="10" style="background:linear-gradient(135deg,#0d150a 0%,#1c2b14 55%,#223318 100%);">
+                  <img src="assets/images/work/paytrack-app.webp" alt="Hand holding a phone showing the PayTrack home screen">
                   <div class="case-card__glare" aria-hidden="true"></div>
                 </div>
               </div>
@@ -261,19 +380,18 @@
         </div>
 
         <!-- ─── Converj ─── -->
-        <div class="case-item">
+        <div class="case-item" data-category="b2b">
           <div class="container">
-            <article class="case-card case-card--green" data-tilt data-reveal>
+            <article class="case-card case-card--green" data-tilt data-reveal="left">
               <div class="case-card__inner">
                 <div class="case-card__content">
-                  <div class="case-card__meta">
-                    <span class="case-card__tag">FinTech · Product Design</span>
-                    <span class="case-card__sep" aria-hidden="true"></span>
-                    <span class="case-card__year">Converj</span>
+                  <div class="case-card__brand">
+                    <img src="assets/images/work/converj/converj-logo.svg" alt="Converj" class="case-card__brand-logo">
+                    <span class="case-card__chip">B2B | Fintech</span>
                   </div>
                   <div class="case-card__body">
-                    <h3 class="case-card__title">Redesigning a fintech product, from core to design system</h3>
-                    <p class="case-card__desc">Redesigned the core product and main website. Built features including invoice creation, OCR, and payment flows. Created a design system used across web and mobile, while contributing to product decisions beyond design.</p>
+                    <h3 class="case-card__title">From 0→1 product to building the design team</h3>
+                    <p class="case-card__desc">As the founding Product Designer, I worked directly with the CEO to shape the product from the ground up, while hiring and managing the design team. Designed the core product, built the design system and design process, and shipped key experiences across two banking partners.</p>
                   </div>
                   <div class="case-card__footer">
                     <a href="converj-case-study.html" class="case-card__link">
@@ -282,8 +400,38 @@
                     </a>
                   </div>
                 </div>
-                <div class="case-card__media" style="background:linear-gradient(145deg,#08101E 0%,#0D1C36 55%,#0F2240 100%);">
-                  <img src="assets/images/work/converj-dashboard.webp" alt="Converj fintech product dashboard">
+                <div class="case-card__media" data-parallax="10" style="background:linear-gradient(145deg,#08101E 0%,#0D1C36 55%,#0F2240 100%);">
+                  <img src="assets/images/work/converj-laptop-mockup.webp" alt="Converj dashboard shown on a laptop">
+                  <div class="case-card__glare" aria-hidden="true"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ─── Pelagos ─── -->
+        <div class="case-item" data-category="system">
+          <div class="container">
+            <article class="case-card" data-tilt data-reveal="right">
+              <div class="case-card__inner">
+                <div class="case-card__content">
+                  <div class="case-card__brand">
+                    <img src="assets/images/work/geoserve-logo.svg" alt="Geoserve" class="case-card__brand-logo">
+                    <span class="case-card__chip">B2B | Maritime</span>
+                  </div>
+                  <div class="case-card__body">
+                    <h3 class="case-card__title">Pelagos - the design system behind Geoserve's maritime platforms</h3>
+                    <p class="case-card__desc">Foundations, a 12-component library, and a real operations dashboard built entirely from it - documented the same way every pattern should be: definition, anatomy, states, usage notes.</p>
+                  </div>
+                  <div class="case-card__footer">
+                    <a href="pelagos-case-study.html" class="case-card__link">
+                      View case study
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                </div>
+                <div class="case-card__media" data-parallax="10" style="background:linear-gradient(135deg,#0a1a42 0%,#12296b 55%,#1852FE 100%);">
+                  <img src="assets/images/work/pelagos/foundations-overview.png" alt="Pelagos design system: Gilroy type, Marine and Navy colour tokens, the Blue ramp, and a sample of the component library">
                   <div class="case-card__glare" aria-hidden="true"></div>
                 </div>
               </div>
@@ -307,9 +455,54 @@
     </section>
 
     <!-- ═══════════════════════════════════════════
+         EXPLORATIONS: scrolling mockup gallery
+    ═══════════════════════════════════════════ -->
+    <section class="mk-scroll bg-grain" aria-label="Design explorations">
+      <div class="mk-scroll__head">
+        <h2 class="mk-scroll__title" data-reveal="scale">Playground</h2>
+        <button type="button" class="mk-poke" id="mkPoke" aria-label="Click to knock the cards down">
+          <span class="mk-poke__text">click here</span>
+          <svg class="mk-poke__arrow" viewBox="0 0 60 54" fill="none" aria-hidden="true">
+            <path d="M6 4C10 20 16 34 26 40C34 45 44 44 52 36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M40 34C46 35 50 36 53 38C51 32 50 28 50 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mk-bento" id="mkBento">
+        <div class="mk-card span-4">
+          <iframe src="assets/mockups/boomerang.html" title="Boomerang - conversational AI landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <iframe src="assets/mockups/vesper.html" title="Vesper.ai - operational AI infrastructure landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card span-4">
+          <iframe src="assets/mockups/fluidic.html" title="Fluidic - animation engine landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <iframe src="assets/mockups/atelier.html" title="Atelier - design agency landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <iframe src="assets/mockups/measured.html" title="Measured - wellness wearable landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <iframe src="assets/mockups/lumora.html" title="Lumora - mindfulness app landing page exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card span-4">
+          <iframe src="assets/mockups/ledger.html" title="Ledger - payment operations console exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <iframe src="assets/mockups/qolaba.html" title="Qolaba - AI workspace dashboard exploration" loading="lazy"></iframe>
+        </div>
+        <div class="mk-card mk-card--dark span-4">
+          <video src="assets/videos/washngoo.mp4" poster="assets/videos/washngoo-poster.jpg" autoplay muted loop playsinline aria-label="WashNGoo - cinematic 3D render exploration" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
          EXPERIENCE
     ═══════════════════════════════════════════ -->
-    <section class="experience-section" id="experience" aria-labelledby="exp-title">
+    <section class="experience-section" id="experience" aria-labelledby="exp-title" style="display:none;">
       <div class="container">
 
         <div class="services__header" style="margin-bottom: var(--s16);">
@@ -449,87 +642,71 @@
           <!-- ── Left: interactive services list ── -->
           <div class="ss-left" id="ss-left" data-reveal>
 
-            <!-- Decorative background cloud -->
-            <div class="ss-cloud" aria-hidden="true">
-              <span class="ss-cloud__item">MVP scoping</span>
-              <span class="ss-cloud__item">Product strategy</span>
-              <span class="ss-cloud__item">QA ownership</span>
-              <span class="ss-cloud__item">User research</span>
-              <span class="ss-cloud__item">Direction</span>
-              <span class="ss-cloud__item">Systems</span>
-              <span class="ss-cloud__item">Prototyping</span>
-            </div>
-
-            <!-- Description bubble -->
-            <div class="ss-bubble" id="ss-bubble" aria-live="polite">
-              <span id="ss-bubble-text"></span>
-            </div>
-
-            <!-- Clickable services list -->
-            <ul class="ss-list" role="list" aria-label="Services - click to learn more">
-              <li>
-                <button class="ss-item"
+            <!-- 3D wheel: items sit on a virtual drum, the centred one is the active service -->
+            <div class="ss-stage" id="ss-stage" tabindex="0" role="listbox"
+                 aria-label="Services — scroll, drag or use the arrow keys to bring one to the centre">
+              <div class="ss-slot" aria-hidden="true"></div>
+              <div class="ss-wheel" id="ss-wheel">
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="1"
-                  data-desc="I define what ships first and what stays out. Scoping upfront saves months of wasted effort downstream."
-                  aria-pressed="false">
+                  data-desc="I define what ships first and what stays out. Scoping upfront saves months of wasted effort downstream.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  Product scoping
+                  <span class="ss-item__label">Product scoping</span>
                 </button>
-              </li>
-              <li>
-                <button class="ss-item"
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="2"
-                  data-desc="I work with founders on what to build, not just how. Strategy comes before execution."
-                  aria-pressed="false">
+                  data-desc="I work with founders on what to build, not just how. Strategy comes before execution.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  Product strategy
+                  <span class="ss-item__label">Product strategy</span>
                 </button>
-              </li>
-              <li>
-                <button class="ss-item"
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="3"
-                  data-desc="I talk to users before opening Figma. Real problems beat assumptions every time."
-                  aria-pressed="false">
+                  data-desc="I talk to users before opening Figma. Real problems beat assumptions every time.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  UX research
+                  <span class="ss-item__label">UX research</span>
                 </button>
-              </li>
-              <li>
-                <button class="ss-item"
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="4"
-                  data-desc="I break what we build, then figure out why. Checking edge cases, logic gaps, and following through bugs."
-                  aria-pressed="false">
+                  data-desc="I break what we build, then figure out why. Checking edge cases, logic gaps, and following through bugs.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  QA ownership
+                  <span class="ss-item__label">QA ownership</span>
                 </button>
-              </li>
-              <li>
-                <button class="ss-item"
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="5"
-                  data-desc="I build components that scale so teams move faster as the product grows, not slower."
-                  aria-pressed="false">
+                  data-desc="I build components that scale so teams move faster as the product grows, not slower.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  Design systems
+                  <span class="ss-item__label">Design systems</span>
                 </button>
-              </li>
-              <li>
-                <button class="ss-item"
+                <button class="ss-item" type="button" role="option" aria-selected="false" tabindex="-1"
                   data-index="6"
-                  data-desc="I hire, mentor, and set standards so design quality compounds across the team over time."
-                  aria-pressed="false">
+                  data-desc="I hire, mentor, and set standards so design quality compounds across the team over time.">
                   <svg class="ss-item__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                  Team building
+                  <span class="ss-item__label">Team building</span>
                 </button>
-              </li>
-            </ul>
-          </div>
+              </div>
+              <div class="ss-rail" id="ss-rail" aria-hidden="true"></div>
+            </div>
+
+            <span class="ss-hint" id="ss-hint" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+              Scroll to explore
+            </span>
+
+            <!-- Description card for the centred item -->
+            <div class="ss-bubble" id="ss-bubble" aria-live="polite">
+              <span class="ss-bubble__text" id="ss-bubble-text"></span>
+            </div>
+
+          </div><!-- /.ss-left -->
 
           <!-- ── Right: testimonial card ── -->
           <div class="ss-right" data-reveal data-delay="2">
 
             <!-- Author header + nav -->
             <div class="ss-testi-head">
-              <div class="ss-avatar" aria-hidden="true">ST</div>
+              <div class="ss-avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
               <div class="ss-testi-author">
                 <p class="ss-testi-name">Shiju Thomas</p>
                 <p class="ss-testi-role">Manager · LinkedIn</p>
@@ -554,7 +731,7 @@
             <div class="ss-testi-slides">
               <div class="ss-testi-slide is-active"
                 data-author="Shiju Thomas"
-                data-role="Manager · LinkedIn"
+                data-role="HR Head · Red Baton"
                 data-initials="ST">
                 <div class="ss-testi-quote">
                   <p>"A quiet yet creative and diligent designer with a rare combination of empathy, speed, and craft. Agile, timely with deliverables, and always commendable to work with."</p>
@@ -562,10 +739,34 @@
               </div>
               <div class="ss-testi-slide"
                 data-author="Krishna Maniyar"
-                data-role="Client · Micron Aerosols"
+                data-role="Client · Reshamandi"
                 data-initials="KM">
                 <div class="ss-testi-quote">
-                  <p>"Meticulous, strong aesthetic sense, self-driven. Mubeen can single-handedly set up your digital product and get it running in record time. Extremely dependable."</p>
+                  <p>"Meticulous, Strong Aesthetic Sense, Updated, Self Driven, takes feedback well. Mubeen can single handedly setup your Digital Products, Brand Identity, Product Research, Product &amp; Market Analysis and get it up and running in record time. He is easy to work with and extremely dependable."</p>
+                </div>
+              </div>
+              <div class="ss-testi-slide"
+                data-author="Amar Roshan Padole"
+                data-role="HR · Red Baton"
+                data-initials="AP">
+                <div class="ss-testi-quote">
+                  <p>"Mubeen is an amazing designer and is skilled in bringing together the ideas of a group into something amazing. I had the opportunity to work with him closely in growing the UI team, where I always admired his leadership trait in mentoring young designers joining the team. As a man of few words, his advice and collaboration are remarkable. He is a great asset to the team, a leader, and a mentor. These are the traits that contributed to the growth of the UI team at Red Baton and Mubeen's contribution is significant."</p>
+                </div>
+              </div>
+              <div class="ss-testi-slide"
+                data-author="Dhwani Kikani"
+                data-role="UX Design Lead · Colleague"
+                data-initials="DK">
+                <div class="ss-testi-quote">
+                  <p>"I have worked with Mubeen in multiple projects as a team and it has been the most well co-ordinated and seamless experience. He has great visual design skills, enthusiasm and it has always been easy to approach Mubeen. His curiosity in understanding design and helping solve a problem makes him a great team mate."</p>
+                </div>
+              </div>
+              <div class="ss-testi-slide"
+                data-author="Deepika D"
+                data-role="Senior Product Designer · SentinelOne"
+                data-initials="DD">
+                <div class="ss-testi-quote">
+                  <p>"I didn't get the chance to work with Mubeen directly, but through our quick connects, I can say that he is a patient being, who knows what he's doing, whether regarding design, development, or mentorship. He's a fun-loving and reliable teammate who's always there to lend a helping hand. I believe he'd be a great addition to any team!"</p>
                 </div>
               </div>
             </div>
@@ -574,6 +775,9 @@
             <div class="ss-testi-dots" role="tablist">
               <button class="ss-testi-dot is-active" role="tab" aria-selected="true" aria-label="Testimonial 1"></button>
               <button class="ss-testi-dot" role="tab" aria-selected="false" aria-label="Testimonial 2"></button>
+              <button class="ss-testi-dot" role="tab" aria-selected="false" aria-label="Testimonial 3"></button>
+              <button class="ss-testi-dot" role="tab" aria-selected="false" aria-label="Testimonial 4"></button>
+              <button class="ss-testi-dot" role="tab" aria-selected="false" aria-label="Testimonial 5"></button>
             </div>
 
           </div><!-- /.ss-right -->
@@ -585,15 +789,15 @@
     <!-- ═══════════════════════════════════════════
          CONTACT
     ═══════════════════════════════════════════ -->
-    <section class="contact" id="contact" aria-labelledby="contact-title">
+    <section class="contact bg-grain bg-grid-lines" id="contact" aria-labelledby="contact-title">
       <div class="container">
         <div class="contact__inner">
           <div>
             <h2 class="contact__headline" id="contact-title" data-reveal>
-              Building something?<br>Let's connect.
+              Building something?<br><span class="hl">Let's connect.</span>
             </h2>
             <p class="contact__desc" data-reveal data-delay="2">
-              If you're building something and need clarity, structure, and execution, I'd love to hear about it.
+              If you're building something and need <span class="hl">clarity, structure, and execution</span>, I'd love to hear about it.
             </p>
           </div>
 
@@ -601,6 +805,17 @@
             <div class="contact__email-row">
               <a href="mailto:mubzansari96@gmail.com" class="contact__email">mubzansari96@gmail.com</a>
               <button class="copy-btn" aria-label="Copy email address">
+                <svg class="icon-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <svg class="icon-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </button>
+            </div>
+            <div class="contact__email-row">
+              <a href="tel:+919072842874" class="contact__email">9072842874</a>
+              <button class="copy-btn" aria-label="Copy phone number">
                 <svg class="icon-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
@@ -618,6 +833,8 @@
             </div>
           </div>
         </div>
+
+        <p class="contact__copyright">&copy; <span class="js-year"></span> Mubeen Ansari. Powered by Codex and a few days of sleepless nights.</p>
       </div>
     </section>
 
@@ -626,27 +843,8 @@
   <!-- ═══════════════════════════════════════════
        FOOTER
   ═══════════════════════════════════════════ -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer__inner">
-        <p class="footer__copy">&copy; <span class="js-year"></span> Mubeen Ansari. All rights reserved.</p>
-        <nav class="footer__links" aria-label="Footer navigation">
-          <a href="#work"    class="footer__link">Work</a>
-          <a href="about.html" class="footer__link">About</a>
-          <a href="#contact" class="footer__link">Contact</a>
-        </nav>
-        <div class="social-links" aria-label="Social media links">
-          <a href="https://www.linkedin.com/in/mubeen-ansari-756332173/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="https://dribbble.com/Mubzansari96" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener noreferrer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <script src="js/main.js?v=20260701"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="js/main.js?v=20260901a"></script>
 </body>
 </html>
