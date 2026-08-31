@@ -13,122 +13,27 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
   <style>
-    /* ── Green Getaways booking mockup ── */
-    .gg-mockup {
-      width: 100%; border-radius: 12px; overflow: hidden;
-      font-family: 'Google Sans Flex', system-ui, sans-serif;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
-      border: 1px solid rgba(0,0,0,0.07);
-      background: #F8FAF8;
+    /* ── Layout: two-column label/content split, matching geoserve-case-study.html's .gs-split ── */
+    .gg-split { display:grid; grid-template-columns:180px 1fr; gap:var(--s10); align-items:start; margin-bottom:clamp(4rem, 10vw, 8rem); }
+    .gg-split .cs-section__label { margin-bottom:0; }
+    .gg-split .cs-section__title { max-width:none; }
+    @media (max-width:700px) {
+      .gg-split { grid-template-columns:1fr; gap:var(--s3); }
     }
-    .gg-topbar {
-      background: #1A3D1F; padding: 0 24px; height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .gg-logo { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
-    .gg-logo span { color: #86EFAC; }
-    .gg-nav { display: flex; gap: 20px; }
-    .gg-nav-link { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
-    .gg-nav-link.active { color: #fff; }
-    .gg-book-btn { background: #4ADE80; color: #14532D; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; }
 
-    .gg-hero-banner {
-      background: linear-gradient(135deg, #1A3D1F 0%, #2D6A35 50%, #4A9650 100%);
-      padding: 28px 32px 0; display: flex; gap: 24px; align-items: flex-end; overflow: hidden;
-    }
-    .gg-hero-text { flex: 1; padding-bottom: 20px; }
-    .gg-hero-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #86EFAC; margin-bottom: 8px; }
-    .gg-hero-title { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 6px; }
-    .gg-hero-sub { font-size: 11px; color: rgba(255,255,255,0.7); }
-    .gg-prop-imgs { display: flex; gap: 8px; align-items: flex-end; }
-    .gg-prop-img { border-radius: 10px 10px 0 0; overflow: hidden; flex-shrink: 0; }
+    .gg-list { list-style:none; display:flex; flex-direction:column; gap:var(--s2); max-width:65ch; margin:var(--s3) 0 var(--s4); padding:0; }
+    .gg-list li { display:flex; align-items:center; gap:10px; font-size:var(--fs-base); color:var(--text); line-height:1.5; font-weight:600; letter-spacing:-0.01em; }
+    .gg-list-icon { width:24px; height:24px; border-radius:7px; background:#F0F7F0; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .gg-list-icon svg { width:13px; height:13px; stroke:#22C55E; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-    .gg-booking-widget {
-      background: #fff; border: 1px solid #D1E8D1; border-radius: 14px;
-      margin: -30px 32px 0; padding: 20px; position: relative; z-index: 2;
-      box-shadow: 0 8px 32px rgba(26,61,31,0.12);
+    .gg-constraints-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+    .gg-theme-card { background:#fff; border:1.5px solid #E5EDE5; border-radius:10px; padding:16px; }
+    .gg-theme-num { font-size:11px; font-weight:800; color:#22C55E; margin-bottom:6px; }
+    .gg-theme-title { font-size:14px; font-weight:700; color:#1A3D1F; margin-bottom:5px; }
+    .gg-theme-desc { font-size:13px; color:#6B7280; line-height:1.5; }
+    @media (max-width:700px) {
+      .gg-constraints-row { grid-template-columns:1fr; }
     }
-    .gg-bw-title { font-size: 13px; font-weight: 700; color: #1A3D1F; margin-bottom: 16px; }
-    .gg-bw-row { display: flex; gap: 10px; align-items: flex-end; }
-    .gg-bw-field { flex: 1; }
-    .gg-bw-label { font-size: 9px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .gg-bw-input {
-      background: #F0F7F0; border: 1.5px solid #D1E8D1; border-radius: 8px;
-      padding: 8px 12px; font-size: 12px; font-weight: 600; color: #1A3D1F;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .gg-bw-input svg { width: 13px; height: 13px; stroke: #4A9650; fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
-    .gg-bw-btn {
-      background: #22C55E; color: #fff; border-radius: 8px;
-      padding: 10px 18px; font-size: 12px; font-weight: 700;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .gg-avail-row {
-      display: flex; gap: 6px; margin-top: 14px; align-items: center;
-    }
-    .gg-avail-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; }
-    .gg-avail-text { font-size: 10px; color: #6B7280; }
-    .gg-avail-badge { background: #DCFCE7; color: #166534; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: auto; }
-
-    .gg-props-section { padding: 28px 32px 24px; }
-    .gg-props-title { font-size: 13px; font-weight: 700; color: #1A3D1F; margin-bottom: 14px; }
-    .gg-props-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .gg-prop-card { background: #fff; border: 1px solid #E5EDE5; border-radius: 10px; overflow: hidden; }
-    .gg-prop-card-img {
-      height: 80px; display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-    }
-    .gg-prop-card-body { padding: 10px 12px; }
-    .gg-prop-card-name { font-size: 11px; font-weight: 700; color: #1A3D1F; margin-bottom: 2px; }
-    .gg-prop-card-loc { font-size: 9px; color: #9CA3AF; margin-bottom: 8px; }
-    .gg-prop-card-footer { display: flex; align-items: center; justify-content: space-between; }
-    .gg-prop-card-price { font-size: 12px; font-weight: 800; color: #1A3D1F; }
-    .gg-prop-card-price span { font-size: 9px; font-weight: 400; color: #9CA3AF; }
-    .gg-prop-card-btn { background: #F0F7F0; color: #1A3D1F; font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid #D1E8D1; }
-
-    /* Admin calendar mockup */
-    .gg-admin-mockup {
-      width: 100%; border-radius: 12px; overflow: hidden;
-      font-family: 'Google Sans Flex', system-ui, sans-serif;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
-      border: 1px solid rgba(0,0,0,0.07);
-      background: #F8FAF8;
-    }
-    .gg-admin-topbar {
-      background: #fff; border-bottom: 1px solid #E5EDE5; padding: 0 20px; height: 44px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .gg-admin-logo { font-size: 13px; font-weight: 700; color: #1A3D1F; }
-    .gg-admin-tag { background: #FEF9C3; color: #854D0E; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
-    .gg-admin-body { display: flex; height: 460px; }
-    .gg-admin-sidebar { width: 190px; background: #fff; border-right: 1px solid #E5EDE5; padding: 16px 0; flex-shrink: 0; }
-    .gg-admin-nav { padding: 7px 16px; font-size: 11px; font-weight: 500; color: #6B7280; display: flex; align-items: center; gap: 8px; }
-    .gg-admin-nav.active { background: #F0F7F0; color: #166534; font-weight: 600; border-right: 2px solid #22C55E; }
-    .gg-admin-nav svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; }
-    .gg-admin-main { flex: 1; padding: 18px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
-    .gg-admin-header { display: flex; align-items: center; justify-content: space-between; }
-    .gg-admin-page-title { font-size: 14px; font-weight: 700; color: #1A3D1F; }
-    .gg-admin-btn { background: #22C55E; color: #fff; border-radius: 6px; padding: 5px 12px; font-size: 10px; font-weight: 700; }
-    .gg-stats-row { display: flex; gap: 10px; flex-shrink: 0; }
-    .gg-stat { flex: 1; background: #fff; border: 1px solid #E5EDE5; border-radius: 8px; padding: 10px 12px; }
-    .gg-stat__label { font-size: 8px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .gg-stat__val { font-size: 18px; font-weight: 800; color: #1A3D1F; }
-    .gg-stat__delta { font-size: 9px; font-weight: 600; margin-top: 2px; color: #16A34A; }
-    .gg-cal-card { flex: 1; background: #fff; border: 1px solid #E5EDE5; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
-    .gg-cal-head { padding: 10px 14px; border-bottom: 1px solid #E5EDE5; display: flex; align-items: center; justify-content: space-between; }
-    .gg-cal-title { font-size: 11px; font-weight: 700; color: #1A3D1F; }
-    .gg-cal-nav { display: flex; gap: 4px; }
-    .gg-cal-arrow { width: 22px; height: 22px; background: #F0F7F0; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #1A3D1F; }
-    .gg-cal-grid { padding: 10px 14px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; flex: 1; }
-    .gg-cal-day-head { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #9CA3AF; text-align: center; padding: 3px 0; }
-    .gg-cal-day { height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: #374151; position: relative; }
-    .gg-cal-day.booked { background: #DCFCE7; color: #166534; font-weight: 700; }
-    .gg-cal-day.partial { background: #FEF9C3; color: #854D0E; font-weight: 700; }
-    .gg-cal-day.blocked { background: #FEE2E2; color: #DC2626; font-weight: 700; }
-    .gg-cal-day.today { border: 1.5px solid #22C55E; }
-    .gg-cal-legend { padding: 8px 14px; border-top: 1px solid #E5EDE5; display: flex; gap: 12px; }
-    .gg-legend-item { display: flex; align-items: center; gap: 5px; font-size: 9px; color: #6B7280; }
-    .gg-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
     /* ── WP Admin Booking Availability ── */
     .gg-wp-mockup { width:100%; border-radius:12px; overflow:hidden; font-family:'Google Sans Flex',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); display:flex; flex-direction:column; }
@@ -240,7 +145,7 @@
 
     /* ── Mobile: product mockups render as a uniformly shrunk screenshot ── */
     @media (max-width: 768px) {
-      .gg-mockup, .gg-admin-mockup, .gg-wp-mockup, .gg-bookings-wrap { zoom: 0.5; }
+      .gg-wp-mockup, .gg-bookings-wrap { zoom: 0.5; }
       .gg-listing-content { flex-shrink: 0; width: 420px; }
       .gg-flow-row { flex-shrink: 0; width: 640px; }
       .gg-steps-visual { overflow-x: auto; }
@@ -344,19 +249,53 @@
     <article class="cs-body">
       <div class="container container--narrow">
 
-        <!-- The Problem -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">The problem</p>
-          <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
-          <p class="cs-section__text">
-            Green Getaways - the eco-travel company I co-founded - was losing hours a day to WhatsApp threads and a spreadsheet that couldn't keep up, so I designed and built the fix myself: live availability, instant payments, and automated confirmations, shipped in two weeks.
-          </p>
-          <p class="cs-section__text">
-            Green Getaways runs eco-friendly camping and farm stays near Bangalore. The stays were great, but booking one wasn't. Every request came in through WhatsApp or a contact form, got checked against a shared spreadsheet by hand, then followed up for payment. If two of us checked the spreadsheet at the same time, we'd double-book the same dates - and it happened more often than I'd like to admit.
-          </p>
-          <p class="cs-section__text">
-            On top of the mistakes, it ate 3-4 hours a day that should have gone into looking after guests.
-          </p>
+        <!-- Context -->
+        <div class="cs-section gg-split" data-reveal>
+          <p class="cs-section__label">Context</p>
+          <div>
+            <h2 class="cs-section__title">Manual bookings were costing more than the bookings were worth</h2>
+            <p class="cs-section__text">
+              Green Getaways - the eco-travel company I co-founded - runs eco-friendly camping and farm stays near Bangalore. The stays were great, but booking one wasn't. Every request came in through WhatsApp or a contact form, got checked against a shared spreadsheet by hand, then followed up for payment.
+            </p>
+            <p class="cs-section__text">
+              If two of us checked the spreadsheet at the same time, we'd double-book the same dates - and it happened more often than I'd like to admit. On top of the mistakes, it ate 3-4 hours a day that should have gone into looking after guests.
+            </p>
+            <p class="cs-section__text">I designed and built the fix myself:</p>
+            <ul class="gg-list">
+              <li><span class="gg-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Live availability</li>
+              <li><span class="gg-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Instant payments</li>
+              <li><span class="gg-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Automated confirmations</li>
+            </ul>
+            <p class="cs-section__text">Shipped in two weeks.</p>
+          </div>
+        </div>
+
+        <!-- Challenge -->
+        <div class="cs-section gg-split" data-reveal>
+          <p class="cs-section__label">The challenge</p>
+          <div>
+            <h2 class="cs-section__title">No off-the-shelf tool fit how we actually operate</h2>
+            <p class="cs-section__text">
+              The plan was simple at first: keep using WordPress for admin, since that's what we already knew, and build a fast, modern booking page on top of it. That plan ran into three real constraints:
+            </p>
+            <div class="gg-constraints-row">
+              <div class="gg-theme-card">
+                <div class="gg-theme-num">01</div>
+                <div class="gg-theme-title">No fit-for-purpose tool</div>
+                <div class="gg-theme-desc">Every booking plugin we tried was built for hotels with fixed rooms. Our properties each have their own capacity, pricing, and dates we need to block for maintenance.</div>
+              </div>
+              <div class="gg-theme-card">
+                <div class="gg-theme-num">02</div>
+                <div class="gg-theme-title">Two-week timeline</div>
+                <div class="gg-theme-desc">The booking page, WordPress backend, and payments all had to be designed and built in two weeks.</div>
+              </div>
+              <div class="gg-theme-card">
+                <div class="gg-theme-num">03</div>
+                <div class="gg-theme-title">Non-technical admin</div>
+                <div class="gg-theme-desc">Whoever runs bookings day-to-day isn't technical, so every admin screen had to work without training.</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Metrics -->
@@ -375,24 +314,27 @@
           </div>
         </div>
 
-        <!-- Approach -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Approach</p>
-          <h2 class="cs-section__title">A fast booking page, built on what we already had</h2>
-          <p class="cs-section__text">
-            The plan was simple: keep using WordPress for admin, since that's what we already knew, and build a fast, modern booking page on top of it. Every booking plugin we tried was built for hotels with fixed rooms, which didn't match how we work - each property has its own capacity, pricing, and dates we need to block for maintenance.
-          </p>
-          <p class="cs-section__text">
-            The system has three parts: each property's availability lives in WordPress, a booking page checks that availability instantly as guests pick dates, and Razorpay handles payment right there. Confirmations, reminders, and receipts all go out automatically. I built the whole thing with Claude Code in two weeks.
-          </p>
+        <!-- My Role -->
+        <div class="cs-section gg-split" data-reveal>
+          <p class="cs-section__label">My role</p>
+          <div>
+            <h2 class="cs-section__title">Owning it end to end, alone</h2>
+            <p class="cs-section__text">
+              As co-founder, I owned this from research through to build - mapping the guest and admin workflows, designing the booking page and admin screens, and building the whole system with Claude Code in two weeks.
+            </p>
+          </div>
         </div>
 
         <!-- Process -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Design &amp; build process</p>
+        <div class="cs-section gg-split" data-reveal>
+          <p class="cs-section__label">Process</p>
+          <div>
           <h2 class="cs-section__title">Designing the booking flow end to end</h2>
+          <p class="cs-section__text">
+            The system has three parts: each property's availability lives in WordPress, a booking page checks that availability instantly as guests pick dates, and Razorpay handles payment right there. Confirmations, reminders, and receipts all go out automatically.
+          </p>
 
-          <div class="cs-steps">
+          <div class="cs-steps" style="margin-top:8px;">
             <div class="cs-step">
               <span class="cs-step__num">01</span>
               <div>
@@ -422,17 +364,10 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Booking flow visual -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">The booking flow</p>
-          <h2 class="cs-section__title">From enquiry to confirmation, fully automated</h2>
-          <p class="cs-section__text">
-            The old process took 11 manual steps across spreadsheets, WhatsApp, and email. The new flow needs zero manual steps for a standard booking.
-          </p>
+          <p class="cs-section__text" style="margin-top:28px;">The old process took 11 manual steps across spreadsheets, WhatsApp, and email. The new flow needs zero manual steps for a standard booking:</p>
 
-          <div class="gg-steps-visual" style="margin-top:24px;">
+          <div class="gg-steps-visual" style="margin-top:20px;">
             <div style="font-size:10px;font-weight:700;color:#4A9650;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;">New automated booking flow</div>
             <div class="gg-flow-row">
               <div class="gg-flow-step">
@@ -469,17 +404,29 @@
               </div>
             </div>
           </div>
+
+          <div class="cs-callout" style="margin-top:24px;">
+            <p class="cs-callout__text">
+              Showing availability live, the moment guests pick dates, turned out to be the single biggest improvement I made. It stopped people from dropping off partway through, and made the whole booking feel trustworthy from the start.
+            </p>
+          </div>
+
+          <p class="cs-section__text" style="margin-top:24px;">
+            Building from scratch instead of using a ready-made plugin took longer upfront, but it meant the system could match how we really operate, instead of us working around a plugin's limits.
+          </p>
+          </div>
         </div>
 
-        <!-- Admin: WP Booking Availability -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Admin dashboard · Screen 01</p>
-          <h2 class="cs-section__title">Booking availability, per property, per day</h2>
-          <p class="cs-section__text">
-            Per-property calendars with blocked-date management. Staff toggle dates directly, set guest capacity limits, and see blocked dates at a glance. No spreadsheet required anymore.
-          </p>
+      </div><!-- /.container.container--narrow -->
 
-          <div style="margin-top:24px;">
+      <!-- What actually shipped: Screen 1 -->
+      <div style="background:#EEF2F8;padding:48px 0 56px;" data-reveal>
+        <div class="container">
+          <h2 class="cs-section__title" style="margin-bottom:var(--s10);">What actually shipped</h2>
+          <h3 class="cs-step__title">Booking availability, per property, per day</h3>
+          <p class="cs-step__desc" style="margin-bottom:24px;">Per-property calendars with blocked-date management. Staff toggle dates directly, set guest capacity limits, and see blocked dates at a glance - every action here takes two clicks or fewer, since I designed it for someone who isn't technical.</p>
+
+          <div>
             <div class="gg-wp-mockup" data-parallax="14">
               <!-- WP top admin bar -->
               <div class="gg-wp-topbar">
@@ -594,16 +541,15 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Admin: GG Bookings list -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Admin dashboard · Screen 02</p>
-          <h2 class="cs-section__title">All bookings, payments, and guest details in one place</h2>
-          <p class="cs-section__text">
-            Revenue, confirmed vs. pending counts, guest breakdown by type, and a full searchable booking list. (Guest PII redacted in the screenshot.)
-          </p>
+      <!-- What actually shipped: Screen 2 -->
+      <div style="background:#F4F7FC;padding:48px 0 56px;" data-reveal>
+        <div class="container">
+          <h3 class="cs-step__title">All bookings, payments, and guest details in one place</h3>
+          <p class="cs-step__desc" style="margin-bottom:24px;">Revenue, confirmed vs. pending counts, guest breakdown by type, and a full searchable booking list. (Guest PII redacted in the screenshot.)</p>
 
-          <div style="margin-top:24px;overflow-x:auto;">
+          <div style="overflow-x:auto;">
             <div class="gg-bookings-wrap" data-parallax="14">
               <div class="gg-bookings-topbar">
                 <div class="gg-bookings-logo-icon">🌿</div>
@@ -722,60 +668,55 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Key decisions -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Key decisions</p>
-          <h2 class="cs-section__title">What made the difference</h2>
-
-          <div class="cs-callout" style="margin-bottom: 24px;">
-            <p class="cs-callout__text">
-              Showing availability live, the moment guests pick dates, was the single biggest improvement we made. It stopped people from dropping off partway through, and made the whole booking feel trustworthy from the start.
-            </p>
-          </div>
-
-          <p class="cs-section__text">
-            Building from scratch instead of using a ready-made plugin took longer upfront, but every plugin we found assumed hotel-style rooms, which didn't match how our properties actually work. Building it ourselves meant the system could match how we really operate, instead of us working around its limits.
-          </p>
-          <p class="cs-section__text">
-            I built the admin side assuming whoever ran it day-to-day wouldn't be technical. Every action takes two clicks or fewer from the calendar view.
-          </p>
-        </div>
+      <div class="container container--narrow" style="padding-top:clamp(3rem, 8vw, 6rem);">
 
         <!-- Outcome -->
-        <div class="cs-section" data-reveal>
+        <div class="cs-section gg-split" data-reveal>
           <p class="cs-section__label">Outcome</p>
-          <h2 class="cs-section__title">What changed after launch</h2>
-          <p class="cs-section__text">
-            Double-bookings dropped to zero immediately. The 3-4 hours we used to spend every day on spreadsheet checks, WhatsApp confirmations, and writing emails by hand is now down to almost nothing. That time goes into looking after guests instead of admin work.
-          </p>
-          <p class="cs-section__text">
-            Guests who used to wait up to 24 hours for confirmation now get it instantly. That alone won back guests who would have booked elsewhere rather than wait.
-          </p>
+          <div>
+            <h2 class="cs-section__title">What changed after launch</h2>
+            <p class="cs-section__text">
+              Double-bookings dropped to zero immediately. The 3-4 hours we used to spend every day on spreadsheet checks, WhatsApp confirmations, and writing emails by hand is now down to almost nothing. That time goes into looking after guests instead of admin work.
+            </p>
+            <p class="cs-section__text">
+              Guests who used to wait up to 24 hours for confirmation now get it instantly. That alone won back guests who would have booked elsewhere rather than wait.
+            </p>
+          </div>
         </div>
 
         <!-- Reflection -->
-        <div class="cs-section" data-reveal>
+        <div class="cs-section gg-split" data-reveal>
           <p class="cs-section__label">Reflection</p>
-          <h2 class="cs-section__title">What I'd do differently</h2>
-          <p class="cs-section__text">
-            Connecting Razorpay for payments turned out more complicated than I expected, especially around partial payments, cancellations, and refunds. Next time I'd plan for those cases upfront instead of solving them as they came up.
-          </p>
-          <p class="cs-section__text">
-            I'd also build guest accounts sooner. Right now, returning guests have to re-enter their details every time they book. A simple account system would make rebooking easier for them, and give us better data on repeat guests.
-          </p>
-        </div>
-
-        <!-- Next project -->
-        <div class="cs-next" data-reveal>
-          <p class="cs-next__label">Next case study</p>
-          <a href="converj-case-study.html" class="cs-next__link">
-            Converj - FinTech product redesign &amp; design system
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-          </a>
+          <div>
+            <h2 class="cs-section__title">What I'd do differently</h2>
+            <p class="cs-section__text">
+              Connecting Razorpay for payments turned out more complicated than I expected, especially around partial payments, cancellations, and refunds. Next time I'd plan for those cases upfront instead of solving them as they came up.
+            </p>
+            <p class="cs-section__text">
+              I'd also build guest accounts sooner. Right now, returning guests have to re-enter their details every time they book. A simple account system would make rebooking easier for them, and give us better data on repeat guests.
+            </p>
+          </div>
         </div>
 
       </div>
+
+      <div class="container container--narrow">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="converj-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">B2B FinTech · Landing Page · Payment Flow UX</p>
+              <h2 class="cs-next__title">Converj - B2B payments platform, built in one week</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
     </article>
 
   </main>
