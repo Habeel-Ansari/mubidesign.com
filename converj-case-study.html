@@ -13,100 +13,64 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
   <style>
-    :root{
-      --sh-bg: #F6F3EC;
-      --sh-line: rgba(46,16,101,0.12);
-      --sh-violet: #7C3AED;
-      --sh-violet-dark: #2E1065;
-      --sh-violet-soft: #A78BFA;
+    /* ── Cover: real screenshot with browser chrome ── */
+    .cs-cover { aspect-ratio: auto; }
+    .cs-cover img { width: 100%; height: auto; display: block; object-fit: contain; }
+
+    .cv-cover { border-radius: 16px; overflow: hidden; box-shadow: 0 32px 72px rgba(0,0,0,0.16); border: 1px solid var(--border); }
+    .cv-cover__bar { background: #EDEAF6; height: 40px; display: flex; align-items: center; padding: 0 14px; gap: 14px; border-bottom: 1px solid var(--border); }
+    .cv-cover__dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .cv-cover__dots span { width: 10px; height: 10px; border-radius: 50%; display: block; }
+    .cv-cover__url { flex: 1; display: flex; justify-content: center; }
+    .cv-cover__url span { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 5px 14px; font-size: 11px; color: var(--text-secondary); font-family: var(--font-sans); }
+
+    /* ── Two-column label/content split, matching geoserve-case-study.html's .gs-split ── */
+    .cv-split { display: grid; grid-template-columns: 180px 1fr; gap: var(--s10); align-items: start; margin-bottom: clamp(4rem, 10vw, 8rem); }
+    .cv-split .cs-section__label { margin-bottom: 0; }
+    .cv-split .cs-section__title { max-width: none; }
+    @media (max-width: 700px) {
+      .cv-split { grid-template-columns: 1fr; gap: var(--s3); }
     }
 
-    .sh-main { background: var(--sh-bg); }
-
-    /* ── Hero ── */
-    .sh-hero { padding: clamp(3rem,8vw,6rem) 0 clamp(2rem,5vw,3rem); }
-    .sh-hero__label { font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sh-violet); margin-bottom: var(--s5); }
-    .sh-hero__title { font-family: var(--font-serif); font-size: clamp(2.4rem,5.5vw,4.2rem); line-height: 1.05; letter-spacing: -0.01em; color: var(--sh-violet-dark); max-width: 20ch; margin-bottom: var(--s5); }
-    .sh-hero__title em { font-style: italic; color: var(--sh-violet); }
-    .sh-hero__desc { font-size: clamp(1.05rem,1.6vw,1.3rem); color: #4A4458; max-width: 46ch; line-height: 1.5; }
-
-    /* ── Project overview panel ── */
-    .sh-panel { margin-top: var(--s10); border: 1px solid var(--sh-line); border-radius: 16px; background: rgba(255,255,255,0.5); padding: var(--s8); display: grid; grid-template-columns: repeat(4,1fr); gap: var(--s8); }
-    .sh-panel__item p:first-child { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #8A7FA0; margin-bottom: 6px; }
-    .sh-panel__item p:last-child { font-size: var(--fs-base); font-weight: 600; color: var(--sh-violet-dark); }
-    .sh-panel__work { grid-column: 1 / -1; border-top: 1px solid var(--sh-line); padding-top: var(--s6); margin-top: var(--s2); }
-    .sh-panel__work p:first-child { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #8A7FA0; margin-bottom: 10px; }
-    .sh-panel__work ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-    .sh-panel__work li { font-size: var(--fs-sm); font-weight: 500; color: var(--sh-violet-dark); background: #fff; border: 1px solid var(--sh-line); border-radius: 20px; padding: 6px 14px; }
-
-    @media (max-width: 800px) {
-      .sh-panel { grid-template-columns: repeat(2,1fr); }
+    /* ── Constraint cards (Challenge section) ── */
+    .cv-constraints-row { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 16px; }
+    .cv-card { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; }
+    .cv-card-num { font-size: 11px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cv-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .cv-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    @media (max-width: 700px) {
+      .cv-constraints-row { grid-template-columns: 1fr; }
     }
 
-    /* ── Pitch (one-liner) ── */
-    .sh-pitch { margin-top: var(--s12); font-size: clamp(1.1rem,2vw,1.4rem); line-height: 1.55; color: var(--sh-violet-dark); max-width: 62ch; }
-
-    /* ── Cover screenshot ── */
-    .sh-cover-wrap { margin-top: clamp(2.5rem,6vw,4rem); }
-    .sh-cover { border-radius: 16px; overflow: hidden; box-shadow: 0 32px 72px rgba(46,16,101,0.16); border: 1px solid var(--sh-line); }
-    .sh-cover__bar { background: #EDEAF6; height: 40px; display: flex; align-items: center; padding: 0 14px; gap: 14px; border-bottom: 1px solid var(--sh-line); }
-    .sh-cover__dots { display: flex; gap: 6px; flex-shrink: 0; }
-    .sh-cover__dots span { width: 10px; height: 10px; border-radius: 50%; display: block; }
-    .sh-cover__url { flex: 1; display: flex; justify-content: center; }
-    .sh-cover__url span { background: #fff; border: 1px solid var(--sh-line); border-radius: 6px; padding: 5px 14px; font-size: 11px; color: var(--sh-violet-dark); font-family: var(--font-sans); }
-    .sh-cover img { width: 100%; display: block; }
-
-    /* ── Narrative (challenge / approach) ── */
-    .sh-narrative { max-width: 62ch; margin-inline: auto; padding-block: clamp(3rem,7vw,5rem); }
-    .sh-narrative__kicker { font-size: var(--fs-sm); font-weight: 700; color: var(--sh-violet-dark); }
-    .sh-narrative__title { font-family: var(--font-serif); font-size: clamp(1.8rem,3.2vw,2.6rem); line-height: 1.15; color: var(--sh-violet-dark); margin: var(--s3) 0 var(--s8); }
-    .sh-narrative p.sh-label { font-weight: 700; color: var(--sh-violet-dark); display: inline; }
-    .sh-narrative p { color: #4A4458; line-height: 1.65; margin-bottom: var(--s6); font-size: var(--fs-base); }
-    .sh-approach-item { margin-bottom: var(--s6); }
-    .sh-approach-item h4 { font-weight: 700; color: var(--sh-violet-dark); margin-bottom: 6px; font-size: var(--fs-base); }
-    .sh-approach-item p { margin-bottom: 0; }
-
-    /* ── Product section: bento grid ── */
-    .sh-product-head { max-width: 62ch; margin-inline: auto; padding-bottom: clamp(2rem,5vw,3rem); text-align: left; }
-    .sh-bento { display: grid; grid-template-columns: repeat(12,1fr); align-items: start; gap: clamp(1rem,3vw,1.75rem); padding-bottom: clamp(3rem,7vw,5rem); }
-    .sh-bento > * { grid-column: span 12; }
-    .sh-bento .span-8 { grid-column: span 8; }
-    .sh-bento .span-7 { grid-column: span 7; }
-    .sh-bento .span-6 { grid-column: span 6; }
-    .sh-bento .span-5 { grid-column: span 5; }
-    .sh-bento .span-4 { grid-column: span 4; }
+    /* ── Screenshot grids ── */
+    .cv-bento { display: grid; grid-template-columns: repeat(12,1fr); align-items: start; gap: clamp(1rem,3vw,1.75rem); margin-top: var(--s8); }
+    .cv-bento > * { grid-column: span 12; }
+    .cv-bento .span-8 { grid-column: span 8; }
+    .cv-bento .span-7 { grid-column: span 7; }
+    .cv-bento .span-6 { grid-column: span 6; }
+    .cv-bento .span-5 { grid-column: span 5; }
+    .cv-bento .span-4 { grid-column: span 4; }
     @media (max-width: 860px) {
-      .sh-bento > [class*="span-"] { grid-column: span 12; }
+      .cv-bento > [class*="span-"] { grid-column: span 12; }
     }
 
-    .sh-shot-frame { border-radius: 14px; overflow: hidden; border: 1px solid var(--sh-line); box-shadow: 0 24px 56px rgba(46,16,101,0.14); background: #fff; }
-    .sh-shot-frame img { width: 100%; display: block; }
-    .sh-shot-cap { font-size: var(--fs-sm); color: #8A7FA0; margin-top: var(--s3); }
+    .cv-shot-frame { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 24px 56px rgba(0,0,0,0.12); background: #fff; }
+    .cv-shot-frame img { width: 100%; display: block; }
+    .cv-shot-cap { font-size: var(--fs-sm); color: var(--text-tertiary); margin-top: var(--s3); }
 
     /* Isolated "component on a colour card" mockup style */
-    .sh-mock-card { background: linear-gradient(155deg,var(--sh-violet-soft),var(--sh-violet)); border-radius: 20px; padding: clamp(1.25rem,4vw,2.25rem); display: flex; align-items: center; justify-content: center; height: 100%; box-sizing: border-box; }
-    .sh-mock-card .sh-shot-frame { width: 100%; box-shadow: 0 20px 44px rgba(46,16,101,0.28); }
+    .cv-mock-card { background: linear-gradient(155deg,#A78BFA,#7C3AED); border-radius: 20px; padding: clamp(1.25rem,4vw,2.25rem); display: flex; align-items: center; justify-content: center; height: 100%; box-sizing: border-box; }
+    .cv-mock-card .cv-shot-frame { width: 100%; box-shadow: 0 20px 44px rgba(46,16,101,0.28); }
 
     /* Phone device mockup */
-    .sh-phone { position: relative; background: #14101C; border-radius: 34px; padding: 12px; max-width: 240px; margin-inline: auto; box-shadow: 0 24px 56px rgba(46,16,101,0.22); }
-    .sh-phone::before { content: ''; position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 64px; height: 14px; background: #14101C; border-radius: 10px; z-index: 2; }
-    .sh-phone__screen { border-radius: 24px; overflow: hidden; background: #fff; position: relative; }
-    .sh-phone__screen img { width: 100%; display: block; }
+    .cv-phone { position: relative; background: #14101C; border-radius: 34px; padding: 12px; max-width: 240px; margin-inline: auto; box-shadow: 0 24px 56px rgba(0,0,0,0.22); }
+    .cv-phone::before { content: ''; position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 64px; height: 14px; background: #14101C; border-radius: 10px; z-index: 2; }
+    .cv-phone__screen { border-radius: 24px; overflow: hidden; background: #fff; position: relative; }
+    .cv-phone__screen img { width: 100%; display: block; }
 
     /* Landing page feature graphics (white card, no browser chrome) */
-    .sh-feature-card { background: #fff; border: 1px solid var(--sh-line); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 44px rgba(46,16,101,0.1); }
-    .sh-feature-card img { width: 100%; display: block; }
-
-    /* ── Closing band ── */
-    .sh-close { background: var(--sh-violet-dark); border-radius: 24px; padding: clamp(2.5rem,6vw,4rem); text-align: center; margin-bottom: clamp(3rem,7vw,5rem); }
-    .sh-close__title { font-family: var(--font-serif); font-size: clamp(1.8rem,3.5vw,2.6rem); color: #fff; margin-bottom: var(--s3); }
-    .sh-close__desc { color: rgba(255,255,255,0.7); margin-bottom: var(--s8); }
-    .sh-close .btn { background: var(--sh-violet-soft); color: var(--sh-violet-dark); border: none; }
-    .sh-close .btn:hover { background: #fff; }
-
-    @media (max-width: 640px) {
-      .sh-panel { padding: var(--s6); }
-    }
+    .cv-feature-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 44px rgba(0,0,0,0.1); }
+    .cv-feature-card img { width: 100%; display: block; }
   </style>
 </head>
 <body>
@@ -149,206 +113,246 @@
     </nav>
   </div>
 
-  <main id="main" class="sh-main">
+  <main id="main">
 
     <!-- HERO -->
-    <section class="sh-hero">
-      <div class="container container--narrow">
-        <p class="sh-hero__label" data-load-reveal data-delay="1">Case study &middot; B2B FinTech</p>
-        <h1 class="sh-hero__title" data-load-reveal data-delay="2">Converj: making B2B payments feel like <em>one click</em></h1>
-        <p class="sh-hero__desc" data-load-reveal data-delay="3">
+    <section class="cs-hero">
+      <div class="container">
+        <p class="cs-hero__label" data-load-reveal data-delay="1">Case study · B2B FinTech</p>
+        <h1 class="cs-hero__title" data-load-reveal data-delay="2">Converj: making B2B payments feel like one click</h1>
+        <p class="cs-hero__desc" data-load-reveal data-delay="3">
           Designing the landing page and core product for a bank-issued Treasury Card - giving buyers extra time to pay and suppliers same-day cash - built in one week.
         </p>
 
-        <div class="sh-panel" data-load-reveal data-delay="4">
-          <div class="sh-panel__item">
-            <p>Role</p>
-            <p>Lead Product Designer</p>
+        <div class="cs-meta" data-load-reveal data-delay="4">
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Role</p>
+            <p class="cs-meta-item__value">Lead Product Designer</p>
           </div>
-          <div class="sh-panel__item">
-            <p>Created</p>
-            <p>2023</p>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Company</p>
+            <p class="cs-meta-item__value">Converj</p>
           </div>
-          <div class="sh-panel__item">
-            <p>Timeline</p>
-            <p>1 week</p>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Created</p>
+            <p class="cs-meta-item__value">2023</p>
           </div>
-          <div class="sh-panel__item">
-            <p>Company</p>
-            <p>Converj</p>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Timeline</p>
+            <p class="cs-meta-item__value">1 week</p>
           </div>
-          <div class="sh-panel__work">
-            <p>What I worked on</p>
-            <ul>
-              <li>Landing page design</li>
-              <li>Core product screens</li>
-              <li>Payment flow UX</li>
-              <li>Web + mobile</li>
-            </ul>
+          <div class="cs-meta-item">
+            <p class="cs-meta-item__label">Scope</p>
+            <p class="cs-meta-item__value">Landing page design · Core product screens · Payment flow UX · Web + mobile</p>
           </div>
         </div>
 
-        <p class="sh-pitch" data-reveal>
-          Converj is a B2B payments platform, issued with partner banks, that lets buyers extend payment terms through a Treasury Card and lets suppliers get paid early - without either side taking on new debt.
-        </p>
-
-        <!-- Cover: real dashboard screenshot -->
-        <div class="sh-cover-wrap" data-reveal>
-          <div class="sh-cover">
-            <div class="sh-cover__bar">
-              <div class="sh-cover__dots">
+        <!-- COVER: real marketing-site screenshot -->
+        <div class="cs-cover" style="background:#F0EDFB;padding:32px 40px 0;" data-load-reveal data-delay="5">
+          <div class="cv-cover" data-parallax="10">
+            <div class="cv-cover__bar">
+              <div class="cv-cover__dots">
                 <span style="background:#FF5F57;"></span>
                 <span style="background:#FEBC2E;"></span>
                 <span style="background:#28C840;"></span>
               </div>
-              <div class="sh-cover__url"><span>converj.com</span></div>
+              <div class="cv-cover__url"><span>converj.com</span></div>
             </div>
-            <img src="assets/images/work/converj/treasury-card-hero.png" alt="Converj marketing site: Use the Treasury Card, monetize your payables" data-parallax="10">
+            <img src="assets/images/work/converj/treasury-card-hero.png" alt="Converj marketing site: Use the Treasury Card, monetize your payables">
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Narrative -->
-    <section class="sh-narrative" data-reveal>
-      <p class="sh-narrative__kicker">The challenge</p>
-      <h2 class="sh-narrative__title">Buyers and suppliers want opposite things from the same invoice</h2>
-      <p>
-        Buyers want more time to pay. Suppliers want to get paid sooner. Converj needed a product that gave both sides what they wanted, on rails a bank would actually approve - and it needed to exist in a week, before the first pilot-bank meeting.
-      </p>
+    <!-- BODY -->
+    <article class="cs-body">
+      <div class="container">
 
-      <p class="sh-narrative__kicker">The approach</p>
-
-      <div class="sh-approach-item">
-        <h4>Designing around the bank's own workflow</h4>
-        <p>Converj ships white-labelled inside partner banks' own platforms - ICICI Bank, Aditya Birla Capital. Every screen had to read as the bank's product first, Converj second: their logo, their colour, their existing information hierarchy.</p>
-      </div>
-
-      <div class="sh-approach-item">
-        <h4>One card, two outcomes</h4>
-        <p>The same Treasury Card either extends a buyer's payment term or pays a supplier early, depending on who initiates it. Reusing one component - and one mental model - for both sides is what made a one-week build realistic.</p>
-      </div>
-    </section>
-
-    <!-- Landing page -->
-    <section class="container container--narrow">
-      <div class="sh-product-head" data-reveal>
-        <p class="sh-narrative__kicker">The landing page</p>
-        <h2 class="sh-narrative__title">Explaining a financial product in cards, not paragraphs</h2>
-        <p style="color:#4A4458;line-height:1.65;">Early payment, dynamic discounting, the buyer-seller flow, and the analytics behind it - broken into cards a finance lead can scan in a minute.</p>
-      </div>
-
-      <div class="sh-bento">
-        <div class="span-6" data-reveal>
-          <div class="sh-feature-card" data-parallax="6">
-            <img src="assets/images/work/converj-web/early-payment-offer.png" alt="Converj landing page card: Early payment offer with invoice preview and confirm action" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-6" data-reveal>
-          <div class="sh-feature-card" data-parallax="6">
-            <img src="assets/images/work/converj-web/dynamic-discounting.png" alt="Converj landing page card: Dynamic Discounting sliders for days and percentage with disbursable amount" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-5" data-reveal>
-          <div class="sh-feature-card" data-parallax="6">
-            <img src="assets/images/work/converj-web/p2p-flow.png" alt="Converj landing page diagram: buyer and seller connected through PO raised and invoice sent, settled by card" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-7" data-reveal>
-          <div class="sh-feature-card" data-parallax="6">
-            <img src="assets/images/work/converj-web/advanced-analytics.png" alt="Converj landing page card: Payments analytics chart alongside a sync now action" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Product -->
-    <section class="container container--narrow">
-      <div class="sh-product-head" data-reveal>
-        <p class="sh-narrative__kicker">The product</p>
-        <h2 class="sh-narrative__title">Nine screens, from the morning dashboard to the 9:30pm checkout</h2>
-        <p style="color:#4A4458;line-height:1.65;">From the overview a bank's finance team opens every morning, to invoicing, to the payment and repayment flows buyers and suppliers actually touch.</p>
-      </div>
-
-      <div class="sh-bento">
-        <div class="span-7" data-reveal>
-          <div class="sh-shot-frame" data-parallax="8">
-            <img src="assets/images/work/converj/invoices-page.png" alt="Converj Manage Invoices table with status badges for overdue, due soon, in review and rejected" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-5" data-reveal>
-          <div class="sh-shot-frame" data-parallax="8">
-            <img src="assets/images/work/converj/create-invoice.png" alt="Converj Create Invoice screen with tax code, PO number, dispatch address and line items" loading="lazy">
-          </div>
-        </div>
-
-        <div data-reveal>
-          <div class="sh-shot-frame" data-parallax="6">
-            <img src="assets/images/work/converj/payment-files-overview.png" alt="Converj Manage Payouts screen listing payment files with in progress, completed and returned status" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-5" data-reveal>
-          <div class="sh-shot-frame" data-parallax="8">
-            <img src="assets/images/work/converj/upload-payment-popup.png" alt="Upload payment file and digital signature modal with success confirmation" loading="lazy">
-          </div>
-        </div>
-
-        <div class="span-7" data-reveal>
-          <div class="sh-mock-card">
-            <div class="sh-shot-frame" data-parallax="6">
-              <img src="assets/images/work/converj/early-payment-schedule.png" alt="Converj repayment schedule with Pay Later and Pay Early options across upcoming invoices" loading="lazy">
-            </div>
-          </div>
-          <p class="sh-shot-cap">Pay Later or Pay Early - the same schedule, read two different ways.</p>
-        </div>
-
-        <div class="span-8" data-reveal>
-          <div class="sh-shot-frame" data-parallax="8">
-            <img src="assets/images/work/converj/payment-extension-detail.png" alt="Converj repayment option with surcharge amount shown inline on hover" loading="lazy">
-          </div>
-          <p class="sh-shot-cap">The surcharge for extending a term, shown inline - never a hidden fee.</p>
-        </div>
-
-        <div class="span-4" data-reveal>
-          <div class="sh-phone" data-parallax="6">
-            <div class="sh-phone__screen">
-              <img src="assets/images/work/converj/payment-mobile.png" alt="Converj mobile payment confirmation screen with CVV entry" loading="lazy">
-            </div>
-          </div>
-          <p class="sh-shot-cap">Paying on mobile - card, amount and CVV, nothing else competing for attention.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Closing -->
-    <section class="container container--narrow">
-      <div class="sh-close" data-reveal>
-        <h2 class="sh-close__title">Built in a week. Shipped inside two banks.</h2>
-        <p class="sh-close__desc">Designed to look like it belonged to the bank first - Converj second.</p>
-        <a href="index.html#contact" class="btn btn--primary">Let's talk</a>
-      </div>
-    </section>
-
-    <!-- Next Project -->
-    <div class="container">
-      <div class="cs-next">
-        <p class="cs-next__label">Next project</p>
-        <a href="design-leadership-case-study.html" class="cs-next__card">
+        <!-- Context -->
+        <div class="cs-section cv-split" data-reveal>
+          <p class="cs-section__label">Context</p>
           <div>
-            <p class="cs-next__cat">Leadership &middot; Design Ops &middot; Team Building</p>
-            <h2 class="cs-next__title">Building a design team from scratch</h2>
+            <h2 class="cs-section__title">Buyers and suppliers want opposite things from the same invoice</h2>
+            <p class="cs-section__text">
+              Converj is a B2B payments platform, issued with partner banks, that lets buyers extend payment terms through a Treasury Card and lets suppliers get paid early - without either side taking on new debt.
+            </p>
+            <p class="cs-section__text">
+              Buyers want more time to pay. Suppliers want to get paid sooner. Converj needed a product that gave both sides what they wanted, on rails a bank would actually approve.
+            </p>
+            <p class="cs-section__text">
+              It needed to exist in a week, before the first pilot-bank meeting.
+            </p>
           </div>
-          <div class="cs-next__arrow" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <!-- Challenge -->
+        <div class="cs-section cv-split" data-reveal>
+          <p class="cs-section__label">The challenge</p>
+          <div>
+            <h2 class="cs-section__title">White-labelled inside two banks' platforms</h2>
+            <p class="cs-section__text">
+              Converj ships white-labelled inside partner banks' own platforms - ICICI Bank, Aditya Birla Capital. That set two hard constraints on the design:
+            </p>
+            <div class="cv-constraints-row">
+              <div class="cv-card">
+                <div class="cv-card-num">01</div>
+                <div class="cv-card-title">Bank-first branding</div>
+                <div class="cv-card-desc">Every screen had to read as the bank's product first, Converj second: their logo, their colour, their existing information hierarchy.</div>
+              </div>
+              <div class="cv-card">
+                <div class="cv-card-num">02</div>
+                <div class="cv-card-title">One week, no room to iterate</div>
+                <div class="cv-card-desc">The landing page and the core product both had to exist before the first pilot-bank meeting.</div>
+              </div>
+            </div>
           </div>
-        </a>
+        </div>
+
+        <!-- My Role -->
+        <div class="cs-section cv-split" data-reveal>
+          <p class="cs-section__label">My role</p>
+          <div>
+            <h2 class="cs-section__title">Landing page, product screens, and the payment flow itself</h2>
+            <p class="cs-section__text">
+              As lead product designer, I owned the landing page design, the core product screens, and the payment flow UX end to end, across web and mobile.
+            </p>
+          </div>
+        </div>
+
+        <!-- Approach -->
+        <div class="cs-section cv-split" data-reveal>
+          <p class="cs-section__label">The approach</p>
+          <div>
+            <h2 class="cs-section__title">One component doing two jobs</h2>
+            <p class="cs-section__text">
+              The same Treasury Card either extends a buyer's payment term or pays a supplier early, depending on who initiates it. Reusing one component - and one mental model - for both sides is what made a one-week build realistic.
+            </p>
+            <p class="cs-section__text">
+              For the landing page, the goal was to explain a financial product without walls of text - early payment, dynamic discounting, the buyer-seller flow, and the analytics behind it, broken into cards a finance lead could scan in a minute.
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /.container -->
+
+      <!-- What actually shipped -->
+      <div class="container">
+        <h2 class="cs-section__title" style="margin-bottom:var(--s10);">What actually shipped</h2>
+
+        <h3 class="cs-step__title">The landing page</h3>
+        <p class="cs-step__desc">Early payment, dynamic discounting, the buyer-seller flow, and the analytics behind it, each broken into its own card.</p>
+
+        <div class="cv-bento">
+          <div class="span-6" data-reveal>
+            <div class="cv-feature-card" data-parallax="6">
+              <img src="assets/images/work/converj-web/early-payment-offer.png" alt="Converj landing page card: Early payment offer with invoice preview and confirm action" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-6" data-reveal>
+            <div class="cv-feature-card" data-parallax="6">
+              <img src="assets/images/work/converj-web/dynamic-discounting.png" alt="Converj landing page card: Dynamic Discounting sliders for days and percentage with disbursable amount" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-5" data-reveal>
+            <div class="cv-feature-card" data-parallax="6">
+              <img src="assets/images/work/converj-web/p2p-flow.png" alt="Converj landing page diagram: buyer and seller connected through PO raised and invoice sent, settled by card" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-7" data-reveal>
+            <div class="cv-feature-card" data-parallax="6">
+              <img src="assets/images/work/converj-web/advanced-analytics.png" alt="Converj landing page card: Payments analytics chart alongside a sync now action" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <h3 class="cs-step__title" style="margin-top:var(--s12);">The product</h3>
+        <p class="cs-step__desc">From the invoices overview a bank's finance team opens every morning, to the payment and repayment flows buyers and suppliers actually touch.</p>
+
+        <div class="cv-bento">
+          <div class="span-7" data-reveal>
+            <div class="cv-shot-frame" data-parallax="8">
+              <img src="assets/images/work/converj/invoices-page.png" alt="Converj Manage Invoices table with status badges for overdue, due soon, in review and rejected" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-5" data-reveal>
+            <div class="cv-shot-frame" data-parallax="8">
+              <img src="assets/images/work/converj/create-invoice.png" alt="Converj Create Invoice screen with tax code, PO number, dispatch address and line items" loading="lazy">
+            </div>
+          </div>
+
+          <div data-reveal>
+            <div class="cv-shot-frame" data-parallax="6">
+              <img src="assets/images/work/converj/payment-files-overview.png" alt="Converj Manage Payouts screen listing payment files with in progress, completed and returned status" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-5" data-reveal>
+            <div class="cv-shot-frame" data-parallax="8">
+              <img src="assets/images/work/converj/upload-payment-popup.png" alt="Upload payment file and digital signature modal with success confirmation" loading="lazy">
+            </div>
+          </div>
+
+          <div class="span-7" data-reveal>
+            <div class="cv-mock-card">
+              <div class="cv-shot-frame" data-parallax="6">
+                <img src="assets/images/work/converj/early-payment-schedule.png" alt="Converj repayment schedule with Pay Later and Pay Early options across upcoming invoices" loading="lazy">
+              </div>
+            </div>
+            <p class="cv-shot-cap">Pay Later or Pay Early - the same schedule, read two different ways.</p>
+          </div>
+
+          <div class="span-8" data-reveal>
+            <div class="cv-shot-frame" data-parallax="8">
+              <img src="assets/images/work/converj/payment-extension-detail.png" alt="Converj repayment option with surcharge amount shown inline on hover" loading="lazy">
+            </div>
+            <p class="cv-shot-cap">The surcharge for extending a term, shown inline - never a hidden fee.</p>
+          </div>
+
+          <div class="span-4" data-reveal>
+            <div class="cv-phone" data-parallax="6">
+              <div class="cv-phone__screen">
+                <img src="assets/images/work/converj/payment-mobile.png" alt="Converj mobile payment confirmation screen with CVV entry" loading="lazy">
+              </div>
+            </div>
+            <p class="cv-shot-cap">Paying on mobile - card, amount and CVV, nothing else competing for attention.</p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- Outcome -->
+      <div class="container" style="padding-top:clamp(3rem, 8vw, 6rem);">
+        <div class="cs-section cv-split" data-reveal>
+          <p class="cs-section__label">Outcome</p>
+          <div>
+            <h2 class="cs-section__title">Built in a week, shipped inside two banks</h2>
+            <p class="cs-section__text">
+              Converj went live white-labelled inside ICICI Bank and Aditya Birla Capital's own platforms - built to look like it belonged to the bank first, Converj second.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Project -->
+      <div class="container">
+        <div class="cs-next">
+          <p class="cs-next__label">Next project</p>
+          <a href="design-leadership-case-study.html" class="cs-next__card">
+            <div>
+              <p class="cs-next__cat">Leadership · Design Ops · Team Building</p>
+              <h2 class="cs-next__title">Building a design team from scratch</h2>
+            </div>
+            <div class="cs-next__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </article>
 
   </main>
 
