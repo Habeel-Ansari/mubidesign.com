@@ -2109,10 +2109,12 @@ body.no-cursor * { cursor: none !important; }
 }
 
 .page-hero__title {
+  font-family: var(--font-serif);
+  font-style: italic;
   font-size: var(--fs-hero);
   line-height: 1.06;
   letter-spacing: -0.03em;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: var(--s6);
 }
 
@@ -2632,10 +2634,12 @@ body.no-cursor * { cursor: none !important; }
 }
 
 .cs-hero__title {
+  font-family: var(--font-serif);
+  font-style: italic;
   font-size: var(--fs-hero);
   line-height: 1.06;
   letter-spacing: -0.03em;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: var(--s6);
 }
 
@@ -2700,9 +2704,11 @@ body.no-cursor * { cursor: none !important; }
 }
 
 .cs-section__title {
+  font-family: var(--font-serif);
+  font-style: italic;
   font-size: var(--fs-xl);
   letter-spacing: -0.02em;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.25;
   margin-bottom: var(--s6);
   max-width: 22ch;
@@ -2915,7 +2921,7 @@ body.no-cursor * { cursor: none !important; }
 
 .cs-next__cat { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s2); }
 
-.cs-next__title { font-size: var(--fs-xl); font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+.cs-next__title { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-xl); font-weight: 400; letter-spacing: -0.02em; color: var(--text); }
 
 .cs-next__arrow {
   width: 52px;
