@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/style.css?v=20260901c">
+  <link rel="stylesheet" href="css/style.css?v=20260901e">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
@@ -27,12 +27,21 @@
     .mk-scroll {
       padding: clamp(3rem,7vw,5rem) 0;
       background: var(--bg-warm);
+      /* Fixed-px tooth depth (not %) so the tear stays a gentle, consistent
+         size regardless of how tall this section grows on narrow screens. */
       clip-path: polygon(
-        0% 2%, 2.5% 5%, 5% 1%, 8% 4.5%, 11% 0.5%, 14% 6%, 17% 2.5%, 20% 5.5%,
-        24% 1%, 27% 4%, 30% 0%, 33% 6.5%, 37% 2%, 40% 5%, 43% 1.5%, 47% 4.5%,
-        50% 0.5%, 53% 6%, 57% 2.5%, 60% 5%, 64% 1%, 67% 4%, 70% 0%, 74% 6%,
-        77% 2%, 81% 5.5%, 84% 1.5%, 88% 4%, 91% 0.5%, 95% 5%, 98% 2%, 100% 3.5%,
-        100% 100%, 0% 100%
+        0% 7px, 2.5% 12px, 5% 5.5px, 8% 11px, 11% 4.8px, 14% 13px, 17% 8px, 20% 12.5px,
+        24% 5.5px, 27% 10px, 30% 4px, 33% 14px, 37% 7px, 40% 12px, 43% 6.3px, 47% 11px,
+        50% 4.8px, 53% 13px, 57% 8px, 60% 12px, 64% 5.5px, 67% 10px, 70% 4px, 74% 13px,
+        77% 7px, 81% 12.5px, 84% 6.3px, 88% 10px, 91% 4.8px, 95% 12px, 98% 7px, 100% 9.4px,
+        100% calc(100% - 12.5px), 98% calc(100% - 5.5px), 95% calc(100% - 10px), 91% calc(100% - 4px),
+        88% calc(100% - 14px), 84% calc(100% - 7px), 81% calc(100% - 12px), 77% calc(100% - 6.3px),
+        74% calc(100% - 11px), 70% calc(100% - 4.8px), 67% calc(100% - 13px), 64% calc(100% - 8px),
+        60% calc(100% - 12px), 57% calc(100% - 5.5px), 53% calc(100% - 10px), 50% calc(100% - 4px),
+        47% calc(100% - 13px), 43% calc(100% - 7px), 40% calc(100% - 12.5px), 37% calc(100% - 6.3px),
+        33% calc(100% - 10px), 30% calc(100% - 4.8px), 27% calc(100% - 12px), 24% calc(100% - 7px),
+        20% calc(100% - 9.4px), 17% calc(100% - 7px), 14% calc(100% - 12px), 11% calc(100% - 5.5px),
+        8% calc(100% - 11px), 5% calc(100% - 4.8px), 2.5% calc(100% - 13px), 0% calc(100% - 8px)
       );
     }
     .mk-scroll__head { position: relative; padding: 0 var(--gutter); max-width: var(--container); margin: 0 auto clamp(1.5rem,4vw,2.5rem); text-align: center; }
@@ -81,6 +90,9 @@
     .mk-bento.is-physics .mk-card { box-shadow: none; }
 
     @media (max-width: 860px) {
+      .mk-bento > [class*="span-"] { grid-column: span 6; }
+    }
+    @media (max-width: 480px) {
       .mk-bento > [class*="span-"] { grid-column: span 12; }
     }
   </style>
@@ -463,8 +475,8 @@
         <button type="button" class="mk-poke" id="mkPoke" aria-label="Click to knock the cards down">
           <span class="mk-poke__text">click here</span>
           <svg class="mk-poke__arrow" viewBox="0 0 60 54" fill="none" aria-hidden="true">
-            <path d="M6 4C10 20 16 34 26 40C34 45 44 44 52 36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M40 34C46 35 50 36 53 38C51 32 50 28 50 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 6C13 19 17 31 25 39C31 45 39 45 47 37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35 32L48 38L44 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
@@ -845,6 +857,6 @@
   ═══════════════════════════════════════════ -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-  <script src="js/main.js?v=20260901b"></script>
+  <script src="js/main.js?v=20260901e"></script>
 </body>
 </html>

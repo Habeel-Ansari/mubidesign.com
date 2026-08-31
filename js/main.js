@@ -1352,17 +1352,22 @@ function dropCards(bento) {
   const arenaW = rect.width;
   // Keep the arena to the grid's own existing footprint — one fold, no
   // page-scroll required, and no sudden layout jump when physics kicks in.
-  const arenaH = Math.max(originalHeight, 420);
+  // Capped against the viewport too: on narrow screens the grid can stack
+  // into a much taller natural height than fits in one fold.
+  const arenaH = Math.min(Math.max(originalHeight, 420), Math.max(window.innerHeight * 0.75, 480));
   bento.style.position = 'relative';
   bento.style.height   = arenaH + 'px';
   bento.style.overflow = 'hidden';
 
   // Pass 2 — now it's safe to pull every card out of flow, re-based to the
   // (now wider) arena's own coordinate space.
-  const cardData = measured.map(d => {
+  const cardData = measured.map((d, i) => {
     const { el, w, h, vx, vy } = d;
     const x = vx - rect.left;
-    const y = vy - rect.top;
+    // Clamp the starting depth so cards from a natural layout taller than
+    // the capped arena don't spawn deeply overlapping the floor — stagger
+    // the clamp slightly per-card so they don't all pop from one line.
+    const y = Math.min(vy - rect.top, arenaH - h - 4 - (i % 3) * 10);
 
     el.style.position        = 'absolute';
     el.style.top             = '0';
