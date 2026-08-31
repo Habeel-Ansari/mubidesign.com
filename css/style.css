@@ -28,6 +28,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   opacity: 0;
   transition: opacity 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 body.fonts-ready {

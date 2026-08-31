@@ -790,30 +790,21 @@ function initServicesInteractive() {
     }
   }
 
-  // ── Wheel: one gesture = one step. Released at both ends so the page can
-  //    keep scrolling instead of trapping the reader inside the section.
+  // ── Wheel: one gesture = one step. Released right at the first/last item so
+  //    the page can keep scrolling instead of trapping the reader inside the
+  //    section — checked per gesture (not "seen everything once") so reverse
+  //    scrolling back through already-visited items always keeps working.
   let cooling = false;
-  let seen    = new Set([0]);
-  let freed   = false;   // true once every service has been centred at least once
   if (stage) {
     stage.addEventListener('wheel', e => {
-      if (freed) return;                 // hand the wheel back to the page
+      const dir = e.deltaY > 0 ? 1 : -1;
+      if ((dir > 0 && active === N - 1) || (dir < 0 && active === 0)) return;
       e.preventDefault();
       if (cooling) return;
       cooling = true;
       setTimeout(() => { cooling = false; }, reduce ? 60 : 230);
-      setActive(active + (e.deltaY > 0 ? 1 : -1));
-      seen.add(active);
-      if (seen.size >= N) freed = true;
+      setActive(active + dir);
     }, { passive: false });
-
-    /* Re-arm on the way back: leaving the section resets the wheel capture so it
-       works again next time, without ever trapping a reader mid-page. */
-    if ('IntersectionObserver' in window && panel) {
-      new IntersectionObserver(es => es.forEach(en => {
-        if (!en.isIntersecting) { freed = false; seen = new Set([active]); }
-      }), { threshold: 0 }).observe(panel);
-    }
 
     // ── Mouse drag along the drum (touch is left to the page scroll)
     let dragging = false, startY = 0, base = 0;
