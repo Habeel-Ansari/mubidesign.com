@@ -1,2 +1,16 @@
+# macOS
 .DS_Store
 **/.DS_Store
+
+# Design working files (not part of the deployed site)
+For Approval Tab*.png
+Home - *.png
+Pay track cover.png
+Profile_pic.png
+blue_shape_bg.png
+green-getaways-cover.webp
+Paytrack screens/
+
+# Editor
+.vscode/
+*.swp
