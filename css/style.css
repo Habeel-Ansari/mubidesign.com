@@ -915,6 +915,7 @@ body.no-cursor * { cursor: none !important; }
   font-size: 1.425rem;
   line-height: 1;
   margin-bottom: 4px;
+  color: var(--accent-color-dark);
 }
 
 .hero__stats-list {
