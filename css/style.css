@@ -827,6 +827,7 @@ body.no-cursor * { cursor: none !important; }
   border-radius: var(--r-lg);
   color: #8FE3B5;
   text-decoration: none;
+  text-align: left;
   transform: rotate(-4deg);
   box-shadow: var(--shadow);
   transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) ease;
@@ -896,7 +897,7 @@ body.no-cursor * { cursor: none !important; }
   padding: 10px 14px;
   background: #8FE3B5;
   border-radius: var(--r-lg);
-  color: var(--accent-color-dark);
+  color: var(--accent-color);
   text-align: left;
   transform: rotate(4deg);
   box-shadow: var(--shadow);
