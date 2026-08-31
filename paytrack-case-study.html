@@ -11,6 +11,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260901n">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <style>
+    .gs-split { display:grid; grid-template-columns:180px 1fr; gap:var(--s10); align-items:start; margin-bottom:clamp(4rem, 10vw, 8rem); }
+    .gs-split .cs-section__label { margin-bottom:0; }
+    .gs-split .cs-section__title { max-width:none; }
+    @media (max-width:700px) {
+      .gs-split { grid-template-columns:1fr; gap:var(--s3); }
+    }
+  </style>
 </head>
 <body>
 
@@ -95,19 +104,51 @@
 
     <!-- CASE STUDY BODY -->
     <article class="cs-body">
-      <div class="container container--narrow">
+      <div class="container">
 
-        <!-- Overview -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Overview</p>
-          <h2 class="cs-section__title">Expense tracking without the spreadsheet</h2>
-          <p class="cs-section__text">
-            Most people who try to track their spending by hand give up within weeks. PayTrack solves this by reading your payment SMS and UPI transactions automatically, so there's nothing to type in. The screens just need to make all that information worth checking every day.
-          </p>
-          <p class="cs-section__text">
-            The design had to do two different jobs well: feel calm and simple the first time someone opens the app, and feel quick and clear every time after that, when someone's just checking where their money went.
-          </p>
+        <!-- Context -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Context</p>
+          <div>
+            <h2 class="cs-section__title">Expense tracking without the spreadsheet</h2>
+            <p class="cs-section__text">
+              Most people who try to track their spending by hand give up within weeks. PayTrack solves this by reading your payment SMS and UPI transactions automatically, so there's nothing to type in. The screens just need to make all that information worth checking every day.
+            </p>
+            <p class="cs-section__text">
+              The design had to do two different jobs well: feel calm and simple the first time someone opens the app, and feel quick and clear every time after that, when someone's just checking where their money went.
+            </p>
+          </div>
         </div>
+
+      </div><!-- /.container -->
+
+      <!-- Challenge -->
+      <section class="cs-challenges">
+        <div class="container container--narrow">
+          <p class="cs-challenges__label">The challenge</p>
+          <h2 class="cs-challenges__title">Challenges</h2>
+          <div class="cs-challenges__grid">
+            <div class="cs-challenge-card cs-challenge-card--1">
+              <h3 class="cs-challenge-card__title">Making two colors feel like enough</h3>
+              <p class="cs-challenge-card__desc">With no room to hide behind extra color, every screen had to earn attention through layout instead.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--2">
+              <h3 class="cs-challenge-card__title">Turning 12 screens into a system</h3>
+              <p class="cs-challenge-card__desc">Every button and card rule had to be written down early, then hold up across 40+ screens.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--3">
+              <h3 class="cs-challenge-card__title">A mascot that knows when to leave</h3>
+              <p class="cs-challenge-card__desc">It had to feel human during onboarding, then get out of the way once real numbers appeared.</p>
+            </div>
+            <div class="cs-challenge-card cs-challenge-card--4">
+              <h3 class="cs-challenge-card__title">Icons that stay clear at 48px</h3>
+              <p class="cs-challenge-card__desc">Ten icons, one shared style, each still needed to read instantly inside a small circle.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
 
         <!-- Metrics -->
         <div class="cs-metrics" data-reveal>
@@ -125,69 +166,138 @@
           </div>
         </div>
 
-        <!-- Direction -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Direction</p>
-          <h2 class="cs-section__title">One accent, held with restraint</h2>
-          <p class="cs-section__text">
-            Most finance apps use blue and white. This one uses just two background colors instead - a deep near-black for anything important, like your statement, and a warm cream for everything you're meant to scan quickly. One bright lime green is used for every button and highlight, so your eye always knows where to look.
-          </p>
+        <!-- My role -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">My role</p>
+          <div>
+            <h2 class="cs-section__title">Visual identity and UI, screen to screen</h2>
+            <p class="cs-section__text">
+              This was a style exploration for PayTrack, a UPI-first expense tracker - defining the product's visual language and applying it consistently across more than 40 screens covering sign-up, home, transactions, categories and profile.
+            </p>
+            <p class="cs-section__text">
+              Scope covered the full system: color, iconography, notification patterns, and screen-by-screen UI, designed for iOS and Android in Figma, with six written guidelines so new screens stay consistent.
+            </p>
+          </div>
+        </div>
 
-          <div class="cs-palette-groups">
-            <div class="cs-palette-group">
-              <h3 class="cs-palette-heading">Primary colors</h3>
-              <div class="cs-palette">
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#11170D;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Ink</div><div class="cs-swatch__hex">#11170D</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#F6EDE4;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Cream</div><div class="cs-swatch__hex">#F6EDE4</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#9FE870;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Lime</div><div class="cs-swatch__hex">#9FE870</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1C4621;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Forest</div><div class="cs-swatch__hex">#1C4621</div></div></div>
+        <!-- Process -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Process</p>
+          <div>
+            <h2 class="cs-section__title">One accent, held with restraint</h2>
+            <p class="cs-section__text">
+              Most finance apps use blue and white. This one uses just two background colors instead - a deep near-black for anything important, like your statement, and a warm cream for everything you're meant to scan quickly. One bright lime green is used for every button and highlight, so your eye always knows where to look.
+            </p>
+
+            <div class="cs-palette-groups">
+              <div class="cs-palette-group">
+                <h3 class="cs-palette-heading">Primary colors</h3>
+                <div class="cs-palette">
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#11170D;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Ink</div><div class="cs-swatch__hex">#11170D</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#F6EDE4;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Cream</div><div class="cs-swatch__hex">#F6EDE4</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#9FE870;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Lime</div><div class="cs-swatch__hex">#9FE870</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1C4621;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Forest</div><div class="cs-swatch__hex">#1C4621</div></div></div>
+                </div>
+              </div>
+
+              <div class="cs-palette-group">
+                <h3 class="cs-palette-heading">Secondary colors</h3>
+                <div class="cs-palette">
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#5541BA;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Groceries</div><div class="cs-swatch__hex">#5541BA</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FF6316;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Food</div><div class="cs-swatch__hex">#FF6316</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FFCBEF;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Shopping</div><div class="cs-swatch__hex">#FFCBEF</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#C8D426;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Others</div><div class="cs-swatch__hex">#C8D426</div></div></div>
+                </div>
+              </div>
+
+              <div class="cs-palette-group">
+                <h3 class="cs-palette-heading">Semantic colors</h3>
+                <div class="cs-palette">
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#DC2625;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Error</div><div class="cs-swatch__hex">#DC2625</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1B9E4B;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Success</div><div class="cs-swatch__hex">#1B9E4B</div></div></div>
+                  <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FB7D24;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Warning</div><div class="cs-swatch__hex">#FB7D24</div></div></div>
+                </div>
               </div>
             </div>
 
-            <div class="cs-palette-group">
-              <h3 class="cs-palette-heading">Secondary colors</h3>
-              <div class="cs-palette">
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#5541BA;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Groceries</div><div class="cs-swatch__hex">#5541BA</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FF6316;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Food</div><div class="cs-swatch__hex">#FF6316</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FFCBEF;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Shopping</div><div class="cs-swatch__hex">#FFCBEF</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#C8D426;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Others</div><div class="cs-swatch__hex">#C8D426</div></div></div>
-              </div>
-            </div>
+            <p class="cs-section__text">
+              The same restraint carries into the icon set: every icon is drawn to sit inside the same lime circle, so categories and actions look consistent everywhere in the app, from first sign-up to everyday use.
+            </p>
 
-            <div class="cs-palette-group">
-              <h3 class="cs-palette-heading">Semantic colors</h3>
-              <div class="cs-palette">
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#DC2625;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Error</div><div class="cs-swatch__hex">#DC2625</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#1B9E4B;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Success</div><div class="cs-swatch__hex">#1B9E4B</div></div></div>
-                <div class="cs-swatch"><div class="cs-swatch__chip" style="background:#FB7D24;"></div><div class="cs-swatch__info"><div class="cs-swatch__name">Warning</div><div class="cs-swatch__hex">#FB7D24</div></div></div>
+            <div class="cs-icons">
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-01.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-02.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-03.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-04.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-05.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-06.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-07.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-08.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-09.svg" alt="" width="48" height="48" loading="lazy"></div>
+              <div class="cs-icon"><img src="assets/icons/paytrack/icon-10.svg" alt="" width="48" height="48" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- The system -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">The system</p>
+          <div>
+            <h2 class="cs-section__title">Guidelines, not just guesses</h2>
+            <p class="cs-section__text">
+              Twelve screens don't make a design system on their own, so every repeating pattern was written down - the same way a brand guide documents things like logo spacing.
+            </p>
+
+            <div class="cs-steps">
+              <div class="cs-step">
+                <span class="cs-step__num">01</span>
+                <div>
+                  <h3 class="cs-step__title">Buttons</h3>
+                  <p class="cs-step__desc">Every button looks the same: a rounded pill shape, dark background, lime text. When a button can't be tapped, it turns plain grey instead of a dimmed lime.</p>
+                </div>
+              </div>
+              <div class="cs-step">
+                <span class="cs-step__num">02</span>
+                <div>
+                  <h3 class="cs-step__title">Statement cards</h3>
+                  <p class="cs-step__desc">Anything showing a number - like a total or balance - sits on a dark card at the top of the screen. Everything you scan and tap sits on the cream background below it.</p>
+                </div>
+              </div>
+              <div class="cs-step">
+                <span class="cs-step__num">03</span>
+                <div>
+                  <h3 class="cs-step__title">Category colour</h3>
+                  <p class="cs-step__desc">Each category gets one color, used everywhere it shows up - in dots, icons and chart slices.</p>
+                </div>
+              </div>
+              <div class="cs-step">
+                <span class="cs-step__num">04</span>
+                <div>
+                  <h3 class="cs-step__title">Bottom sheets</h3>
+                  <p class="cs-step__desc">Every selection menu - month, view, filter - opens the same way: a cream panel that slides up from the bottom, with rounded corners and the same dark-and-lime Apply button.</p>
+                </div>
+              </div>
+              <div class="cs-step">
+                <span class="cs-step__num">05</span>
+                <div>
+                  <h3 class="cs-step__title">Navigation</h3>
+                  <p class="cs-step__desc">Three tabs stay visible at all times, and the one you're on turns lime. You're never more than one tap away from Home.</p>
+                </div>
+              </div>
+              <div class="cs-step">
+                <span class="cs-step__num">06</span>
+                <div>
+                  <h3 class="cs-step__title">Type</h3>
+                  <p class="cs-step__desc">Bold, compact headings. Softer grey for less important text. Numbers stay neatly aligned wherever two amounts need to line up, like in a list of prices.</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Iconography -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Iconography</p>
-          <h2 class="cs-section__title">A custom icon set, built for the app</h2>
-          <p class="cs-section__text">
-            Every icon is drawn to sit inside the same lime circle, so categories and actions look consistent everywhere in the app, from your first sign-up to everyday use.
-          </p>
+        <h2 class="cs-section__title" style="margin-bottom:var(--s10);">What actually shipped</h2>
 
-          <div class="cs-icons">
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-01.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-02.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-03.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-04.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-05.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-06.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-07.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-08.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-09.svg" alt="" width="48" height="48" loading="lazy"></div>
-            <div class="cs-icon"><img src="assets/icons/paytrack/icon-10.svg" alt="" width="48" height="48" loading="lazy"></div>
-          </div>
-        </div>
-
-      </div><!-- /.container--narrow -->
+      </div><!-- /.container -->
 
       <!-- Notifications showcase -->
       <section class="cs-notifs">
@@ -340,99 +450,22 @@
           <p class="cs-scope-note">This shows 12 of the 40+ screens designed. The categories, transaction details, add-expense and profile screens all follow the same style rules shown here.</p>
         </div>
 
-        <!-- Guidelines -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">The system</p>
-          <h2 class="cs-section__title">Guidelines, not just guesses</h2>
-          <p class="cs-section__text">
-            Twelve screens don't make a design system on their own, so every repeating pattern was written down - the same way a brand guide documents things like logo spacing.
-          </p>
-
-          <div class="cs-steps">
-            <div class="cs-step">
-              <span class="cs-step__num">01</span>
-              <div>
-                <h3 class="cs-step__title">Buttons</h3>
-                <p class="cs-step__desc">Every button looks the same: a rounded pill shape, dark background, lime text. When a button can't be tapped, it turns plain grey instead of a dimmed lime.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">02</span>
-              <div>
-                <h3 class="cs-step__title">Statement cards</h3>
-                <p class="cs-step__desc">Anything showing a number - like a total or balance - sits on a dark card at the top of the screen. Everything you scan and tap sits on the cream background below it.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">03</span>
-              <div>
-                <h3 class="cs-step__title">Category colour</h3>
-                <p class="cs-step__desc">Each category gets one color, used everywhere it shows up - in dots, icons and chart slices.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">04</span>
-              <div>
-                <h3 class="cs-step__title">Bottom sheets</h3>
-                <p class="cs-step__desc">Every selection menu - month, view, filter - opens the same way: a cream panel that slides up from the bottom, with rounded corners and the same dark-and-lime Apply button.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">05</span>
-              <div>
-                <h3 class="cs-step__title">Navigation</h3>
-                <p class="cs-step__desc">Three tabs stay visible at all times, and the one you're on turns lime. You're never more than one tap away from Home.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <span class="cs-step__num">06</span>
-              <div>
-                <h3 class="cs-step__title">Type</h3>
-                <p class="cs-step__desc">Bold, compact headings. Softer grey for less important text. Numbers stay neatly aligned wherever two amounts need to line up, like in a list of prices.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div><!-- /.container--narrow -->
 
-      <!-- Challenges -->
-      <section class="cs-challenges">
-        <div class="container container--narrow">
-          <p class="cs-challenges__label">Reflection</p>
-          <h2 class="cs-challenges__title">Challenges</h2>
-          <div class="cs-challenges__grid">
-            <div class="cs-challenge-card cs-challenge-card--1">
-              <h3 class="cs-challenge-card__title">Making two colors feel like enough</h3>
-              <p class="cs-challenge-card__desc">With no room to hide behind extra color, every screen had to earn attention through layout instead.</p>
-            </div>
-            <div class="cs-challenge-card cs-challenge-card--2">
-              <h3 class="cs-challenge-card__title">Turning 12 screens into a system</h3>
-              <p class="cs-challenge-card__desc">Every button and card rule had to be written down early, then hold up across 40+ screens.</p>
-            </div>
-            <div class="cs-challenge-card cs-challenge-card--3">
-              <h3 class="cs-challenge-card__title">A mascot that knows when to leave</h3>
-              <p class="cs-challenge-card__desc">It had to feel human during onboarding, then get out of the way once real numbers appeared.</p>
-            </div>
-            <div class="cs-challenge-card cs-challenge-card--4">
-              <h3 class="cs-challenge-card__title">Icons that stay clear at 48px</h3>
-              <p class="cs-challenge-card__desc">Ten icons, one shared style, each still needed to read instantly inside a small circle.</p>
-            </div>
+      <div class="container">
+
+        <!-- Outcome -->
+        <div class="cs-section gs-split" data-reveal>
+          <p class="cs-section__label">Outcome</p>
+          <div>
+            <h2 class="cs-section__title">Twelve screens' worth of rules held for 40+</h2>
+            <p class="cs-section__text">
+              The restrained palette made numbers-heavy screens easier to scan. The patterns written down after the first twelve screens scaled cleanly across the rest of the 40+, without breaking down. And one mascot, used sparingly during onboarding, was enough to make the app feel human before getting out of the way once real numbers took over.
+            </p>
           </div>
         </div>
-      </section>
 
-      <!-- Key Takeaways -->
-      <section class="cs-takeaways">
-        <div class="container container--narrow">
-          <h2 class="cs-takeaways__title">Key takeaways</h2>
-          <ol class="cs-takeaways__list">
-            <li><span class="cs-takeaways__num">01</span><p>Less color reads clearer. A restrained palette makes a numbers-heavy screen easier to scan.</p></li>
-            <li><span class="cs-takeaways__num">02</span><p>Document patterns early. Twelve screens' worth of rules scaled cleanly to 40+.</p></li>
-            <li><span class="cs-takeaways__num">03</span><p>A little character goes a long way - one mascot was enough to make the app feel human.</p></li>
-          </ol>
-        </div>
-      </section>
+      </div><!-- /.container -->
 
       <!-- Next Project -->
       <div class="container">
