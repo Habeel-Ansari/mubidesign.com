@@ -88,6 +88,14 @@
       .dl-before-after { grid-template-columns: 1fr; }
       .dl-bar-label { width: 130px; }
     }
+
+    /* ── Two-column section split (label + content), matching the GeoServe case study ── */
+    .dl-split { display:grid; grid-template-columns:180px 1fr; gap:var(--s10); align-items:start; margin-bottom:clamp(4rem, 10vw, 8rem); }
+    .dl-split .cs-section__label { margin-bottom:0; }
+    .dl-split .cs-section__title { max-width:none; }
+    @media (max-width:700px) {
+      .dl-split { grid-template-columns:1fr; gap:var(--s3); }
+    }
   </style>
 </head>
 <body>
@@ -271,16 +279,35 @@
     <article class="cs-body">
       <div class="container container--narrow">
 
-        <!-- Business context -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">The situation</p>
-          <h2 class="cs-section__title">Design as an afterthought - and what it costs</h2>
-          <p class="cs-section__text">
-            When I took on a design lead role at a Series A startup in 2020, the product org had a familiar problem: design had been reactive for too long. There was one designer (me) supporting a product and engineering team of twenty, no component library, no design review process, and no shared source of truth in Figma. Features shipped with inconsistent UI patterns, onboarding drop-off was high, and engineering spent considerable time resolving design questions mid-sprint.
-          </p>
-          <p class="cs-section__text">
-            The business had just raised funding and was accelerating hiring. Leadership wanted to scale the product quickly - which meant either design became a bottleneck, or we built the systems and team that would let design scale with the product. I was given the mandate to build the design function.
-          </p>
+        <!-- Context -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">Context</p>
+          <div>
+            <h2 class="cs-section__title">Design as an afterthought - and what it costs</h2>
+            <p class="cs-section__text">
+              When I took on a design lead role at a Series A startup in 2020, design had been reactive for too long. I was the only designer supporting a product and engineering team of twenty. There was no component library, no design review process, and no shared source of truth in Figma. Features shipped with inconsistent UI patterns, onboarding drop-off was high, and engineering lost real time resolving design questions mid-sprint.
+            </p>
+            <p class="cs-section__text">
+              The company had just raised funding and was accelerating hiring. Leadership wanted to scale the product fast, which meant design either became a bottleneck, or we built the systems and team to scale with it.
+            </p>
+          </div>
+        </div>
+
+        <!-- Challenge -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">The challenge</p>
+          <div>
+            <h2 class="cs-section__title">Infrastructure first, headcount second</h2>
+            <p class="cs-section__text">
+              My first instinct was to hire immediately - I was one designer and there was too much work. Instead I spent the first six weeks mapping the actual workflow: where design was getting blocked, where the most expensive errors happened, and where engineering was losing time waiting on design decisions. The answer pointed at infrastructure, not headcount.
+            </p>
+            <p class="cs-section__text">
+              Without a component library, every new designer would recreate the same work. Without a review process, quality would stay inconsistent no matter how many people I hired. Without documented standards, a new hire would take months to produce work that fit the product. So I built the infrastructure first, then hired into it - so each new person could be productive from week one instead of month three.
+            </p>
+            <p class="cs-section__text">
+              The plan had four parts: a component library, a documented design review process, a simple hiring process, and then scaling the team against that foundation.
+            </p>
+          </div>
         </div>
 
         <!-- Metrics -->
@@ -299,24 +326,24 @@
           </div>
         </div>
 
-        <!-- Strategy -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Approach</p>
-          <h2 class="cs-section__title">Infrastructure first, headcount second</h2>
-          <p class="cs-section__text">
-            My first instinct was to hire immediately - I was the only designer and there was too much work. But I spent the first six weeks mapping the actual workflow: where was design being blocked, where were the most expensive errors, where was engineering losing time waiting on design decisions? The answer pointed not at headcount, but at infrastructure.
-          </p>
-          <p class="cs-section__text">
-            Without a component library, every designer (including a new hire) would recreate the same work. Without a design review process, quality would remain inconsistent regardless of team size. Without documented standards, a new hire would take months to produce work that fit the product's visual language. I decided to build the infrastructure first, then hire into it - so that each new team member could be productive from week one, not month three.
-          </p>
-          <p class="cs-section__text">
-            The four-part plan: establish a component library, define and document the design review process, create a simple but consistent hiring process, and then scale the team against that foundation.
-          </p>
+        <!-- My Role -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">My role</p>
+          <div>
+            <h2 class="cs-section__title">Owning the function, not just the deliverables</h2>
+            <p class="cs-section__text">
+              I was given the mandate to build the design function - as design lead, a player-coach role where I kept shipping design work myself while building the team and systems underneath it.
+            </p>
+            <p class="cs-section__text">
+              I set the scope myself: component library, review process, hiring, and mentoring, run as one connected roadmap rather than four separate initiatives.
+            </p>
+          </div>
         </div>
 
-        <!-- Process -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">What I built</p>
+        <!-- Leadership: what I built -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">Leadership</p>
+          <div>
           <h2 class="cs-section__title">The four pillars of the design function</h2>
 
           <div class="cs-steps">
@@ -324,7 +351,7 @@
               <span class="cs-step__num">01</span>
               <div>
                 <h3 class="cs-step__title">Component library</h3>
-                <p class="cs-step__desc">Built a shared Figma component library from scratch, starting with audit of existing UI patterns across the product. Unified inconsistent components (we had six button variants that should have been two), defined a token system for colour, typography, and spacing, and documented every component with usage guidelines and do/don't examples. Library shipped to Storybook so engineering had a living, browsable reference that stayed in sync with Figma.</p>
+                <p class="cs-step__desc">Built a shared Figma component library from scratch, starting with an audit of existing UI patterns across the product. Unified inconsistent components (we had six button variants that should have been two), defined a token system for colour, typography, and spacing, and documented every component with usage guidelines and do/don't examples. Library shipped to Storybook so engineering had a living, browsable reference that stayed in sync with Figma.</p>
               </div>
             </div>
             <div class="cs-step">
@@ -349,13 +376,18 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
 
       </div><!-- /.container--narrow -->
 
-      <!-- Component library visual -->
+      <!-- What shipped: component library visual + before/after -->
       <div style="background:#F0EDFB;padding:48px 0 56px;" data-reveal>
-        <div class="container">
+        <div class="container container--narrow">
+          <p class="cs-section__label">What shipped</p>
+          <h2 class="cs-section__title" style="margin-bottom:var(--s6);">The systems, not just the screens</h2>
+          <p class="cs-section__text" style="margin-bottom:28px;">Two of the four pillars are easiest to show directly: the component library, and the review process it made possible.</p>
+
           <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:20px;">Component library - core patterns</p>
           <div class="comp-grid">
             <div class="comp-card">
@@ -385,61 +417,9 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="container container--narrow">
-
-        <!-- Team dynamics / management philosophy -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Leadership approach</p>
-          <h2 class="cs-section__title">What I learned about leading a design team</h2>
-          <p class="cs-section__text">
-            The most counterintuitive lesson: good design leadership reduces the need for your own design decisions. Early in my leadership, I'd jump in with solutions. A year later, the team was making better decisions than I would have alone - because they understood the constraints, the patterns, and the reasoning behind our standards. My job shifted from making good decisions to creating the conditions for the team to make good decisions without me in the room.
-          </p>
-          <p class="cs-section__text">
-            I introduced a practice I called "design reasoning" - for any significant design decision, the designer needed to articulate the user need it addressed, the alternative they considered and rejected, and the engineering constraint they worked within. This wasn't bureaucratic; it was a thinking scaffold. It made feedback conversations much more productive because both sides understood the problem before debating the solution.
-          </p>
-          <p class="cs-section__text">
-            On the process side, I avoided over-engineering design ops. The temptation when building a team is to create process for every possible scenario. We kept it simple: clear stages for when work gets reviewed, a shared component library, and weekly syncs that focused on blockers - not status. The team had autonomy within those guardrails.
-          </p>
-        </div>
-
-        <!-- AI integration context -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">AI &amp; tooling</p>
-          <h2 class="cs-section__title">Scaling team output with AI-assisted workflows</h2>
-          <p class="cs-section__text">
-            As AI tools matured, I piloted their integration into the team's workflow. The highest-leverage applications were documentation and research synthesis - two tasks that consumed significant designer time without producing directly shippable work. By using AI to generate first-draft component documentation and to synthesise research notes into insight summaries, we returned time to the work that required human judgment: the design decisions themselves.
-          </p>
-          <p class="cs-section__text">
-            I also introduced AI-assisted spec generation in the eng handoff stage - designers would use AI to produce a first-pass spec document that they'd then review and refine. This reduced the time between design completion and engineering kickoff, and meant the specs were more thorough because the tedious parts were handled by AI.
-          </p>
-          <p class="cs-section__text">
-            The net effect: the team was able to handle more surface area without proportionally more headcount. The constraint wasn't designer hours - it was designer judgment. AI tooling reduced the former; good process developed the latter.
-          </p>
-        </div>
-
-        <!-- Outcomes -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Outcomes</p>
-          <h2 class="cs-section__title">What the team looked like two years later</h2>
-          <p class="cs-section__text">
-            The team grew from one to four - two mid-level product designers and one researcher - with a structured onboarding process that got new hires productive in under three weeks. The component library shipped 84 production-ready components over 18 months, eliminating the inconsistency that had previously been a constant source of design debt and engineering rework.
-          </p>
-          <p class="cs-section__text">
-            Design QA pass rate - the percentage of shipped features that passed the design review checklist without requiring revision - went from 64% to 91% over six months, driven by the structured review process and the team's growing familiarity with shared standards.
-          </p>
-          <p class="cs-section__text">
-            Average review cycle time dropped from 3.2 days to 1.4 days. This wasn't from rushing reviews - it was from giving designers better tools to self-review before asking for feedback, reducing the back-and-forth that slowed things down. Two team members were promoted during this period.
-          </p>
-        </div>
-
-        <!-- Progress bars before/after -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Before &amp; after</p>
-          <h2 class="cs-section__title">Measurable shifts in team health</h2>
-          <div class="dl-bar-wrap" style="margin-top:32px;">
+          <p class="cs-section__text" style="margin:28px 0 0;">Six months after the review process launched, the numbers moved together:</p>
+          <div class="dl-bar-wrap" style="margin-top:20px;">
             <div class="dl-before-after">
               <!-- Before -->
               <div>
@@ -492,20 +472,59 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="container container--narrow">
+
+        <!-- How I led: philosophy + AI tooling -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">How I led</p>
+          <div>
+            <h2 class="cs-section__title">Delegating decisions, not just work</h2>
+            <p class="cs-section__text">
+              The biggest shift in how I led: good design leadership reduces how often the team needs your own decisions. Early on I'd jump in with solutions. A year in, the team was making better calls than I would have alone, because they understood the constraints and reasoning behind our standards.
+            </p>
+            <p class="cs-section__text">
+              I introduced a practice I called "design reasoning" - for any significant decision, a designer had to state the user need it addressed, the alternative they'd rejected, and the engineering constraint they worked within. It wasn't bureaucracy, it was a thinking scaffold, and it made feedback conversations far more productive.
+            </p>
+            <p class="cs-section__text">
+              I deliberately kept process light: clear review stages, a shared component library, and weekly syncs focused on blockers, not status. The team had autonomy inside those guardrails.
+            </p>
+            <p class="cs-section__text">
+              As AI tools matured, I piloted them where they had the most leverage: first-draft component documentation, synthesising research notes into insight summaries, and first-pass spec generation before engineering handoff. None of it replaced designer judgment - it gave the team more surface area to cover without adding headcount.
+            </p>
+          </div>
+        </div>
+
+        <!-- Outcome -->
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">Outcome</p>
+          <div>
+            <h2 class="cs-section__title">What the team looked like two years later</h2>
+            <p class="cs-section__text">
+              The team grew from one to four - two mid-level product designers and one researcher - with an onboarding process that got new hires productive in under three weeks. The component library shipped 84 production-ready components over 18 months, cutting the inconsistency that used to be a constant source of design debt and engineering rework.
+            </p>
+            <p class="cs-section__text">
+              Design QA pass rate - the share of shipped features that passed review without needing revision - went from 64% to 91% over six months. Average review cycle time dropped from 3.2 days to 1.4 days, not from rushing reviews but from giving designers better tools to self-review before asking for feedback. Two team members were promoted during this period.
+            </p>
+          </div>
+        </div>
 
         <!-- Reflection -->
-        <div class="cs-section" data-reveal>
-          <p class="cs-section__label">Key learnings</p>
-          <h2 class="cs-section__title">What I'd do differently</h2>
-          <p class="cs-section__text">
-            I would have started the component library even earlier - before the first hire. I waited until I had a designer to share the library with, but the act of building it forced design decisions that clarified our visual language. It would have been more valuable to have that clarity before bringing someone new into the system.
-          </p>
-          <p class="cs-section__text">
-            I also underestimated how much of a design lead's job is stakeholder management, not team management. Managing up - building trust with product and engineering leadership, advocating for design investment, communicating the value of design ops work that doesn't produce immediate visible output - took as much energy as managing the team itself. I got better at this over time, but wish I'd treated it as a skill to develop explicitly rather than a tax on my time.
-          </p>
-          <p class="cs-section__text">
-            The most durable lesson: a design team's output ceiling is set by its infrastructure, not its talent. Talented designers working without shared systems produce inconsistent work. Average designers working with excellent systems produce consistently good work. Invest in the infrastructure first.
-          </p>
+        <div class="cs-section dl-split" data-reveal>
+          <p class="cs-section__label">Reflection</p>
+          <div>
+            <h2 class="cs-section__title">What I'd do differently</h2>
+            <p class="cs-section__text">
+              I'd have started the component library even earlier, before the first hire. Building it forced design decisions that clarified our visual language, and that clarity would have been more useful before bringing someone new into the system.
+            </p>
+            <p class="cs-section__text">
+              I also underestimated how much of the job is managing up, not managing the team - building trust with product and engineering leadership, and making the case for design ops work that doesn't produce visible output right away. I got better at it, but wish I'd treated it as a skill to develop on purpose.
+            </p>
+            <p class="cs-section__text">
+              The lesson that stuck: a design team's output ceiling is set by its infrastructure, not its talent. Talented designers without shared systems produce inconsistent work. Average designers with good systems produce consistently good work. Invest in the infrastructure first.
+            </p>
+          </div>
         </div>
 
       </div><!-- /.container--narrow -->
