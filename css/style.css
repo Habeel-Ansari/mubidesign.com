@@ -28,12 +28,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   opacity: 0;
   transition: opacity 0.2s ease;
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
 input, textarea, [contenteditable] {
+  -webkit-touch-callout: default;
   -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
   user-select: text;
 }
 
