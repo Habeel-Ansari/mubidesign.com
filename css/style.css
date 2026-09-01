@@ -2910,25 +2910,25 @@ body.no-cursor * { cursor: none !important; }
   gap: var(--s8);
   padding: var(--s8) var(--s10);
   border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
+  border: 1px solid var(--accent-color-dark);
+  background: var(--accent-color-dark);
+  color: #F7F3EC;
   transition: background var(--t-base) ease, transform var(--t-base) var(--ease-out);
   cursor: pointer;
 }
 
-.cs-next__card:hover { background: var(--bg-alt); transform: translateX(4px); }
+.cs-next__card:hover { background: var(--accent-color); transform: translateX(4px); }
 
-.cs-next__cat { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s2); }
+.cs-next__cat { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(247, 243, 236, 0.7); margin-bottom: var(--s2); }
 
-.cs-next__title { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-xl); font-weight: 400; letter-spacing: -0.02em; color: var(--text); }
+.cs-next__title { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-xl); font-weight: 400; letter-spacing: -0.02em; color: #8FE3B5; }
 
 .cs-next__arrow {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--text);
-  color: var(--bg);
+  background: #8FE3B5;
+  color: var(--accent-color-dark);
   display: flex;
   align-items: center;
   justify-content: center;
