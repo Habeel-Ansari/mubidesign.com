@@ -3165,8 +3165,15 @@ body.no-cursor * { cursor: none !important; }
 @media (max-width: 1024px) {
   .services__header  { grid-template-columns: 1fr; }
   .services__list    { grid-template-columns: repeat(2, 1fr); }
-  .case-card__inner  { grid-template-columns: 1fr; }
+  .case-card__inner  { grid-template-columns: 1fr; min-height: 0; }
   .case-card__media  { order: -1; aspect-ratio: 16/9; }
+  .case-card__desc {
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .contact__inner    { grid-template-columns: 1fr; }
   .cs-layout         { grid-template-columns: 1fr; }
   .cs-layout--reverse .cs-layout__media { order: 0; }
@@ -3182,7 +3189,7 @@ body.no-cursor * { cursor: none !important; }
   .work-grid { grid-template-columns: 1fr; }
   .wg-card--full .wg-card__thumb { aspect-ratio: 16/9; }
 
-  .case-item { min-height: auto; padding-bottom: var(--s6); }
+  .case-item, .case-item:last-child { min-height: auto; padding-bottom: var(--s6); }
   .case-card { position: relative; top: auto; }
 
   .testimonial-slide { grid-template-columns: 1fr; }
