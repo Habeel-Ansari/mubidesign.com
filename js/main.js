@@ -806,10 +806,12 @@ function initServicesInteractive() {
       setActive(active + dir);
     }, { passive: false });
 
-    // ── Mouse drag along the drum (touch is left to the page scroll)
+    // ── Drag along the drum — mouse and touch alike. Touch needs this: there's
+    //    no wheel event on mobile, so dragging is the only way to reach items
+    //    beyond direct tap range. The stage's touch-action:none hands the
+    //    gesture to us instead of the page scroll.
     let dragging = false, startY = 0, base = 0;
     stage.addEventListener('pointerdown', e => {
-      if (e.pointerType !== 'mouse') return;
       dragging = true; startY = e.clientY; base = active;
       stage.setPointerCapture(e.pointerId);
     });
@@ -1383,6 +1385,9 @@ function dropCards(bento) {
   const wall = 80;
   Composite.add(world, [
     Bodies.rectangle(arenaW / 2, arenaH + wall / 2, arenaW * 2, wall, { isStatic: true }),
+    // Top wall — without this a hard drag-throw can fling a card above the
+    // arena, where it overlaps the "Playground" heading sitting just above it.
+    Bodies.rectangle(arenaW / 2, -wall / 2, arenaW * 2, wall, { isStatic: true }),
     Bodies.rectangle(-wall / 2, arenaH / 2, wall, arenaH * 2, { isStatic: true }),
     Bodies.rectangle(arenaW + wall / 2, arenaH / 2, wall, arenaH * 2, { isStatic: true }),
   ]);

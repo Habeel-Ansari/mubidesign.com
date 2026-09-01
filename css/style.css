@@ -677,7 +677,6 @@ body.no-cursor * { cursor: none !important; }
   display: flex;
   flex-direction: column;
   gap: 0;
-  flex: 1;
 }
 
 .mobile-menu__link {
@@ -1768,11 +1767,13 @@ body.no-cursor * { cursor: none !important; }
   padding-block: var(--s24);
   background-color: var(--accent-color-dark);
   overflow: hidden;
+  /* Fixed-px tooth depth (not %) so the tear stays a gentle, consistent
+     size regardless of how tall this section grows on narrow screens. */
   clip-path: polygon(
-    0% 2%, 2.5% 5%, 5% 1%, 8% 4.5%, 11% 0.5%, 14% 6%, 17% 2.5%, 20% 5.5%,
-    24% 1%, 27% 4%, 30% 0%, 33% 6.5%, 37% 2%, 40% 5%, 43% 1.5%, 47% 4.5%,
-    50% 0.5%, 53% 6%, 57% 2.5%, 60% 5%, 64% 1%, 67% 4%, 70% 0%, 74% 6%,
-    77% 2%, 81% 5.5%, 84% 1.5%, 88% 4%, 91% 0.5%, 95% 5%, 98% 2%, 100% 3.5%,
+    0% 7px, 2.5% 12px, 5% 5.5px, 8% 11px, 11% 4.8px, 14% 13px, 17% 8px, 20% 12.5px,
+    24% 5.5px, 27% 10px, 30% 4px, 33% 14px, 37% 7px, 40% 12px, 43% 6.3px, 47% 11px,
+    50% 4.8px, 53% 13px, 57% 8px, 60% 12px, 64% 5.5px, 67% 10px, 70% 4px, 74% 13px,
+    77% 7px, 81% 12.5px, 84% 6.3px, 88% 10px, 91% 4.8px, 95% 12px, 98% 7px, 100% 9.4px,
     100% 100%, 0% 100%
   );
 }
@@ -3190,6 +3191,7 @@ body.no-cursor * { cursor: none !important; }
   .wg-card--full .wg-card__thumb { aspect-ratio: 16/9; }
 
   .case-item, .case-item:last-child { min-height: auto; padding-bottom: var(--s6); }
+  .case-card { border-radius: 8px; }
   .case-card { position: relative; top: auto; }
 
   .testimonial-slide { grid-template-columns: 1fr; }
@@ -3205,7 +3207,12 @@ body.no-cursor * { cursor: none !important; }
   .cs-meta { gap: var(--s6); }
   .cs-next__card { flex-direction: column; align-items: flex-start; }
 
-  .hero { min-height: auto; padding-top: calc(var(--header-h) + var(--s8)); }
+  .hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: calc(var(--header-h) + var(--s8));
+    padding-bottom: var(--s10);
+  }
   .hero__inner { gap: var(--s8); }
   .hero__video-wrapper { display: none; }
   .hero__visual { flex-wrap: nowrap; gap: var(--s4); }
@@ -3274,7 +3281,7 @@ body.no-cursor * { cursor: none !important; }
   perspective-origin: 34% 50%;
   outline: none;
   cursor: ns-resize;
-  touch-action: pan-y;                 /* never hijack a touch page-scroll */
+  touch-action: none;                  /* drum handles its own drag on touch — see JS */
   /* Items dissolve into the panel at the top and bottom instead of clipping */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
