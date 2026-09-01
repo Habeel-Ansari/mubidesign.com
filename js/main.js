@@ -1418,9 +1418,14 @@ function dropCards(bento) {
   sync();
 
   // Grab-and-throw — pick a card up with the mouse (or a finger) and fling
-  // it into the others.
+  // it into the others. `pixelRatio` is a canvas-backing-store concept —
+  // bento is a plain DOM element, not a <canvas>, so leaving it at Matter's
+  // default of 1 keeps mouse.position aligned with real CSS-pixel card
+  // positions. Setting it to devicePixelRatio (as a stray earlier attempt
+  // did) silently scaled every drag coordinate down on any HiDPI screen,
+  // so the constraint grabbed whatever body sat at half the real cursor
+  // position instead of the card actually under the pointer.
   const mouse = Mouse.create(bento);
-  mouse.pixelRatio = window.devicePixelRatio || 1;
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse,
     constraint: { stiffness: 0.25, damping: 0.15, render: { visible: false } },
