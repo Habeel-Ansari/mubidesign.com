@@ -1298,7 +1298,8 @@ function initPlaygroundGravity() {
   const poke  = qs('#mkPoke');
   const bento = qs('#mkBento');
   if (!poke || !bento) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(max-width: 768px)').matches) {
     poke.remove();
     return;
   }
