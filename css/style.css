@@ -557,7 +557,7 @@ body.no-cursor * { cursor: none !important; }
   justify-content: space-between;
   gap: var(--s8);
   width: 100%;
-  max-width: 880px;
+  max-width: 1040px;
   padding: 8px 8px 8px 24px;
   border-radius: var(--r-pill);
   background: linear-gradient(155deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.32) 55%, rgba(255, 255, 255, 0.58) 100%);
