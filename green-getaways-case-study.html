@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260902g">
+  <link rel="stylesheet" href="css/style.css?v=20260902i">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
   <style>
@@ -35,7 +35,9 @@
       .gg-constraints-row { grid-template-columns:1fr; }
     }
 
-    /* ── WP Admin Booking Availability ── */
+    /* ── WP Admin Booking Availability — shadcn/ui-style components inside the
+       WordPress chrome. Topbar + sidebar stay literal WP; everything the
+       plugin itself renders is redrawn in a cleaner, componentised style. ── */
     .gg-wp-mockup { width:100%; border-radius:12px; overflow:hidden; font-family:'Google Sans Flex',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); display:flex; flex-direction:column; }
     .gg-wp-topbar { background:#1D2327; height:32px; display:flex; align-items:center; padding:0 12px; gap:16px; flex-shrink:0; }
     .gg-wp-topbar-item { font-size:9px; color:rgba(240,246,252,.7); display:flex; align-items:center; gap:4px; }
@@ -47,78 +49,95 @@
     .gg-wp-menu-item svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:1.8; flex-shrink:0; }
     .gg-wp-menu-item.active { background:#0073AA; color:#fff; }
     .gg-wp-menu-sep { height:1px; background:rgba(255,255,255,.07); margin:4px 0; }
-    .gg-wp-main { flex:1; background:#F0F0F1; overflow-y:auto; padding:16px; }
-    .gg-wp-page-title { font-size:16px; font-weight:700; color:#1D2327; margin-bottom:12px; }
-    .gg-wp-notice { background:#fff; border-left:4px solid #F0A500; padding:10px 14px; margin-bottom:12px; border-radius:0 4px 4px 0; display:flex; align-items:flex-start; gap:8px; }
-    .gg-wp-notice-icon { width:28px; height:28px; background:#D63638; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; flex-shrink:0; }
-    .gg-wp-notice-title { font-size:11px; font-weight:700; color:#1D2327; margin-bottom:2px; }
-    .gg-wp-notice-desc { font-size:9px; color:#646970; }
-    .gg-wp-notice-desc strong { color:#1D2327; }
-    .gg-wp-notice-btn { display:inline-block; background:#2271B1; color:#fff; border-radius:3px; padding:4px 10px; font-size:9px; font-weight:600; margin-top:6px; }
-    .gg-wp-tabs { display:flex; gap:0; border-bottom:1px solid #C3C4C7; margin-bottom:14px; }
-    .gg-wp-tab { padding:7px 14px; font-size:10px; font-weight:500; color:#50575E; border:1px solid transparent; border-bottom:none; margin-bottom:-1px; cursor:default; }
-    .gg-wp-tab.active { background:#F0F0F1; border-color:#C3C4C7; color:#1D2327; font-weight:600; }
-    .gg-wp-content-grid { display:flex; gap:14px; }
-    .gg-wp-panel { background:#fff; border:1px solid #C3C4C7; border-radius:4px; padding:14px; }
-    .gg-wp-panel-title { font-size:11px; font-weight:700; color:#1D2327; margin-bottom:12px; }
-    .gg-mini-cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-    .gg-mini-cal-arrow { width:24px; height:24px; background:#2271B1; border-radius:3px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:700; }
-    .gg-mini-cal-month { font-size:11px; font-weight:700; color:#1D2327; }
-    .gg-mini-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
-    .gg-mini-cal-dh { font-size:8px; font-weight:600; color:#646970; text-align:center; padding:2px; }
-    .gg-mini-cal-d { height:28px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:500; color:#1D2327; }
-    .gg-mini-cal-d.avail { color:#646970; }
-    .gg-mini-cal-d.blocked { background:#D63638; color:#fff; font-weight:700; border-radius:3px; }
-    .gg-mini-cal-d.today { background:#D63638; color:#fff; font-weight:700; }
-    .gg-mini-cal-d.green { color:#1D2327; }
-    .gg-mini-cal-d.empty { opacity:0; }
-    .gg-mini-cal-legend { display:flex; gap:12px; margin-top:8px; }
-    .gg-mini-cal-leg-item { display:flex; align-items:center; gap:4px; font-size:8px; color:#50575E; }
-    .gg-mini-cal-leg-dot { width:8px; height:8px; border-radius:50%; }
-    .gg-max-guests { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
-    .gg-guest-box { border:1px solid #C3C4C7; border-radius:3px; padding:10px; text-align:center; }
-    .gg-guest-label { font-size:8px; font-weight:600; color:#50575E; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
-    .gg-guest-val { font-size:22px; font-weight:700; color:#1D2327; }
-    .gg-guest-hint { font-size:7px; color:#9CA3AF; margin-top:2px; }
-    .gg-blocked-dates { margin-bottom:12px; }
-    .gg-blocked-label { font-size:10px; font-weight:700; color:#1D2327; margin-bottom:8px; }
-    .gg-blocked-chips { display:flex; flex-wrap:wrap; gap:5px; }
-    .gg-blocked-chip { background:#D63638; color:#fff; border-radius:3px; padding:3px 8px; font-size:9px; font-weight:600; display:flex; align-items:center; gap:4px; }
-    .gg-save-btn { background:#1A3D1F; color:#fff; border-radius:3px; padding:9px 0; text-align:center; font-size:11px; font-weight:700; width:100%; }
+    .gg-wp-main { flex:1; background:#FAFAFA; overflow-y:auto; padding:20px; }
+    .gg-wp-page-title { font-size:17px; font-weight:700; color:#18181B; margin-bottom:14px; letter-spacing:-0.01em; }
 
-    /* ── GG Bookings admin ── */
+    /* Alert (shadcn Alert — destructive variant) */
+    .gg-wp-notice { background:#FEF2F2; border:1px solid #FECACA; padding:13px 14px; margin-bottom:16px; border-radius:10px; display:flex; align-items:flex-start; gap:10px; }
+    .gg-wp-notice-icon { width:26px; height:26px; background:#FEE2E2; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#DC2626; flex-shrink:0; }
+    .gg-wp-notice-icon svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+    .gg-wp-notice-title { font-size:11.5px; font-weight:600; color:#18181B; margin-bottom:2px; }
+    .gg-wp-notice-desc { font-size:10px; color:#71717A; line-height:1.5; }
+    .gg-wp-notice-desc strong { color:#3F3F46; font-weight:600; }
+    .gg-wp-notice-btn { display:inline-flex; align-items:center; background:#18181B; color:#fff; border-radius:6px; padding:5px 11px; font-size:10px; font-weight:500; margin-top:8px; }
+    .gg-wp-notice-close { margin-left:auto; width:20px; height:20px; border-radius:5px; display:flex; align-items:center; justify-content:center; color:#A1A1AA; flex-shrink:0; }
+    .gg-wp-notice-close svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* Tabs (shadcn Tabs — segmented track) */
+    .gg-wp-tabs { display:inline-flex; gap:2px; background:#F0F0F1; border-radius:9px; padding:3px; margin-bottom:16px; }
+    .gg-wp-tab { padding:7px 14px; font-size:10.5px; font-weight:500; color:#71717A; border-radius:7px; cursor:default; }
+    .gg-wp-tab.active { background:#fff; color:#18181B; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .gg-wp-content-grid { display:flex; gap:16px; }
+
+    /* Card (shadcn Card) */
+    .gg-wp-panel { background:#fff; border:1px solid #E4E4E7; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+    .gg-wp-panel-title { font-size:11.5px; font-weight:600; color:#18181B; margin-bottom:12px; }
+
+    /* Calendar (shadcn Calendar) */
+    .gg-mini-cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .gg-mini-cal-arrow { width:22px; height:22px; background:#fff; border:1px solid #E4E4E7; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3F3F46; font-size:12px; font-weight:600; }
+    .gg-mini-cal-month { font-size:11px; font-weight:600; color:#18181B; }
+    .gg-mini-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+    .gg-mini-cal-dh { font-size:8px; font-weight:600; color:#A1A1AA; text-align:center; padding:2px; text-transform:uppercase; }
+    .gg-mini-cal-d { height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:500; color:#3F3F46; }
+    .gg-mini-cal-d.avail { color:#52525B; }
+    .gg-mini-cal-d.blocked { background:#EF4444; color:#fff; font-weight:600; }
+    .gg-mini-cal-d.today { background:#fff; color:#18181B; font-weight:700; box-shadow:inset 0 0 0 1.5px #18181B; }
+    .gg-mini-cal-d.green { color:#18181B; }
+    .gg-mini-cal-d.empty { opacity:0; }
+    .gg-mini-cal-legend { display:flex; gap:14px; margin-top:10px; }
+    .gg-mini-cal-leg-item { display:flex; align-items:center; gap:5px; font-size:8.5px; color:#71717A; }
+    .gg-mini-cal-leg-dot { width:8px; height:8px; border-radius:50%; }
+
+    /* Stat inputs (shadcn Card, compact) */
+    .gg-max-guests { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+    .gg-guest-box { border:1px solid #E4E4E7; border-radius:10px; padding:12px 10px; text-align:center; background:#fff; }
+    .gg-guest-label { font-size:8px; font-weight:600; color:#A1A1AA; text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }
+    .gg-guest-val { font-size:22px; font-weight:700; color:#18181B; letter-spacing:-0.02em; }
+    .gg-guest-hint { font-size:7.5px; color:#A1A1AA; margin-top:2px; }
+    .gg-blocked-dates { margin-bottom:14px; }
+    .gg-blocked-label { font-size:10.5px; font-weight:600; color:#18181B; margin-bottom:9px; }
+    .gg-blocked-chips { display:flex; flex-wrap:wrap; gap:6px; }
+
+    /* Badge (shadcn Badge — destructive/outline variant) */
+    .gg-blocked-chip { background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:6px; padding:4px 6px 4px 9px; font-size:9.5px; font-weight:500; display:inline-flex; align-items:center; gap:5px; }
+    .gg-blocked-chip svg { width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:2.2; opacity:.7; }
+
+    /* Button (shadcn Button — default variant) */
+    .gg-save-btn { background:#18181B; color:#fff; border-radius:8px; padding:10px 0; text-align:center; font-size:11.5px; font-weight:500; width:100%; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+
+    /* ── GG Bookings admin — same shadcn-inspired system ── */
     .gg-bookings-wrap { width:100%; border-radius:12px; overflow:hidden; font-family:'Google Sans Flex',system-ui,sans-serif; font-size:12px; box-shadow:0 24px 64px rgba(0,0,0,.14); border:1px solid rgba(0,0,0,.07); background:#fff; }
-    .gg-bookings-topbar { background:#fff; border-bottom:1px solid #E5EDE5; padding:12px 18px; display:flex; align-items:center; gap:10px; }
-    .gg-bookings-logo-icon { width:24px; height:24px; background:#2D6A35; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:11px; }
-    .gg-bookings-title { font-size:14px; font-weight:800; color:#1A3D1F; }
-    .gg-bookings-count { background:#1A3D1F; color:#fff; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; }
-    .gg-bookings-stats { display:flex; gap:0; padding:0 18px 14px; flex-wrap:wrap; }
-    .gg-bstat { flex:1; min-width:100px; background:#F9FBF9; border:1px solid #E5EDE5; padding:12px 14px; }
-    .gg-bstat:first-child { border-radius:8px 0 0 8px; }
-    .gg-bstat:last-child { border-radius:0 8px 8px 0; }
-    .gg-bstat-label { font-size:8px; font-weight:600; color:#9CA3AF; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
-    .gg-bstat-val { font-size:18px; font-weight:800; color:#1A3D1F; }
+    .gg-bookings-topbar { background:#fff; border-bottom:1px solid #F0F0F1; padding:14px 18px; display:flex; align-items:center; gap:10px; }
+    .gg-bookings-logo-icon { width:26px; height:26px; background:#166534; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12px; }
+    .gg-bookings-title { font-size:14px; font-weight:700; color:#18181B; letter-spacing:-0.01em; }
+    .gg-bookings-count { background:#166534; color:#fff; font-size:9px; font-weight:600; padding:3px 9px; border-radius:999px; }
+    .gg-bookings-stats { display:flex; gap:10px; padding:14px 18px; flex-wrap:wrap; }
+    .gg-bstat { flex:1; min-width:100px; background:#fff; border:1px solid #E4E4E7; border-radius:10px; padding:12px 14px; }
+    .gg-bstat-label { font-size:8px; font-weight:600; color:#A1A1AA; text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }
+    .gg-bstat-val { font-size:19px; font-weight:700; color:#18181B; letter-spacing:-0.02em; }
     .gg-bstat-val.revenue { font-size:14px; }
-    .gg-bstat-val.confirmed { color:#166534; }
-    .gg-bstat-val.pending { color:#9CA3AF; }
-    .gg-bookings-filter { padding:0 18px 12px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #E5EDE5; }
-    .gg-filter-link { font-size:10px; font-weight:600; color:#9CA3AF; }
-    .gg-filter-link.active { color:#166534; }
+    .gg-bstat-val.confirmed { color:#16A34A; }
+    .gg-bstat-val.pending { color:#A1A1AA; }
+    .gg-bookings-filter { padding:0 18px 12px; display:flex; align-items:center; gap:4px; border-bottom:1px solid #F0F0F1; }
+    .gg-filter-link { font-size:10.5px; font-weight:500; color:#71717A; padding:6px 10px; border-radius:7px; }
+    .gg-filter-link.active { color:#18181B; font-weight:600; background:#F4F4F5; }
     .gg-filter-link .num { font-weight:400; }
-    .gg-filter-sep { color:#D1D5DB; font-size:10px; }
-    .gg-search-row { display:flex; align-items:center; gap:6px; margin-left:auto; }
-    .gg-search-input { border:1px solid #D1D5DB; border-radius:4px; padding:4px 10px; font-size:10px; color:#9CA3AF; width:200px; }
-    .gg-search-btn { background:#1A3D1F; color:#fff; border-radius:4px; padding:4px 12px; font-size:10px; font-weight:600; }
+    .gg-filter-sep { display:none; }
+    .gg-search-row { display:flex; align-items:center; gap:8px; margin-left:auto; }
+    .gg-search-input { border:1px solid #E4E4E7; border-radius:7px; padding:6px 11px; font-size:10px; color:#71717A; width:200px; background:#fff; }
+    .gg-search-btn { background:#18181B; color:#fff; border-radius:7px; padding:6px 13px; font-size:10px; font-weight:500; }
     .gg-bookings-table { width:100%; border-collapse:collapse; font-size:10px; }
-    .gg-bookings-table th { background:#1A3D1F; color:#fff; padding:8px 10px; text-align:left; font-size:9px; font-weight:600; letter-spacing:.03em; white-space:nowrap; }
-    .gg-bookings-table td { padding:8px 10px; border-bottom:1px solid #F3F4F6; color:#374151; white-space:nowrap; vertical-align:top; }
+    .gg-bookings-table th { background:#FAFAFA; color:#71717A; padding:9px 10px; text-align:left; font-size:8.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; border-bottom:1px solid #E4E4E7; border-top:1px solid #E4E4E7; }
+    .gg-bookings-table td { padding:9px 10px; border-bottom:1px solid #F4F4F5; color:#3F3F46; white-space:nowrap; vertical-align:top; }
     .gg-bookings-table tr:last-child td { border-bottom:none; }
-    .gg-td-date { font-size:9px; color:#9CA3AF; }
-    .gg-td-time { font-size:8px; color:#D1D5DB; }
-    .gg-badge-adults { background:#DCFCE7; color:#166534; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
-    .gg-badge-kids { background:#FEF3C7; color:#92400E; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
-    .gg-badge-toddler { background:#FEF9C3; color:#854D0E; font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; }
-    .gg-status-confirmed { color:#166534; font-weight:700; font-size:9px; }
+    .gg-td-date { font-size:9px; color:#A1A1AA; }
+    .gg-td-time { font-size:8px; color:#D4D4D8; }
+    .gg-badge-adults { background:#F0FDF4; color:#166534; border:1px solid #DCFCE7; font-size:9px; font-weight:600; padding:2px 8px; border-radius:6px; display:inline-block; }
+    .gg-badge-kids { background:#FFFBEB; color:#92400E; border:1px solid #FEF3C7; font-size:9px; font-weight:600; padding:2px 8px; border-radius:6px; display:inline-block; }
+    .gg-badge-toddler { background:#FEFCE8; color:#854D0E; border:1px solid #FEF9C3; font-size:9px; font-weight:600; padding:2px 8px; border-radius:6px; display:inline-block; }
+    .gg-status-confirmed { display:inline-flex; align-items:center; gap:4px; color:#166534; background:#F0FDF4; border:1px solid #DCFCE7; font-weight:600; font-size:9px; padding:3px 8px 3px 6px; border-radius:999px; }
+    .gg-status-confirmed::before { content:''; width:5px; height:5px; border-radius:50%; background:#22C55E; }
     .gg-blurred { filter:blur(4px); user-select:none; pointer-events:none; color:#374151; }
     .gg-pay-id { font-size:8px; font-family:monospace; }
 
@@ -464,13 +483,13 @@
                   <div class="gg-wp-page-title">Booking Availability</div>
                   <!-- License warning -->
                   <div class="gg-wp-notice">
-                    <div class="gg-wp-notice-icon">E</div>
+                    <div class="gg-wp-notice-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                     <div>
                       <div class="gg-wp-notice-title">Your License Is Inactive</div>
                       <div class="gg-wp-notice-desc">Your license key has been <strong>cancelled</strong> (most likely due to a refund request). Please consider acquiring a new license.</div>
                       <div class="gg-wp-notice-btn">Activate License</div>
                     </div>
-                    <div style="margin-left:auto;font-size:14px;color:#9CA3AF;cursor:default;">✕</div>
+                    <div class="gg-wp-notice-close"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
                   </div>
                   <!-- Property tabs -->
                   <div class="gg-wp-tabs">
@@ -527,10 +546,10 @@
                       <div class="gg-blocked-dates">
                         <div class="gg-blocked-label">Blocked Dates</div>
                         <div class="gg-blocked-chips">
-                          <div class="gg-blocked-chip">2026-06-13 ✕</div>
-                          <div class="gg-blocked-chip">2026-06-27 ✕</div>
-                          <div class="gg-blocked-chip">2026-06-28 ✕</div>
-                          <div class="gg-blocked-chip">2026-07-11 ✕</div>
+                          <div class="gg-blocked-chip">2026-06-13<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+                          <div class="gg-blocked-chip">2026-06-27<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+                          <div class="gg-blocked-chip">2026-06-28<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+                          <div class="gg-blocked-chip">2026-07-11<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
                         </div>
                       </div>
                       <div class="gg-save-btn">Save Changes</div>
@@ -723,6 +742,6 @@
 
   <!-- FOOTER -->
 
-  <script src="js/main.js?v=20260902g"></script>
+  <script src="js/main.js?v=20260902i"></script>
 </body>
 </html>

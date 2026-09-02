@@ -1405,6 +1405,21 @@ body.no-cursor * { cursor: none !important; }
   color: var(--accent-color);
 }
 
+.case-card__ai-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: var(--accent-color-dark);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #8FE3B5;
+}
+.case-card__ai-tag::before { content: '✦'; font-size: 0.9em; }
+
 .case-card__tag {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
