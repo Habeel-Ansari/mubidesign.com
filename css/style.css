@@ -1411,14 +1411,19 @@ body.no-cursor * { cursor: none !important; }
   gap: 5px;
   padding: 5px 12px;
   border-radius: var(--r-pill);
-  background: var(--accent-color-dark);
+  background: linear-gradient(135deg, #1A0A3C, #3B1FA8);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #8FE3B5;
+  color: #C4B5FD;
 }
-.case-card__ai-tag::before { content: '✦'; font-size: 0.9em; }
+.case-card__ai-tag svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  fill: #A78BFA;
+}
 
 .case-card__tag {
   font-family: var(--font-mono);
