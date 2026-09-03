@@ -1787,15 +1787,7 @@ body.no-cursor * { cursor: none !important; }
   padding-block: var(--s24);
   background-color: var(--accent-color-dark);
   overflow: hidden;
-  /* Fixed-px tooth depth (not %) so the tear stays a gentle, consistent
-     size regardless of how tall this section grows on narrow screens. */
-  clip-path: polygon(
-    0% 7px, 2.5% 12px, 5% 5.5px, 8% 11px, 11% 4.8px, 14% 13px, 17% 8px, 20% 12.5px,
-    24% 5.5px, 27% 10px, 30% 4px, 33% 14px, 37% 7px, 40% 12px, 43% 6.3px, 47% 11px,
-    50% 4.8px, 53% 13px, 57% 8px, 60% 12px, 64% 5.5px, 67% 10px, 70% 4px, 74% 13px,
-    77% 7px, 81% 12.5px, 84% 6.3px, 88% 10px, 91% 4.8px, 95% 12px, 98% 7px, 100% 9.4px,
-    100% 100%, 0% 100%
-  );
+  /* Torn-paper top/bottom edges come from the shared .torn-edges class. */
 }
 
 .contact .container { position: relative; z-index: 1; }
@@ -2537,21 +2529,44 @@ body.no-cursor * { cursor: none !important; }
 }
 
 /* ═══════════════════════════════════════════
-   TRUST — client logo marquee + awards
+   Torn-paper edge — shared by every section whose background
+   departs from the page's base tone (dark-green bands, warm
+   Playground strip). Fixed-px tooth depth keeps the tear a
+   consistent, gentle size regardless of section height.
+═══════════════════════════════════════════ */
+.torn-edges {
+  clip-path: polygon(
+    0% 7px, 2.5% 12px, 5% 5.5px, 8% 11px, 11% 4.8px, 14% 13px, 17% 8px, 20% 12.5px,
+    24% 5.5px, 27% 10px, 30% 4px, 33% 14px, 37% 7px, 40% 12px, 43% 6.3px, 47% 11px,
+    50% 4.8px, 53% 13px, 57% 8px, 60% 12px, 64% 5.5px, 67% 10px, 70% 4px, 74% 13px,
+    77% 7px, 81% 12.5px, 84% 6.3px, 88% 10px, 91% 4.8px, 95% 12px, 98% 7px, 100% 9.4px,
+    100% calc(100% - 12.5px), 98% calc(100% - 5.5px), 95% calc(100% - 10px), 91% calc(100% - 4px),
+    88% calc(100% - 14px), 84% calc(100% - 7px), 81% calc(100% - 12px), 77% calc(100% - 6.3px),
+    74% calc(100% - 11px), 70% calc(100% - 4.8px), 67% calc(100% - 13px), 64% calc(100% - 8px),
+    60% calc(100% - 12px), 57% calc(100% - 5.5px), 53% calc(100% - 10px), 50% calc(100% - 4px),
+    47% calc(100% - 13px), 43% calc(100% - 7px), 40% calc(100% - 12.5px), 37% calc(100% - 6.3px),
+    33% calc(100% - 10px), 30% calc(100% - 4.8px), 27% calc(100% - 12px), 24% calc(100% - 7px),
+    20% calc(100% - 9.4px), 17% calc(100% - 7px), 14% calc(100% - 12px), 11% calc(100% - 5.5px),
+    8% calc(100% - 11px), 5% calc(100% - 4.8px), 2.5% calc(100% - 13px), 0% calc(100% - 8px)
+  );
+}
+
+/* ═══════════════════════════════════════════
+   TRUST — client logo marquee
 ═══════════════════════════════════════════ */
 .trust {
-  background: #121210;
-  padding-block: clamp(3rem, 6vw, 4.5rem);
+  background: var(--accent-color-dark);
+  padding-block: clamp(3.5rem, 7vw, 5rem);
   overflow: hidden;
 }
 
-.trust__label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+.trust__heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  letter-spacing: -0.01em;
+  color: #F7F3EC;
 }
 
 .trust__marquee {
@@ -2578,27 +2593,29 @@ body.no-cursor * { cursor: none !important; }
 }
 
 .trust__logo {
-  height: clamp(20px, 3vw, 28px);
+  --logo-scale: 1;
+  height: calc(clamp(20px, 3vw, 28px) * var(--logo-scale));
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  opacity: 0.42;
+  opacity: 0.45;
   transition: opacity 0.25s ease;
 }
 
-.trust__logo:hover { opacity: 0.85; }
+.trust__logo:hover { opacity: 0.9; }
 
 .trust__logo--text {
+  --logo-scale: 1;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-size: calc(clamp(1.05rem, 2vw, 1.3rem) * var(--logo-scale));
   letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.45);
   white-space: nowrap;
   transition: color 0.25s ease;
 }
 
-.trust__logo--text:hover { color: rgba(255, 255, 255, 0.85); }
+.trust__logo--text:hover { color: rgba(255, 255, 255, 0.9); }
 
 @keyframes trustScroll {
   from { transform: translateX(0); }
@@ -2609,46 +2626,57 @@ body.no-cursor * { cursor: none !important; }
   .trust__track { animation: none; }
 }
 
-.trust__awards {
-  margin-top: clamp(2.5rem, 6vw, 3.75rem);
-  padding-top: clamp(2.5rem, 6vw, 3.75rem);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+/* ═══════════════════════════════════════════
+   AWARDS — standalone band after Selected work
+═══════════════════════════════════════════ */
+.awards {
+  background: var(--accent-color-dark);
+  padding-block: clamp(3.5rem, 7vw, 5rem);
 }
 
-.trust__award-list {
+.awards__heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  letter-spacing: -0.01em;
+  color: #F7F3EC;
+}
+
+.awards__list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--s8) clamp(1.75rem, 4vw, 3rem);
-  margin-top: var(--s6);
+  margin-top: var(--s8);
 }
 
-.trust__award {
+.awards__item {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.trust__award-icon {
+.awards__icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
   color: #8FE3B5;
 }
 
-.trust__award-name {
+.awards__name {
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   color: rgba(255, 255, 255, 0.68);
   white-space: nowrap;
 }
 
-.trust__award-year {
+.awards__year {
   color: rgba(255, 255, 255, 0.36);
 }
 
 @media (max-width: 640px) {
-  .trust__award-list { gap: var(--s5) var(--s8); }
+  .awards__list { gap: var(--s5) var(--s8); }
 }
 
 .exp-list { display: flex; flex-direction: column; }
