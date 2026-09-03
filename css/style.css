@@ -2557,7 +2557,6 @@ body.no-cursor * { cursor: none !important; }
 .trust {
   background: var(--accent-color-dark);
   padding-block: clamp(3.5rem, 7vw, 5rem);
-  overflow: hidden;
 }
 
 .trust__heading {
@@ -2573,6 +2572,7 @@ body.no-cursor * { cursor: none !important; }
 .trust__marquee {
   position: relative;
   margin-top: var(--s8);
+  overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
 }
@@ -2632,7 +2632,6 @@ body.no-cursor * { cursor: none !important; }
 ═══════════════════════════════════════════ */
 .awards {
   padding-block: clamp(3.5rem, 7vw, 5rem);
-  border-top: 1px solid var(--border);
   text-align: center;
 }
 
@@ -2680,6 +2679,7 @@ body.no-cursor * { cursor: none !important; }
 
 @media (max-width: 640px) {
   .awards__list { gap: var(--s5) var(--s8); }
+  .awards__name { white-space: normal; }
 }
 
 .exp-list { display: flex; flex-direction: column; }
