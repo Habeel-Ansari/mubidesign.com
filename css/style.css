@@ -2678,7 +2678,8 @@ body.no-cursor * { cursor: none !important; }
 }
 
 @media (max-width: 640px) {
-  .awards__list { gap: var(--s5) var(--s8); }
+  .awards__list { flex-direction: column; align-items: center; gap: var(--s5); }
+  .awards__item { align-items: flex-start; text-align: left; }
   .awards__name { white-space: normal; }
 }
 
