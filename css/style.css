@@ -2567,6 +2567,7 @@ body.no-cursor * { cursor: none !important; }
   font-size: clamp(1.4rem, 2.6vw, 1.9rem);
   letter-spacing: -0.01em;
   color: #F7F3EC;
+  text-align: center;
 }
 
 .trust__marquee {
@@ -2630,8 +2631,9 @@ body.no-cursor * { cursor: none !important; }
    AWARDS — standalone band after Selected work
 ═══════════════════════════════════════════ */
 .awards {
-  background: var(--accent-color-dark);
   padding-block: clamp(3.5rem, 7vw, 5rem);
+  border-top: 1px solid var(--border);
+  text-align: center;
 }
 
 .awards__heading {
@@ -2640,13 +2642,14 @@ body.no-cursor * { cursor: none !important; }
   font-weight: 400;
   font-size: clamp(1.4rem, 2.6vw, 1.9rem);
   letter-spacing: -0.01em;
-  color: #F7F3EC;
+  color: var(--text);
 }
 
 .awards__list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--s8) clamp(1.75rem, 4vw, 3rem);
   margin-top: var(--s8);
 }
@@ -2661,18 +2664,18 @@ body.no-cursor * { cursor: none !important; }
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: #8FE3B5;
+  color: var(--accent-color);
 }
 
 .awards__name {
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .awards__year {
-  color: rgba(255, 255, 255, 0.36);
+  color: var(--text-tertiary);
 }
 
 @media (max-width: 640px) {
