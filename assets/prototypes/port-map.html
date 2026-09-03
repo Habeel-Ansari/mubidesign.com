@@ -1010,12 +1010,12 @@
     maxZoom: 8,
   });
 
-  // Stadia dark maritime tile — matches dark ocean color tone
-  // CartoDB Dark Matter — free, no API key, dark maritime style
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 19,
+  // Esri World Dark Gray Base — free, no API key required, dark maritime style.
+  // (CARTO's dark_all basemap now requires an API key and serves a watermarked
+  // placeholder without one, so it was swapped out for this.)
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="https://www.esri.com/">Esri</a>',
+    maxZoom: 16,
   }).addTo(lmap);
 
   // Custom pin SVG for Leaflet divIcon
