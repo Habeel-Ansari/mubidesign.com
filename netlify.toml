@@ -15,11 +15,6 @@
   to = "/about.html"
   status = 200
 
-[[redirects]]
-  from = "/case-study/:slug"
-  to = "/case-study.html"
-  status = 200
-
 # Security headers
 [[headers]]
   for = "/*"
