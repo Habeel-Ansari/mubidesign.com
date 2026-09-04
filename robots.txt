@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /case-study.html
+Disallow: /voyage-optimization.html
+Disallow: /assets/prototypes/
+Disallow: /assets/mockups/
+
+Sitemap: https://mubidesign.com/sitemap.xml
