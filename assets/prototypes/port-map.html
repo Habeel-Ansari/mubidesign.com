@@ -2461,6 +2461,24 @@
       if (!popup.contains(e.target) && !e.target.closest('.cal-btn')) close();
     });
   })();
+
+  // Auto-open the distance calculator with a prefilled route, e.g.
+  // port-map.html?calc=Gibraltar:Rotterdam - used to showcase the
+  // calculator as its own screen in the case study.
+  (function () {
+    const calc = new URLSearchParams(location.search).get('calc');
+    if (!calc) return;
+    const [from, to] = calc.split(':');
+    if (!from || !to) return;
+    setTimeout(() => {
+      openCalculator(from);
+      const toRow = stopsList.querySelector('[data-role="to"]');
+      const toInput = toRow.querySelector('.stop-input');
+      toInput.value = to;
+      updateRowFlag(toRow);
+      recalc();
+    }, 300);
+  })();
 </script>
 </body>
 </html>
