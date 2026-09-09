@@ -2995,6 +2995,9 @@ body.no-cursor * { cursor: none !important; }
   border-radius: var(--r-xl);
   padding: var(--s10) var(--s5) var(--s6);
   min-height: 460px;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
   box-shadow: var(--shadow-lg);
 }
 .cs-notifs__clock { text-align: center; margin-bottom: var(--s8); }
@@ -3168,7 +3171,7 @@ body.no-cursor * { cursor: none !important; }
 }
 .cs-canvas__flow {
   position: absolute;
-  top: var(--s6); right: var(--s8);
+  top: var(--s6); left: var(--s8);
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -3248,7 +3251,7 @@ body.no-cursor * { cursor: none !important; }
 .cs-canvas__side-note { display: flex; align-items: center; gap: var(--s2); max-width: 150px; flex-shrink: 0; }
 .cs-canvas__side-note p { font-size: var(--fs-sm); color: rgba(246,237,228,0.65); line-height: 1.55; margin: 0; }
 .cs-canvas__side-note--left { flex-direction: row; text-align: right; }
-.cs-canvas__side-note--right { flex-direction: row-reverse; text-align: left; }
+.cs-canvas__side-note--right { flex-direction: row; text-align: left; }
 .cs-canvas__connector--h { width: 32px; height: 1px; background: rgba(159,232,112,0.5); position: relative; flex-shrink: 0; }
 .cs-canvas__connector--h::before {
   content: ''; position: absolute; top: -3.5px; width: 7px; height: 7px;
@@ -3315,10 +3318,10 @@ body.no-cursor * { cursor: none !important; }
 .cs-scope-note {
   font-size: var(--fs-xs);
   color: var(--text-tertiary);
-  border-top: 1px solid var(--border);
-  padding-top: var(--s5);
   margin-top: var(--s4);
   max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
 }
 
 /* Case-study: flat documentation-page cards (foundations/components filmstrips) */
