@@ -3227,6 +3227,14 @@ body.no-cursor * { cursor: none !important; }
 .cs-canvas__filmstrip .cs-screen__frame { box-shadow: none; }
 .cs-canvas__filmstrip .cs-screen__name { display: none; }
 
+/* Filmstrip variant that keeps each screen's name visible, e.g. distinct
+   named directions rather than steps of one sequential flow. */
+.cs-canvas__filmstrip--named .cs-screen__name {
+  display: block;
+  color: rgba(246,237,228,0.65);
+  text-align: center;
+}
+
 .cs-canvas__spotlight {
   position: relative;
   z-index: 1;
