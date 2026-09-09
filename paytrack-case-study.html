@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Google+Sans+Flex:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260903i">
+  <link rel="stylesheet" href="css/style.css?v=20260909a">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
 
   <style>
@@ -363,7 +363,7 @@
       <div class="container">
 
         <!-- Walkthrough -->
-        <div class="cs-section" data-reveal>
+        <div class="cs-section" data-reveal style="margin-top: var(--s16);">
           <p class="cs-section__label">Walkthrough</p>
           <h2 class="cs-section__title">Twelve screens, three jobs</h2>
           <p class="cs-section__text">
@@ -377,35 +377,13 @@
             <p class="cs-section__text">Log in with your phone number, verify with a code that shows a countdown, see a one-line pitch for the app, see what's worth paying for, and grant permissions that explain why they're needed before asking.</p>
             <div class="cs-canvas">
               <span class="cs-canvas__flow">Flow 01 · Onboarding</span>
-              <div class="cs-canvas__screens">
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">Mobile-first entry, no password to remember.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/login.webp" alt="Login screen: mobile number entry with Send OTP button" loading="lazy"></div><div class="cs-screen__name">01 - Login</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">The code box is ready to type in right away, with a visible countdown.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-sent.webp" alt="OTP verification screen with 24 second resend cooldown" loading="lazy"></div><div class="cs-screen__name">02 - Verify (sent)</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">Resend unlocks the moment the cooldown ends.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-ready.webp" alt="OTP verification screen with Resend OTP link active" loading="lazy"></div><div class="cs-screen__name">03 - Verify (ready)</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">The pitch in one line: spends, decoded.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/welcome.webp" alt="Welcome screen: Your spends, decoded" loading="lazy"></div><div class="cs-screen__name">04 - Welcome</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">A 50%-off offer that focuses on what you'll get, not a list of features.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/premium.webp" alt="Premium upsell screen: 50 percent off premium" loading="lazy"></div><div class="cs-screen__name">05 - Premium</div></div>
-                </div>
-                <div class="cs-canvas__screen cs-canvas__screen--hero">
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/permissions.webp" alt="App permissions screen with toggles for SMS, notifications and more" loading="lazy"></div><div class="cs-screen__name">06 - Permissions</div></div>
-                </div>
+              <div class="cs-canvas__filmstrip">
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/login.webp" alt="Login screen: mobile number entry with Send OTP button" loading="lazy"></div><div class="cs-screen__name">01 - Login</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-sent.webp" alt="OTP verification screen with 24 second resend cooldown" loading="lazy"></div><div class="cs-screen__name">02 - Verify (sent)</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/otp-ready.webp" alt="OTP verification screen with Resend OTP link active" loading="lazy"></div><div class="cs-screen__name">03 - Verify (ready)</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/welcome.webp" alt="Welcome screen: Your spends, decoded" loading="lazy"></div><div class="cs-screen__name">04 - Welcome</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/premium.webp" alt="Premium upsell screen: 50 percent off premium" loading="lazy"></div><div class="cs-screen__name">05 - Premium</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/permissions.webp" alt="App permissions screen with toggles for SMS, notifications and more" loading="lazy"></div><div class="cs-screen__name">06 - Permissions</div></div>
               </div>
             </div>
           </div>
@@ -438,30 +416,12 @@
             <p class="cs-section__text">Every transaction grouped by day. Filtering by month, date range or category always opens the same kind of pop-up sheet, so it never feels unfamiliar.</p>
             <div class="cs-canvas">
               <span class="cs-canvas__flow">Flow 03 · Transactions</span>
-              <div class="cs-canvas__screens">
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">A list of every transaction, grouped by day, newest first.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/listing.webp" alt="Transactions listing grouped by day" loading="lazy"></div><div class="cs-screen__name">08 - Listing</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">Jump to any month without leaving the list.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-month.webp" alt="Choose month bottom sheet" loading="lazy"></div><div class="cs-screen__name">09 - Choose month</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">Today, last week, last year - all picked the same simple way.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-view.webp" alt="Choose view bottom sheet with Today, Last week, Last month options" loading="lazy"></div><div class="cs-screen__name">10 - Choose view</div></div>
-                </div>
-                <div class="cs-canvas__screen">
-                  <p class="cs-canvas__caption">Twelve categories, each with its own icon and colour.</p>
-                  <span class="cs-canvas__connector"></span>
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter.webp" alt="Filter bottom sheet with twelve spend categories" loading="lazy"></div><div class="cs-screen__name">11 - Filter</div></div>
-                </div>
-                <div class="cs-canvas__screen cs-canvas__screen--hero">
-                  <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter-applied.webp" alt="Transactions list with an active filter chip showing 2 Applied" loading="lazy"></div><div class="cs-screen__name">12 - Filter applied</div></div>
-                </div>
+              <div class="cs-canvas__filmstrip">
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/listing.webp" alt="Transactions listing grouped by day" loading="lazy"></div><div class="cs-screen__name">08 - Listing</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-month.webp" alt="Choose month bottom sheet" loading="lazy"></div><div class="cs-screen__name">09 - Choose month</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/choose-view.webp" alt="Choose view bottom sheet with Today, Last week, Last month options" loading="lazy"></div><div class="cs-screen__name">10 - Choose view</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter.webp" alt="Filter bottom sheet with twelve spend categories" loading="lazy"></div><div class="cs-screen__name">11 - Filter</div></div>
+                <div class="cs-screen"><div class="cs-screen__frame"><div class="cs-screen__notch"></div><img src="assets/images/work/paytrack/filter-applied.webp" alt="Transactions list with an active filter chip showing 2 Applied" loading="lazy"></div><div class="cs-screen__name">12 - Filter applied</div></div>
               </div>
             </div>
           </div>
@@ -508,6 +468,6 @@
 
   <!-- FOOTER -->
 
-  <script src="js/main.js?v=20260903i"></script>
+  <script src="js/main.js?v=20260909a"></script>
 </body>
 </html>

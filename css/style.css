@@ -3210,6 +3210,23 @@ body.no-cursor * { cursor: none !important; }
   box-shadow: 0 0 0 2px #9FE870, 0 12px 40px rgba(159,232,112,0.25);
 }
 
+/* Case-study: plain horizontal filmstrip - no captions/connectors, edge-faded row */
+.cs-canvas__filmstrip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--s6);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+.cs-canvas__filmstrip::-webkit-scrollbar { display: none; }
+.cs-canvas__filmstrip .cs-screen { flex: 0 0 auto; }
+.cs-canvas__filmstrip .cs-screen__frame { box-shadow: none; }
+.cs-canvas__filmstrip .cs-screen__name { display: none; }
+
 .cs-canvas__spotlight {
   position: relative;
   z-index: 1;
